@@ -1,0 +1,64 @@
+<html>
+
+    <head>
+      <meta charset="UTF-8">
+        <title></title>
+
+        <link rel="stylesheet" href="styleLogin.css">
+
+    </head>
+
+    <body>
+
+        <center>
+            <div class="container">
+                <input type="checkbox" id="check">
+                <div class="login form">
+                  <header>Login</header>
+                  <form action="login.php" method="post">
+                    <input type="text" name="nombre" placeholder="Tu nombre">
+                    <input type="password" name="pass" placeholder="Tu contraseña">
+                    <button type="post" class="button" value="Login"> Login </button>
+                  </form>
+                  <div class="signup">
+                    <span class="signup">No tienes cuenta?
+                     <label for="check">Registrarse</label>
+                    </span>
+                  </div>
+                </div>
+                <div class="registration form">
+                  <header>Registro</header>
+
+                  <form action="registrarUsuario.php" method="post">
+                    <input type="text" placeholder="Tu nombre" name="nombre">
+                    <input type="password" placeholder="Crea una contraseña" name="pass">
+                    <input type="password" placeholder="Confirma tu contraseña">
+                    <button type="post">Registrarse</button>
+                  </form>
+               
+                  <div class="signup">
+                    <span class="signup">Ya tienes una cuenta?
+                     <label for="check">Login</label>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </center>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </body>
+
+</html>
