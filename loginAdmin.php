@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["pass"]) && !empty($_POS
     $numero = $_POST["numero"];
     $pass = $_POST["pass"];
     $_SESSION['nombreUser'] = $nombre;
-    $querychecar = $conn->prepare("SELECT * FROM usuarios WHERE Numero_Empleado = ? and Contraseña_Empleado = ?");
+    $querychecar = $conn->prepare("SELECT * FROM usuarios WHERE Numero_Empleado = ? and Contraseña_Empleado = ? and Area = 'Administrador de sistema' ");
     $querychecar->bind_param("ss", $numero, $pass);
     $querychecar->execute();
     $result = $querychecar->get_result();
@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["pass"]) && !empty($_POS
                 alert("Numero o Contraseña Incorrectos.");
                 history.back();
               </script>';
+        header('Location: adminPage.php');
          
     } 
     else
@@ -24,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["pass"]) && !empty($_POS
         alert("Login Correcto");
         history.back();
       </script>';
+      header('Location: adminPage.php');
  
     }
 }

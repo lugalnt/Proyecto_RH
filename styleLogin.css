@@ -61,13 +61,14 @@ body{
 .form a:hover{
   text-decoration: underline;
 }
-.form input.button{
+button{
   color: #fff;
   background: #4b7747;
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 350;
   letter-spacing: 1px;
-  margin-top: 1.7rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   cursor: pointer;
   transition: 0.4s;
 }
@@ -85,4 +86,17 @@ margin-top: 25px;
 }
 .signup label:hover{
   text-decoration: underline;
+}
+
+#soyadmin
+{
+  color: #fff;
+  background: #4b7747;
+  font-size: 1.7rem;
+  font-weight: 350;
+  letter-spacing: 1px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: 0.4s;
 }
