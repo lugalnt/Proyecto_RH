@@ -1,0 +1,316 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 25-01-2025 a las 02:25:59
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `proyectorh`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empleado`
+--
+
+CREATE TABLE `empleado` (
+  `Numero_Empleado` int(20) NOT NULL,
+  `Nombre_Empleado` varchar(30) NOT NULL,
+  `Contraseña_Empleado` varchar(20) NOT NULL,
+  `Area` varchar(30) NOT NULL,
+  `Edad` int(3) NOT NULL,
+  `Genero` varchar(12) NOT NULL,
+  `Titulo` varchar(50) NOT NULL,
+  `Fecha_Ingreso` date NOT NULL,
+  `Direccion` varchar(200) NOT NULL,
+  `Telefono` varchar(12) NOT NULL,
+  `Discapacidad` varchar(50) NOT NULL DEFAULT 'N/A',
+  `Estado` varchar(30) NOT NULL,
+  `Dias_Extras` int(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empleado_familiar`
+--
+
+CREATE TABLE `empleado_familiar` (
+  `Numero_Empleado` int(11) NOT NULL,
+  `Id_Familiar` int(11) NOT NULL,
+  `Relacion` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empleado_prestacion`
+--
+
+CREATE TABLE `empleado_prestacion` (
+  `Numero_Empleado` int(11) NOT NULL,
+  `Id_Prestacion` int(11) NOT NULL,
+  `Tipo` varchar(40) NOT NULL,
+  `Fecha_Solicitada` date NOT NULL,
+  `Fecha_Otorgada` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `familiar_empleado`
+--
+
+CREATE TABLE `familiar_empleado` (
+  `Id_Familiar` int(11) NOT NULL,
+  `Nombre_Familiar` varchar(50) NOT NULL,
+  `Nivel academico` varchar(25) NOT NULL,
+  `Edad` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `familiar_prestacion`
+--
+
+CREATE TABLE `familiar_prestacion` (
+  `Id_Familiar` int(11) NOT NULL,
+  `Id_Prestacion` int(11) NOT NULL,
+  `Tipo` varchar(35) NOT NULL,
+  `Fecha_Otorgada` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prestacion`
+--
+
+CREATE TABLE `prestacion` (
+  `Id_Prestacion` int(11) NOT NULL,
+  `Fecha_Solicitada` date NOT NULL,
+  `Fecha_Otorgada` date NOT NULL,
+  `Tipo` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prestacion_apoyoacademico`
+--
+
+CREATE TABLE `prestacion_apoyoacademico` (
+  `Id_Prestacion` int(11) NOT NULL,
+  `Numero_Empleado` int(11) NOT NULL,
+  `Id_Familiar` int(11) NOT NULL,
+  `Nivel_Academico` varchar(20) NOT NULL,
+  `Nombre_Institucion` varchar(35) NOT NULL,
+  `Tipo` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prestacion_apoyofinanciero`
+--
+
+CREATE TABLE `prestacion_apoyofinanciero` (
+  `Id_Prestacion` int(11) NOT NULL,
+  `Numero_Empleado` int(11) NOT NULL,
+  `Id_Familiar` int(11) NOT NULL DEFAULT 0,
+  `Deposito` tinyint(1) NOT NULL,
+  `Reembolso` tinyint(1) NOT NULL,
+  `Tipo` varchar(35) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prestacion_dias`
+--
+
+CREATE TABLE `prestacion_dias` (
+  `Id_Prestacion` int(11) NOT NULL,
+  `Numero_Empleado` int(11) NOT NULL,
+  `Fecha_Solicitada` date NOT NULL,
+  `Dia extra` tinyint(1) NOT NULL,
+  `Motivo` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prestacion_plazos`
+--
+
+CREATE TABLE `prestacion_plazos` (
+  `Id_Prestacion` int(11) NOT NULL,
+  `Numero_Empleado` int(11) NOT NULL,
+  `Fecha_Incio` date NOT NULL,
+  `Fecha_Final` date NOT NULL,
+  `Tipo` varchar(34) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  ADD PRIMARY KEY (`Numero_Empleado`);
+
+--
+-- Indices de la tabla `empleado_familiar`
+--
+ALTER TABLE `empleado_familiar`
+  ADD KEY `Numero_Empleado` (`Numero_Empleado`),
+  ADD KEY `Id_Familiar` (`Id_Familiar`);
+
+--
+-- Indices de la tabla `empleado_prestacion`
+--
+ALTER TABLE `empleado_prestacion`
+  ADD KEY `Numero_Empleado` (`Numero_Empleado`),
+  ADD KEY `Id_Prestacion` (`Id_Prestacion`);
+
+--
+-- Indices de la tabla `familiar_empleado`
+--
+ALTER TABLE `familiar_empleado`
+  ADD PRIMARY KEY (`Id_Familiar`) USING BTREE;
+
+--
+-- Indices de la tabla `familiar_prestacion`
+--
+ALTER TABLE `familiar_prestacion`
+  ADD KEY `Id_Familiar` (`Id_Familiar`),
+  ADD KEY `Id_Prestacion` (`Id_Prestacion`);
+
+--
+-- Indices de la tabla `prestacion`
+--
+ALTER TABLE `prestacion`
+  ADD PRIMARY KEY (`Id_Prestacion`);
+
+--
+-- Indices de la tabla `prestacion_apoyoacademico`
+--
+ALTER TABLE `prestacion_apoyoacademico`
+  ADD KEY `Id_Prestacion` (`Id_Prestacion`),
+  ADD KEY `Numero_Empleado` (`Numero_Empleado`),
+  ADD KEY `Id_Familiar` (`Id_Familiar`);
+
+--
+-- Indices de la tabla `prestacion_apoyofinanciero`
+--
+ALTER TABLE `prestacion_apoyofinanciero`
+  ADD KEY `Id_Prestacion` (`Id_Prestacion`),
+  ADD KEY `Numero_Empleado` (`Numero_Empleado`),
+  ADD KEY `Id_Familiar` (`Id_Familiar`);
+
+--
+-- Indices de la tabla `prestacion_dias`
+--
+ALTER TABLE `prestacion_dias`
+  ADD KEY `Id_Prestacion` (`Id_Prestacion`),
+  ADD KEY `Numero_Empleado` (`Numero_Empleado`);
+
+--
+-- Indices de la tabla `prestacion_plazos`
+--
+ALTER TABLE `prestacion_plazos`
+  ADD KEY `Id_Prestacion` (`Id_Prestacion`),
+  ADD KEY `Numero_Empleado` (`Numero_Empleado`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  MODIFY `Numero_Empleado` int(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `prestacion`
+--
+ALTER TABLE `prestacion`
+  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `empleado_familiar`
+--
+ALTER TABLE `empleado_familiar`
+  ADD CONSTRAINT `empleado_familiar_ibfk_1` FOREIGN KEY (`Id_Familiar`) REFERENCES `familiar_empleado` (`Id_Familiar`),
+  ADD CONSTRAINT `empleado_familiar_ibfk_2` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado` (`Numero_Empleado`);
+
+--
+-- Filtros para la tabla `empleado_prestacion`
+--
+ALTER TABLE `empleado_prestacion`
+  ADD CONSTRAINT `empleado_prestacion_ibfk_1` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado` (`Numero_Empleado`),
+  ADD CONSTRAINT `empleado_prestacion_ibfk_2` FOREIGN KEY (`Id_Prestacion`) REFERENCES `prestacion` (`Id_Prestacion`);
+
+--
+-- Filtros para la tabla `familiar_prestacion`
+--
+ALTER TABLE `familiar_prestacion`
+  ADD CONSTRAINT `familiar_prestacion_ibfk_1` FOREIGN KEY (`Id_Familiar`) REFERENCES `empleado_familiar` (`Id_Familiar`),
+  ADD CONSTRAINT `familiar_prestacion_ibfk_2` FOREIGN KEY (`Id_Prestacion`) REFERENCES `prestacion` (`Id_Prestacion`);
+
+--
+-- Filtros para la tabla `prestacion_apoyoacademico`
+--
+ALTER TABLE `prestacion_apoyoacademico`
+  ADD CONSTRAINT `prestacion_apoyoacademico_ibfk_1` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado_prestacion` (`Numero_Empleado`),
+  ADD CONSTRAINT `prestacion_apoyoacademico_ibfk_2` FOREIGN KEY (`Id_Prestacion`) REFERENCES `prestacion` (`Id_Prestacion`),
+  ADD CONSTRAINT `prestacion_apoyoacademico_ibfk_3` FOREIGN KEY (`Id_Familiar`) REFERENCES `familiar_prestacion` (`Id_Familiar`);
+
+--
+-- Filtros para la tabla `prestacion_apoyofinanciero`
+--
+ALTER TABLE `prestacion_apoyofinanciero`
+  ADD CONSTRAINT `prestacion_apoyofinanciero_ibfk_1` FOREIGN KEY (`Id_Prestacion`) REFERENCES `prestacion` (`Id_Prestacion`),
+  ADD CONSTRAINT `prestacion_apoyofinanciero_ibfk_2` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado_prestacion` (`Numero_Empleado`),
+  ADD CONSTRAINT `prestacion_apoyofinanciero_ibfk_3` FOREIGN KEY (`Id_Familiar`) REFERENCES `familiar_prestacion` (`Id_Familiar`);
+
+--
+-- Filtros para la tabla `prestacion_dias`
+--
+ALTER TABLE `prestacion_dias`
+  ADD CONSTRAINT `prestacion_dias_ibfk_1` FOREIGN KEY (`Id_Prestacion`) REFERENCES `empleado_prestacion` (`Id_Prestacion`),
+  ADD CONSTRAINT `prestacion_dias_ibfk_2` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado_prestacion` (`Numero_Empleado`);
+
+--
+-- Filtros para la tabla `prestacion_plazos`
+--
+ALTER TABLE `prestacion_plazos`
+  ADD CONSTRAINT `prestacion_plazos_ibfk_1` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado_prestacion` (`Numero_Empleado`),
+  ADD CONSTRAINT `prestacion_plazos_ibfk_2` FOREIGN KEY (`Id_Prestacion`) REFERENCES `empleado_prestacion` (`Id_Prestacion`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
