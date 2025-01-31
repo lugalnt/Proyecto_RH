@@ -80,11 +80,41 @@ session_start();
            $nivelAcademicoFam = $_POST['nivelacademico'];
            $edadFam = $_POST['edad'];
            $relacionFam = $_POST['relacion'];
-    
             
+            
+            $queryFamilia = $conn->prepare("INSERT into familiar_empleado (Nombre_Familiar,Nivel academico, Edad, Relacion) values(?,?,?)");
+            $queryFamilia->bind_param("ssis", $nombreFam,$nivelAcademicoFam,$edadFam);
 
+            if($queryFamilia->execute())
+            {
+                $numero_empleado = $_SESSION['Numero_Empleado'];
 
+                $id_familiar = $queryFamilia->insert_id;
 
+                $queryFamiliaEmpleado = $conn->prepare("INSERT INTO empleado_familiar (Numero_Empleado,Id_Familiar,Relacion) VALUES (?,?,?)");
+                $queryFamiliaEmpleado->bind_param("iis", $numero_empleado,$id_familiar,$relacionFam);
+
+                if($queryFamiliaEmpleado->execute())
+                {
+                    echo '<script type="text/javascript">
+                    alert("Familiar registrado");
+                  </script>'; 
+                  echo("<meta http-equiv='refresh' content='1'>");
+                }
+                else
+                {
+                    echo '<script type="text/javascript">
+                    alert("Problema");
+                  </script>'; 
+                }
+
+            }
+            else
+            {
+                echo '<script type="text/javascript">
+                alert("Problema");
+              </script>';
+            }
 
 
         } 
