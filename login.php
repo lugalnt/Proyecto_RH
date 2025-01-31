@@ -1,15 +1,17 @@
 <?php
-require_once("conn.php");
 session_start();
+require_once("conn.php");
 if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["pass"]) && !empty($_POST["numero"])){
 
     $numero = $_POST["numero"];
     $pass = $_POST["pass"];
-    $_SESSION['nombreUser'] = $nombre;
-    $querychecar = $conn->prepare("SELECT * FROM usuarios WHERE Numero_Empleado = ? and Contraseña_Empleado = ?");
+ 
+    $querychecar = $conn->prepare("SELECT * FROM empleado WHERE Numero_Empleado = ? and Contraseña_Empleado = ?");
     $querychecar->bind_param("ss", $numero, $pass);
     $querychecar->execute();
     $result = $querychecar->get_result();
+    $row = $result->fetch_assoc();
+
     ////////////////////////////////////////////////////////////////
     if ($result->num_rows <= 0) {
         echo '<script type="text/javascript">
@@ -20,11 +22,13 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["pass"]) && !empty($_POS
     } 
     else
     {
+      $_SESSION['Numero_Empleado'] = $row['Numero_Empleado'];
+      $_SESSION['Nombre_Empleado'] = $row['Nombre_Empleado'];
         echo '<script type="text/javascript">
         alert("Login Correcto");
-        history.back();
+        
       </script>';
- 
+      header('Location: index.php');
     }
 }
 else

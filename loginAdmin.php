@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["pass"]) && !empty($_POS
     $numero = $_POST["numero"];
     $pass = $_POST["pass"];
     $_SESSION['nombreUser'] = $nombre;
-    $querychecar = $conn->prepare("SELECT * FROM usuarios WHERE Numero_Empleado = ? and Contraseña_Empleado = ? and Area = 'Administrador de sistema' ");
+    $querychecar = $conn->prepare("SELECT * FROM empleado WHERE Numero_Empleado = ? and Contraseña_Empleado = ? and Area = 'Administrador de sistema' ");
     $querychecar->bind_param("ss", $numero, $pass);
     $querychecar->execute();
     $result = $querychecar->get_result();

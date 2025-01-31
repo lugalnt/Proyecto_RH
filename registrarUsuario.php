@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["nombre"]) && !empty($_P
     $nombre = $_POST["nombre"];
     $pass = $_POST["pass"];
 
-    $querychecar = $conn->prepare("SELECT * FROM usuarios WHERE Numero_Empleado = ? AND Nombre_Empleado = ?");
+    $querychecar = $conn->prepare("SELECT * FROM empleado WHERE Numero_Empleado = ? AND Nombre_Empleado = ?");
     $querychecar->bind_param("ss", $numero, $nombre);
     $querychecar->execute();
     $result = $querychecar->get_result();
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["nombre"]) && !empty($_P
  
     
 
-    $querychecar = $conn->prepare("SELECT * FROM usuarios WHERE Numero_Empleado = ? and Contraseña_Empleado = ?");
+    $querychecar = $conn->prepare("SELECT * FROM empleado WHERE Numero_Empleado = ? and Contraseña_Empleado = ?");
     $querychecar->bind_param("ss", $numero, $pass);
     $querychecar->execute();
     $result = $querychecar->get_result();
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["nombre"]) && !empty($_P
     else
     {
 
-        $query = $conn->prepare("UPDATE usuarios SET Nombre_Empleado = ?, Contraseña_Empleado = ? WHERE Numero_Empleado = ? ");
+        $query = $conn->prepare("UPDATE empleado SET Nombre_Empleado = ?, Contraseña_Empleado = ? WHERE Numero_Empleado = ? ");
         $query->bind_param("sss", $nombre, $pass, $numero);
         if ($query->execute()) {
             echo '<script type="text/javascript">

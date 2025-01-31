@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<meta charset="UTF-8">
+
+<head>
+    <title>Encuesta de registro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styleencuesta.css">
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1 id="title">Registro</h1>
+            <p id="description">Registra a un empleado al sistema</p>
+        </header>
+        <form id="survey-form" method="post" action="registrarUsuariopar2.php">
+
+            <div class="form-group">
+                <label for="numero" id="email-label">Numero Empleado</label>
+                <input type="text" name="numeroem" id="Direccion" placeholder="Numero de empleado" required>
+            </div>
+            <div class="form-group">
+                <label for="name" id="email-label">Nombre del empleado</label>
+                <input type="text" name="nombre" id="Direccion" placeholder="Nombre de empleado" required>
+            </div>
+            <div class="form-group">
+                <label for="occupation">Area laboral</label>
+                <select name="area" id="dropdown">
+                    <option value="Administrador">Administrador de sistema</option>
+                    <option value="RH">Recursos Humanos</option>
+                    <option value="Profesor" selected>Profesor</option>
+                    <option value="Area de administracion">Area de administracion</option>
+                  </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="name" id="email-label">Direccion</label>
+                <input type="text" name="Direccion" id="Direccion" placeholder="Introduce tu Direccion" required>
+            </div>
+            <div class="form-group">
+                <label for="numero" id="email-label">Numero</label>
+                <input type="text" name="numero" id="numero" placeholder="Introduce Un numero de telefono" required>
+            </div>
+            <div class="form-group">
+                <label for="numero" id="email-label">Titulo</label>
+                <input type="text" name="titulo" id="titulo" placeholder="Introduce tu titulo" required>
+            </div>
+            <div class="form-group">
+                <label for="edad" id="number-label">Edad</label>
+                <input type="number" name="edad" id="edad" min="1" max="99" placeholder="Introduce tu edad">
+            </div>
+            
+
+
+            <div class="form-group">
+                <label for="occupation">Selecciona tu genero</label>
+                <select name="genero" id="dropdown">
+                    <option value="masc">Maculino</option>
+                    <option value="fem">Femenino</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button id="submit" type="post">Termina tu registro</button>
+            </div>
+        </form>
+    </main>
+</body>
+
+</html> 
