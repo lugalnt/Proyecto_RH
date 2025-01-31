@@ -80,6 +80,7 @@ if(!isset($_SESSION['Numero_Empleado']))
                             <th>Teléfono</th>
                             <th>Discapacidad</th>
                             <th>Estado</th>
+                            <th>Días</th>
                             <th>Días Extras</th>
                           </tr>";
             
@@ -97,6 +98,7 @@ if(!isset($_SESSION['Numero_Empleado']))
                                 <td>{$fila['Telefono']}</td>
                                 <td>{$fila['Discapacidad']}</td>
                                 <td>{$fila['Estado']}</td>
+                                <td>{$fila['Dias']}</td>
                                 <td>{$fila['Dias_Extras']}</td>
                               </tr>";
                     }

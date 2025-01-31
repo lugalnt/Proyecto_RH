@@ -32,7 +32,7 @@
 
             <div class="form-group">
                 <label for="numero" id="email-label">Numero Empleado</label>
-                <input type="text" name="numeroem" id="Direccion" placeholder="Numero de empleado" required>
+                <input type="text" name="numeroem" id="Direccion" placeholder="Numero de empleado">
             </div>
             <div class="form-group">
                 <label for="name" id="email-label">Nombre del empleado</label>
