@@ -58,7 +58,7 @@ session_start();
             
             <div class="form-group">
                 <label for="occupation">Relacion con tu familiar</label>
-                <select name="Relacion" id="dropdown">
+                <select name="relacion" id="dropdown">
                     <option value="Esposo">Esposo/a</option>
                     <option value="Pareja">Pareja/a</option>
                     <option value="Hijo">Hijo/a</option>
@@ -70,6 +70,31 @@ session_start();
                 <button id="submit" type="post">Terminar registro</button>
             </div>
         </form>
+
+        <?php
+
+        if ($_SERVER["REQUEST_METHOD"]=="POST")
+        {
+
+           $nombreFam = $_POST['nombre'];
+           $nivelAcademicoFam = $_POST['nivelacademico'];
+           $edadFam = $_POST['edad'];
+           $relacionFam = $_POST['relacion'];
+    
+            
+
+
+
+
+
+        } 
+
+
+        ?>
+
+
+
+
     </main>
 
                 </tr> 
