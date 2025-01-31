@@ -17,9 +17,9 @@ session_start();
             <caption><br></caption>
             <thead>
                 <tr>
-                    <th>Numero_Empleado<br></th>
-                    <th>Nombre_Empleado</th>
-                    <th>Area<br></th>
+                    <th>Nombre de tu familiar<br></th>
+                    <th>Relacion</th>
+                    <th>Nivel academico<br></th>
                 </tr>
             </thead>
 
@@ -63,7 +63,6 @@ session_start();
                     <option value="Pareja">Pareja/a</option>
                     <option value="Hijo">Hijo/a</option>
                     <option value="Padre">Madre/Padre</option>
-                    
                 </select>
             </div>
 
