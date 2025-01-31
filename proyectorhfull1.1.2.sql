@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-01-2025 a las 17:35:25
+-- Tiempo de generación: 31-01-2025 a las 19:52:27
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -84,6 +84,13 @@ CREATE TABLE `empleado_familiar` (
   `Relacion` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `empleado_familiar`
+--
+
+INSERT INTO `empleado_familiar` (`Numero_Empleado`, `Id_Familiar`, `Relacion`) VALUES
+(445, 0, 'Esposo');
+
 -- --------------------------------------------------------
 
 --
@@ -107,9 +114,16 @@ CREATE TABLE `empleado_prestacion` (
 CREATE TABLE `familiar_empleado` (
   `Id_Familiar` int(11) NOT NULL,
   `Nombre_Familiar` varchar(50) NOT NULL,
-  `Nivel academico` varchar(25) NOT NULL,
+  `Nivel_academico` varchar(25) NOT NULL,
   `Edad` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `familiar_empleado`
+--
+
+INSERT INTO `familiar_empleado` (`Id_Familiar`, `Nombre_Familiar`, `Nivel_academico`, `Edad`) VALUES
+(0, 'Primo de vaqui', 'Secundaria', 3);
 
 -- --------------------------------------------------------
 
