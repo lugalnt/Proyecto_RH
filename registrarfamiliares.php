@@ -13,18 +13,7 @@ session_start();
 
     <div role="region" tabindex="0">
         <center>
-        <table>
-            <caption><br></caption>
-            <thead>
-                <tr>
-                    <th>Nombre de tu familiar<br></th>
-                    <th>Relacion</th>
-                    <th>Nivel academico<br></th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
+        
 
                 <main>
         <header>
