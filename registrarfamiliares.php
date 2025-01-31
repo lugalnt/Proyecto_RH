@@ -82,8 +82,8 @@ session_start();
            $relacionFam = $_POST['relacion'];
             
             
-            $queryFamilia = $conn->prepare("INSERT into familiar_empleado (Nombre_Familiar,Nivel_academico, Edad, Relacion) values(?,?,?,?)");
-            $queryFamilia->bind_param("ssis", $nombreFam,$nivelAcademicoFam,$edadFam,$relacionFam);
+            $queryFamilia = $conn->prepare("INSERT into familiar_empleado (Nombre_Familiar,Nivel_academico, Edad) values(?,?,?)");
+            $queryFamilia->bind_param("ssi", $nombreFam,$nivelAcademicoFam,$edadFam);
 
             if($queryFamilia->execute())
             {
