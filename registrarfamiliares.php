@@ -52,6 +52,7 @@ session_start();
                     <option value="Pareja">Pareja/a</option>
                     <option value="Hijo">Hijo/a</option>
                     <option value="Padre">Madre/Padre</option>
+                    <option value="Otro">Otro</option>
                 </select>
             </div>
 
