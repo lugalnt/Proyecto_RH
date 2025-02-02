@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
 
 
         $queryInsertPF = $conn->prepare("INSERT INTO prestacion_apoyofinanciero (Id_Prestacion,Numero_Empleado,Id_Familiar,Tipo,Deposito,Reembolso) VALUES (?,?,?,?,?,?)");
-        $queryInsertPF->bind_param("iiis", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $tipo, $deposito, $reembolso);
+        $queryInsertPF->bind_param("iiisii", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $tipo, $deposito, $reembolso);
         $queryInsertPF->execute();
         $queryInsertPF->close();
         echo "Solicitud enviada correctamente";
