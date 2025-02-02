@@ -32,7 +32,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
 {
 
     $nombre_familiar = $_POST['nombre_familiar'];
-    $tipo = $_POST['tipo']
+    $tipo = $_POST['tipo'];
+    
    
 
    
