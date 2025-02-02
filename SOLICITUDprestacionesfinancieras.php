@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
 {
     $tipo_pago = $_POST['tipo_pago'];
     $nombre_familiar = "%".$_POST['nombre_familiar']."%";
-    $tipo = $_POST['tipo'];
+    $tipoPF = $_POST['tipo'];
     
    $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Numero_Empleado = ?");
     $queryChecarPF->bind_param("si", $nombre_familiar, $_SESSION['Numero_Empleado']);
@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
         $queryInsertPE->close();
 
         $queryInsertPEE = $conn->prepare("INSERT INTO familiar_prestacion (Id_Familiar,Id_Prestacion,Tipo) VALUES (?, ?, ?)");
-        $queryInsertPEE->bind_param("iis", $row['Id_Familiar'], $id_prestacion, $tipo);
+        $queryInsertPEE->bind_param("iis", $row['Id_Familiar'], $id_prestacion, $tipoPF);
         $queryInsertPEE->execute();
         $queryInsertPEE->close();
 
