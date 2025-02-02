@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
         $queryInsertPE->close();
 
         $queryInsertPEE = $conn->prepare("INSERT INTO familiar_prestacion (Id_Familiar,Id_Prestacion,Tipo) VALUES (?, ?, ?)");
-        $queryInsertPEE->bind_param("iis", $row['Id_Familiar'], $id_prestacion, $tipoPF);
+        $queryInsertPEE->bind_param("iis", $row['Id_Familiar'], $id_prestacion, $tipo);
         $queryInsertPEE->execute();
         $queryInsertPEE->close();
 
@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
 
 
         $queryInsertPF = $conn->prepare("INSERT INTO prestacion_apoyofinanciero (Id_Prestacion,Numero_Empleado,Id_Familiar,Tipo,Deposito,Reembolso) VALUES (?,?,?,?,?,?)");
-        $queryInsertPF->bind_param("iiisii", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $tipo, $deposito, $reembolso);
+        $queryInsertPF->bind_param("iiisii", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $tipoPF, $deposito, $reembolso);
         $queryInsertPF->execute();
         $queryInsertPF->close();
         echo "Solicitud enviada correctamente";

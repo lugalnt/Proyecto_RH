@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-01-2025 a las 19:52:27
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Tiempo de generación: 03-02-2025 a las 00:38:44
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -101,8 +101,8 @@ CREATE TABLE `empleado_prestacion` (
   `Numero_Empleado` int(11) NOT NULL,
   `Id_Prestacion` int(11) NOT NULL,
   `Tipo` varchar(40) NOT NULL,
-  `Fecha_Solicitada` date NOT NULL,
-  `Fecha_Otorgada` date NOT NULL
+  `Fecha_Solicitada` date NOT NULL DEFAULT current_timestamp(),
+  `Fecha_Otorgada` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -135,7 +135,7 @@ CREATE TABLE `familiar_prestacion` (
   `Id_Familiar` int(11) NOT NULL,
   `Id_Prestacion` int(11) NOT NULL,
   `Tipo` varchar(35) NOT NULL,
-  `Fecha_Otorgada` date NOT NULL
+  `Fecha_Otorgada` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
