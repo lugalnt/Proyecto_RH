@@ -18,6 +18,13 @@
             <option value="Exencion de pago de inscripciones">Exención de pago de inscripciones</option>
         </select><br><br>
 
+        <label for="tipo_pago">Tipo de Pago:</label>
+        <select id="tipo_pago" name="tipo_pago">
+            <option value="Deposito">Depósito</option>
+            <option value="Reembolso">Reembolso</option>
+        </select><br><br>
+
+
         <button type="submit">Enviar Solicitud</button>
     </form>
 </body>
@@ -30,12 +37,12 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"]=="POST")
 {
-
+    $tipo_pago = $_POST['tipo_pago'];
     $nombre_familiar = "%".$_POST['nombre_familiar']."%";
     $tipo = $_POST['tipo'];
     
-   $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Id_Empleado = ?");
-    $queryChecarPF->bind_param("si", $nombre_familiar, $_SESSION['Id_Empleado']);
+   $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Numero_Empleado = ?");
+    $queryChecarPF->bind_param("si", $nombre_familiar, $_SESSION['Numero_Empleado']);
     $queryChecarPF->execute();
     $result = $queryChecarPF->get_result();
     $row = $result->fetch_assoc();
@@ -43,8 +50,39 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     
     if ($row)
     {
-        $queryInsertPF = $conn->prepare("INSERT INTO prestaciones_financieras (Id_Familiar, Tipo_Prestacion) VALUES (?, ?)");
-        $queryInsertPF->bind_param("is", $row['Id_Familiar'], $tipo);
+        $tipo = "Financiera";
+        $queryInsertP = $conn->prepare("INSERT INTO prestacion (Tipo) VALUES (?)");
+        $queryInsertP->bind_param("s", $tipo);
+        $queryInsertP->execute();
+        $id_prestacion = $conn->insert_id;
+        $queryInsertP->close();
+        
+        $queryInsertPE = $conn->prepare("INSERT INTO empleado_prestacion (Numero_Empleado, Id_Prestacion, Tipo) VALUES (?, ?, ?)");
+        $queryInsertPE->bind_param("iis", $_SESSION['Numero_Empleado'], $id_prestacion, $tipo);
+        $queryInsertPE->execute();
+        $queryInsertPE->close();
+
+        $queryInsertPEE = $conn->prepare("INSERT INTO familiar_prestacion (Id_Familiar,Id_Prestacion,Tipo) VALUES (?, ?, ?)");
+        $queryInsertPEE->bind_param("iis", $row['Id_Familiar'], $id_prestacion, $tipo);
+        $queryInsertPEE->execute();
+        $queryInsertPEE->close();
+
+
+        if ($tipo_pago == "Deposito")
+        {
+            $deposito = 1;
+            $reembolso = 0;
+        }
+        else
+        {
+            $deposito = 0;
+            $reembolso = 1;
+        }
+
+
+
+        $queryInsertPF = $conn->prepare("INSERT INTO prestacion_apoyofinanciero (Id_Prestacion,Numero_Empleado,Id_Familiar,Tipo,Deposito,Reembolso) VALUES (?,?,?,?,?,?)");
+        $queryInsertPF->bind_param("iiis", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $tipo, $deposito, $reembolso);
         $queryInsertPF->execute();
         $queryInsertPF->close();
         echo "Solicitud enviada correctamente";
