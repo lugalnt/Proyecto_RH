@@ -28,6 +28,9 @@
 require_once("conn.php");
 session_start();
 
+if ($_SERVER["REQUEST_METHOD"]=="POST")
+{
+
 $nombre_familiar = $_POST['nombre_familiar'];
 $nombre_institucion = $_POST['nombre_institucion'];
 $tipoApoyo = $_POST['tipo'];
@@ -77,7 +80,7 @@ else
     echo "No se encontró el familiar";
 }
 
-
+}
 
 
 
