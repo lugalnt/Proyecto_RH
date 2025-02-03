@@ -50,6 +50,10 @@ if ($row)
     {
         echo "No se puede solicitar exención de inscripción para esta institución y/o nivel académico del familiar no es Universidad"; 
     }
+    else
+    {
+        
+    
 
     $tipo = "Academico";
     $queryInsertP = $conn->prepare("INSERT INTO prestacion (Tipo) VALUES (?)");
@@ -74,6 +78,7 @@ if ($row)
     $queryInsertPA->close();
     
     echo "Solicitud enviada correctamente";
+    }
 }
 else
 {
