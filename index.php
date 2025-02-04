@@ -161,10 +161,8 @@ if(!isset($_SESSION['Numero_Empleado']))
 
                   <?php
 
-                  require_once("conn.php");
-                  session_start();
 
-                  $querySPR = conn->prepare("SELECT TOP 3 * FROM prestacion p ORDER BY Fecha_Solicitada DESC");
+                  $querySPR = $conn->prepare("SELECT TOP 3 * FROM prestacion p ORDER BY Fecha_Solicitada DESC");
                   $querySPR->execute();
                   $result = $querySPR->get_result();
                   while($row = $result->fetch_assoc())
