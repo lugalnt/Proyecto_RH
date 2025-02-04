@@ -157,12 +157,26 @@ if(!isset($_SESSION['Numero_Empleado']))
             </div>
 
             <div class="latest-benefits">
-                <h3>Últimas Prestaciones</h3>
-                <div class="benefits-container">
-                    <p>Prestación de Lentes</p>
-                    <p>ID EMPLEADO, NOMBRE EMPLEADO</p>
-                    <p>FECHA: 1/23/2025</p>
-                </div>
+                <h3>Últimas Solicitud de prestaciones Prestaciones</h3>
+
+                  <?php
+
+                  require_once("conn.php");
+                  session_start();
+
+                  $querySPR = conn->prepare("SELECT TOP 3 * FROM prestacion p ORDER BY Fecha_Solicitada DESC");
+                  $querySPR->execute();
+                  $result = $querySPR->get_result();
+                  while($row = $result->fetch_assoc())
+                  {
+                    echo "<div class='benefits-container'>";
+                    echo "<p>".$row['Tipo']."</p>";
+                    echo "<p>".$row['Id_Empleado'].", ".$row['Nombre_Empleado']."</p>";
+                    echo "<p>FECHA: ".$row['Fecha_Solicitada']."</p>";
+                    echo "</div>";
+                  }
+
+                  ?>
             </div>
         </div>
     </div>
