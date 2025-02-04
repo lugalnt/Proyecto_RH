@@ -104,7 +104,7 @@ while($rowSP = $resultadoSP->fetch_assoc())
     echo "<td>".$tipo."</td>";
     echo "<td>".$nombreFamiliar."</td>";
     echo "<td>";
-    echo "<form action='otorgarprestacion.php' method='post'>";
+    echo "<form action='' method='post'>";
     echo "<button type='submit' class='btn btn-primary' value='".$idPrestacion."'>Otorgar prestación</button>";
     echo "</form>";
     echo "</td>";
@@ -149,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     alert("Prestación otorgada");
     </script>';
     echo("<meta http-equiv='refresh' content='1'>");
-    
+
  
 
 
