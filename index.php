@@ -7,12 +7,13 @@ if(!isset($_SESSION['Numero_Empleado']))
   header('Location: login.html');
 }
 
+if($_SESSION['Area'] != "RH")
+{
+  header('Location: indexEMP.php');
+}
+
 
 ?>
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,9 +27,9 @@ if(!isset($_SESSION['Numero_Empleado']))
 <body>
     <div class="sidebar">
         <div class="logo">
-            <h2>RH</h2>
+            <h2>Recursos Humanos</h2>
         </div>
-        <h2>Prestaciones</h2>
+        <h2>Revisar solicitudes de prestaciones</h2>
     </div>
     <div class="main">
         <div class="header">
@@ -109,13 +110,7 @@ if(!isset($_SESSION['Numero_Empleado']))
                 }
                 $stmt->close();
                 }
-            
-                
-            
-            
-
-           
-                
+          
                
             ?>
            
@@ -157,7 +152,7 @@ if(!isset($_SESSION['Numero_Empleado']))
             </div>
 
             <div class="latest-benefits">
-                <h3>Últimas Solicitud de prestaciones Prestaciones</h3>
+                <h3>Últimas Solicitud de prestaciones</h3>
 
                   <?php
 

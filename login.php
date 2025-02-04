@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["pass"]) && !empty($_POS
     } 
     else
     {
+      $_SESSION['Area'] = $row['Area'];
       $_SESSION['Numero_Empleado'] = $row['Numero_Empleado'];
       $_SESSION['Nombre_Empleado'] = $row['Nombre_Empleado'];
         echo '<script type="text/javascript">
