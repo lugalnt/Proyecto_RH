@@ -132,6 +132,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $queryOP->execute();
     $queryOP->close();
 
+    $queryOPE = $conn->prepare("UPDATE empleado_prestacion SET Fecha_Otorgada = CURRENT_DATE WHERE Id_Prestacion = ?");
+    $queryOPE->bind_param("i", $idPrestacion);
+    $queryOPE->execute();
+    $queryOPE->close();
+    
+
     $queryCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
     $queryCFP->bind_param("i", $idPrestacion);
     $queryCFP->execute();
