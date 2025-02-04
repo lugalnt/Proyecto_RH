@@ -31,7 +31,7 @@ if(!isset($_SESSION['Numero_Empleado']))
         <li>Ayuda útiles</li>
     </ul>
     <br><br>
-    <a class="ccbtn btn-blue btn-rounded" href="#1">Solicitar prestación académica</a>
+    <a class="ccbtn btn-blue btn-rounded" href="SOLICITUDprestacionapoyoacademico.php">Solicitar prestación académica</a>
     <br><br>
     <h2>Prestaciones Financieras</h2>
     <ul>
@@ -41,7 +41,7 @@ if(!isset($_SESSION['Numero_Empleado']))
         <li>Lentes</li>
     </ul>
     <br><br>
-    <a class="ccbtn btn-blue btn-rounded" href="#2">Solicitar prestación financiera</a>
+    <a class="ccbtn btn-blue btn-rounded" href="SOLICITUDprestacionesfinancieras.php">Solicitar prestación financiera</a>
 
     </div>
     <div class="main">
