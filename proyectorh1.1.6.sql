@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-02-2025 a las 08:42:27
+-- Tiempo de generación: 04-02-2025 a las 09:01:21
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -52,7 +52,7 @@ INSERT INTO `empleado` (`Numero_Empleado`, `Nombre_Empleado`, `Contraseña_Emple
 (1, 'Admin', '1', 'Administrador de sistema', 1, 'fem', 'admin', '2025-01-31', 'w', '1', 'N/A', 'Activo', 0, 24),
 (223, 'Vaqui', 'vaqui', 'RH', 4, 'fem', 'Todologa', '2025-01-29', 'Romanza', '233444222', 'N/A', 'Activo', 0, 24),
 (444, 'Curli', '', 'Profesor', 3, 'masc', 'Todologo', '2015-01-01', 'Romanza', '333333333', 'N/A', 'Activo', 8, 24),
-(445, 'Cubry', 'vaqui', 'Area de administracion', 7, 'masc', 'Pendejo', '2015-02-18', 'Aqui', '222333222', 'N/A', 'Activo', 6, 24);
+(445, 'Cubry', 'vaqui', 'Area de administracion', 7, 'masc', 'Pendejo', '2015-02-18', 'Aqui', '222333222', 'N/A', 'Activo', 6, 22);
 
 --
 -- Disparadores `empleado`
@@ -112,7 +112,9 @@ CREATE TABLE `empleado_prestacion` (
 INSERT INTO `empleado_prestacion` (`Numero_Empleado`, `Id_Prestacion`, `Tipo`, `Fecha_Solicitada`, `Fecha_Otorgada`) VALUES
 (445, 2, 'Academico', '2025-02-02', NULL),
 (445, 3, 'Financiera', '2025-02-03', '2025-02-03'),
-(445, 4, 'Academico', '2025-02-03', NULL);
+(445, 4, 'Academico', '2025-02-03', NULL),
+(445, 12, 'Día', '2025-02-04', NULL),
+(445, 13, 'Día', '2025-02-04', NULL);
 
 -- --------------------------------------------------------
 
@@ -177,7 +179,15 @@ INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`,
 (2, '2025-02-02', '2025-02-03', 'Academico'),
 (3, '2025-02-03', '2025-02-03', 'Financiera'),
 (4, '2025-02-03', NULL, 'Academico'),
-(5, '2025-02-04', NULL, 'Día');
+(5, '2025-02-04', NULL, 'Día'),
+(6, '2025-02-04', NULL, 'Día'),
+(7, '2025-02-04', NULL, 'Día'),
+(8, '2025-02-04', NULL, 'Día'),
+(9, '2025-02-04', NULL, 'Día'),
+(10, '2025-02-04', NULL, 'Día'),
+(11, '2025-02-04', NULL, 'Día'),
+(12, '2025-02-04', NULL, 'Día'),
+(13, '2025-02-04', NULL, 'Día');
 
 -- --------------------------------------------------------
 
@@ -237,6 +247,14 @@ CREATE TABLE `prestacion_dias` (
   `Dia_extra` tinyint(1) NOT NULL,
   `Motivo` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `prestacion_dias`
+--
+
+INSERT INTO `prestacion_dias` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Solicitada`, `Dia_extra`, `Motivo`) VALUES
+(12, 445, '2025-02-12', 0, 'Permiso sindical'),
+(13, 445, '2025-02-13', 0, 'Permiso sindical');
 
 -- --------------------------------------------------------
 
@@ -339,7 +357,7 @@ ALTER TABLE `empleado`
 -- AUTO_INCREMENT de la tabla `prestacion`
 --
 ALTER TABLE `prestacion`
-  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas
@@ -386,8 +404,8 @@ ALTER TABLE `prestacion_apoyofinanciero`
 -- Filtros para la tabla `prestacion_dias`
 --
 ALTER TABLE `prestacion_dias`
-  ADD CONSTRAINT `prestacion_dias_ibfk_1` FOREIGN KEY (`Id_Prestacion`) REFERENCES `empleado_prestacion` (`Id_Prestacion`),
-  ADD CONSTRAINT `prestacion_dias_ibfk_2` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado_prestacion` (`Numero_Empleado`);
+  ADD CONSTRAINT `prestacion_dias_ibfk_1` FOREIGN KEY (`Id_Prestacion`) REFERENCES `empleado_prestacion` (`Id_Prestacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `prestacion_dias_ibfk_2` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado_prestacion` (`Numero_Empleado`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `prestacion_plazos`
