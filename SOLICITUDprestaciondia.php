@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
 
     if($diaExtra)
     {
-        $queryUpdateED = $conn->prepare("UPDATE empleado SET Dias = Dias - 1 WHERE Numero_Empleado = ?");
+        $queryUpdateED = $conn->prepare("UPDATE empleado SET Dias_Extras = Dias_Extras - 1 WHERE Numero_Empleado = ?");
         $queryUpdateED->bind_param("i", $_SESSION['Numero_Empleado']);
         $queryUpdateED->execute();
         $queryUpdateED->close();

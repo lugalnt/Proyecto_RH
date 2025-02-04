@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-02-2025 a las 07:37:28
+-- Tiempo de generación: 04-02-2025 a las 08:42:27
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -176,7 +176,8 @@ CREATE TABLE `prestacion` (
 INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`, `Tipo`) VALUES
 (2, '2025-02-02', '2025-02-03', 'Academico'),
 (3, '2025-02-03', '2025-02-03', 'Financiera'),
-(4, '2025-02-03', NULL, 'Academico');
+(4, '2025-02-03', NULL, 'Academico'),
+(5, '2025-02-04', NULL, 'Día');
 
 -- --------------------------------------------------------
 
@@ -233,7 +234,7 @@ CREATE TABLE `prestacion_dias` (
   `Id_Prestacion` int(11) NOT NULL,
   `Numero_Empleado` int(11) NOT NULL,
   `Fecha_Solicitada` date NOT NULL,
-  `Dia extra` tinyint(1) NOT NULL,
+  `Dia_extra` tinyint(1) NOT NULL,
   `Motivo` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -338,7 +339,7 @@ ALTER TABLE `empleado`
 -- AUTO_INCREMENT de la tabla `prestacion`
 --
 ALTER TABLE `prestacion`
-  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
