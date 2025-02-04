@@ -15,7 +15,7 @@
         <select id="tipo" name="tipo">
             <option value="Guarderia">Guardería</option>
             <option value="Gastos funerarios">Gastos funerarios</option>
-            <option value="Exencion de pago de inscripciones">Exención de pago de inscripciones</option>
+            <option value="Lentes">Lentes</option>
         </select><br><br>
 
         <label for="tipo_pago">Tipo de Pago:</label>
