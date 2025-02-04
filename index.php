@@ -164,13 +164,13 @@ if(!isset($_SESSION['Numero_Empleado']))
 
                   $querySPR = $conn->prepare("SELECT * FROM prestacion ORDER BY Fecha_Solicitada DESC LIMIT 3");
                   $querySPR->execute();
-                  $result = $querySPR->get_result();
+                  $resultSPR = $querySPR->get_result();
 
-                  while($row = $result->fetch_assoc())
+                  while($rowSPR = $resultSPR->fetch_assoc())
                   {
 
                     $queryCNE = $conn->prepare("SELECT Numero_Empleado FROM empleado_prestacion WHERE Id_Prestacion = ?");
-                    $queryCNE->bind_param("i", $row['Numero_Empleado']);
+                    $queryCNE->bind_param("i", $rowSPR['Id_Prestacion']);
                     $queryCNE->execute();
                     $resultCNE = $queryCNE->get_result();
                     $rowCNE = $resultCNE->fetch_assoc();
