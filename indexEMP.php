@@ -42,7 +42,15 @@ if(!isset($_SESSION['Numero_Empleado']))
     </ul>
     <br><br>
     <a class="ccbtn btn-blue btn-rounded" href="SOLICITUDprestacionesfinancieras.php">Solicitar prestación financiera</a>
-
+    <br><br>
+    <h2>Prestaciones de Día</h2>
+    <ul>
+        <li>Permiso sindical</li>
+        <li>Nacimiento de hijo</li>
+        <li>Matrimonio</li>
+    </ul>
+    <br><br>
+    <a class="ccbtn btn-blue btn-rounded" href="SOLICITUDprestaciondia.php">Solicitar prestación de día</a>
     </div>
     <div class="main">
         <div class="header">
