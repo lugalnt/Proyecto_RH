@@ -29,7 +29,7 @@ if(!isset($_SESSION['Numero_Empleado']))
     </div>
     <div class="main">
         <div class="header">
-        </div>    
+            
        
           <div class="right">
                   <?php
@@ -38,7 +38,7 @@ if(!isset($_SESSION['Numero_Empleado']))
                 echo'<form method="post"> <button type="submit" name="logout">Log out</button> </form>';
                 ?>
           </div>
-                            
+                            </div> 
         <div class="content">
             <div class="calendar-section">
                 <h3>Mi Calendario</h3>
