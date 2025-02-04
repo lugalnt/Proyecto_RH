@@ -9,7 +9,7 @@
     <h2>Solicitud de Apoyo Financiero</h2>
     <form action="" method="post">
         <label for="nombre_familiar">Nombre del Familiar:</label>
-        <input type="text" id="nombre_familiar" name="nombre_familiar" required><br><br>
+        <input type="text" id="nombre_familiar" name="nombre_familiar" ><br><br>
 
         <label for="tipo">Tipo de Prestación:</label>
         <select id="tipo" name="tipo">
