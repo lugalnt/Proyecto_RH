@@ -53,6 +53,24 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $motivo = $_POST['motivo'];
     $otro = $_POST['otro'] ?? null;
 
+    $queryCheckFecha = $conn->prepare("SELECT COUNT(*) FROM prestacion_dias WHERE Numero_Empleado = ? AND Fecha_Solicitada = ?");
+    $queryCheckFecha->bind_param("is", $_SESSION['Numero_Empleado'], $fecha);
+    $queryCheckFecha->execute();
+    $queryCheckFecha->bind_result($count);
+    $queryCheckFecha->fetch();
+    $queryCheckFecha->close();
+
+    if ($count > 0) {
+        echo '<script type="text/javascript">
+        alert("Ya existe una solicitud de prestación para la fecha seleccionada.");
+        </script>';
+        echo("<meta http-equiv='refresh' content='1'>");
+    }
+    else{
+
+
+
+
     $queryInsertarP = $conn->prepare("INSERT INTO prestacion (Tipo, Fecha_Solicitada) VALUES ('Día', CURRENT_DATE)");
     $queryInsertarP->execute();
     $Id_Prestacion = $conn->insert_id;
@@ -101,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     if($motivo == "Permiso sindical")
     {
         echo '<script type="text/javascript">
-        window.location.href = "PermisoSindical.php";
+        window.location.href = "PermisoSindical.pdf";
         </script>';
     }else
     {
@@ -111,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
         echo("<meta http-equiv='refresh' content='1'>");
     }
 
-
+    }
   
 }
 
