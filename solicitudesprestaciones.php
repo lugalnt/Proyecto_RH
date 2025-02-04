@@ -119,3 +119,40 @@ while($rowSP = $resultadoSP->fetch_assoc())
 </body>
 </html>
 
+<?php
+
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+
+    $idPrestacion = $_POST['idPrestacion'];   
+ 
+    $queryOP = $conn->prepare("UPDATE prestacion SET Fecha_Otorgada = CURRENT_DATE WHERE Id_Prestacion = ?");
+    $queryOP->bind_param("i", $idPrestacion);
+    $queryOP->execute();
+    $queryOP->close();
+
+    $queryCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
+    $queryCFP->bind_param("i", $idPrestacion);
+    $queryCFP->execute();
+    $resultCFP = $queryCFP->get_result();
+
+    if ($resultCFP->num_rows > 0)
+    {
+        $queryOPF = $conn->prepare("UPDATE familiar_prestacion SET Fecha_Otorgada = CURRENT_DATE WHERE Id_Prestacion = ?");
+        $queryOPF->bind_param("i", $idPrestacion);
+        $queryOPF->execute();
+        $queryOPF->close();
+
+    }
+
+    echo '<script type="text/javascript">
+    alert("Prestación otorgada");
+    </script>';
+    echo("<meta http-equiv='refresh' content='1'>");
+    
+ 
+
+
+}
+
+?>
