@@ -185,9 +185,9 @@ if(!isset($_SESSION['Numero_Empleado']))
 
 
                     echo "<div class='benefits-container'>";
-                    echo "<p>".$row['Tipo']."</p>";
-                    echo "<p>".$row['Numero_Empleado'].", ".htmlspecialchars($NombreEmpleado)."</p>";
-                    echo "<p>FECHA: ".$row['Fecha_Solicitada']."</p>";
+                    echo "<p>".$rowSPR['Tipo']."</p>";
+                    echo "<p>".$rowCNE['Numero_Empleado'].", ".htmlspecialchars($NombreEmpleado)."</p>";
+                    echo "<p>FECHA: ".$rowSPR['Fecha_Solicitada']."</p>";
                     echo "</div>";
                   }
 
