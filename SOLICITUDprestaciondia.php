@@ -15,6 +15,7 @@
             }
         }
     </script>
+     <link rel="stylesheet" href="stylesolicitudes.css">
 </head>
 <body>
     <form action="" method="post">

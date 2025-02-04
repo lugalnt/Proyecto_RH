@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Apoyo Financiero</title>
+    <link rel="stylesheet" href="stylesolicitudes.css">
 </head>
 <body>
     <h2>Solicitud de Apoyo Financiero</h2>
@@ -47,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
 
 
 
-    
+
    $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Numero_Empleado = ?");
     $queryChecarPF->bind_param("si", $nombre_familiar, $_SESSION['Numero_Empleado']);
     $queryChecarPF->execute();
