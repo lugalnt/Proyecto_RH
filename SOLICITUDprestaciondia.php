@@ -58,6 +58,12 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $Id_Prestacion = $conn->insert_id;
     $queryInsertarP->close();
 
+    $queryInsertarPE = $conn->prepare("INSERT INTO empleado_prestacion (Numero_Empleado, Id_Prestacion, Tipo, Fecha_Solicitada) VALUES (?, ?, ?, ?)");
+    $queryInsertarPE->bind_param("iiss", $_SESSION['Numero_Empleado'], $Id_Prestacion, 'Día', CURRENT_DATE);
+    $queryInsertarPE->execute();
+    $queryInsertarPE->close();
+    
+
     $queryInsertarPF = $conn->prepare("INSERT INTO prestacion_dias (Id_Prestacion, Numero_Empleado, Fecha_Solicitada, Dia_Extra,  Motivo) VALUES (?, ?, ?, ?, ?)");
     $queryInsertarPF->bind_param("iisis", $Id_Prestacion, $_SESSION['Numero_Empleado'], $fecha, $diaExtra, $motivo);
     $queryInsertarPF->execute();
