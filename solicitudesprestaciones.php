@@ -81,7 +81,7 @@ while($rowSP = $resultadoSP->fetch_assoc())
 
     if ($resultCFP->num_rows > 0)
     {
-
+        $rowCFP = $resultCFP->fetch_assoc();
         $idFamiliar = $rowCFP['Id_Familiar'];
 
         $queryCF = $conn->prepare("SELECT Nombre_Familiar FROM familiar_empleado WHERE Id_Familiar = ?");
