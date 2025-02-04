@@ -7,11 +7,6 @@ if(!isset($_SESSION['Numero_Empleado']))
   header('Location: login.html');
 }
 
-if($_SESSION['Area'] != "RH")
-{
-  header('Location: indexEMP.php');
-}
-
 
 ?>
 
