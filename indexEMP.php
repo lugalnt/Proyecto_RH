@@ -25,7 +25,22 @@ if(!isset($_SESSION['Numero_Empleado']))
         <div class="logo">
             <h2>Empleado</h2>
         </div>
-        <h2>Prestaciones</h2>
+        <h2>Prestaciones Académicas</h2>
+    <ul>
+        <li>Exención de inscripción</li>
+        <li>Ayuda útiles</li>
+    </ul>
+    <a class="ccbtn btn-blue btn-rounded" href="#1">Solicitar prestación académica</a>
+
+    <h2>Prestaciones Financieras</h2>
+    <ul>
+        <li>Guardería</li>
+        <li>Gastos funerarios</li>
+        <li>Útiles</li>
+        <li>Lentes</li>
+    </ul>
+    <a class="ccbtn btn-blue btn-rounded" href="#2">Solicitar prestación financiera</a>
+
     </div>
     <div class="main">
         <div class="header">
