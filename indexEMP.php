@@ -30,8 +30,9 @@ if(!isset($_SESSION['Numero_Empleado']))
         <li>Exención de inscripción</li>
         <li>Ayuda útiles</li>
     </ul>
+    <br><br>
     <a class="ccbtn btn-blue btn-rounded" href="#1">Solicitar prestación académica</a>
-
+    <br><br>
     <h2>Prestaciones Financieras</h2>
     <ul>
         <li>Guardería</li>
@@ -39,6 +40,7 @@ if(!isset($_SESSION['Numero_Empleado']))
         <li>Útiles</li>
         <li>Lentes</li>
     </ul>
+    <br><br>
     <a class="ccbtn btn-blue btn-rounded" href="#2">Solicitar prestación financiera</a>
 
     </div>
