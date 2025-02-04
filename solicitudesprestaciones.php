@@ -105,7 +105,8 @@ while($rowSP = $resultadoSP->fetch_assoc())
     echo "<td>".$nombreFamiliar."</td>";
     echo "<td>";
     echo "<form action='' method='post'>";
-    echo "<button type='submit' class='btn btn-primary' value='".$idPrestacion."'>Otorgar prestación</button>";
+    echo "<input type='hidden' name='idPrestacion' value='".$idPrestacion."'>";
+    echo "<button type='submit' class='btn btn-primary'>Otorgar prestación</button>";
     echo "</form>";
     echo "</td>";
     echo "</tr>";
