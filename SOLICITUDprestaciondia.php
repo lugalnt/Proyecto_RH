@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $motivo = $_POST['motivo'];
     $otro = $_POST['otro'] ?? null;
 
-    $queryInsertarP = $conn->prepare("INSERT INTO prestacion (Tipo, Fecha_Solicitud) VALUES ('Día', CURRENT_DATE)");
+    $queryInsertarP = $conn->prepare("INSERT INTO prestacion (Tipo, Fecha_Solicitada) VALUES ('Día', CURRENT_DATE)");
     $queryInsertarP->execute();
     $Id_Prestacion = $conn->insert_id;
     $queryInsertarP->close();
@@ -62,6 +62,22 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $queryInsertarPF->bind_param("iisis", $Id_Prestacion, $_SESSION['Numero_Empleado'], $fecha, $diaExtra, $motivo);
     $queryInsertarPF->execute();
     $queryInsertarPF->close();
+
+
+    if($diaExtra)
+    {
+        $queryUpdateED = $conn->prepare("UPDATE empleado SET Dias = Dias - 1 WHERE Numero_Empleado = ?");
+        $queryUpdateED->bind_param("i", $_SESSION['Numero_Empleado']);
+        $queryUpdateED->execute();
+        $queryUpdateED->close();
+    }
+    else
+    {
+    $queryUpdateED = $conn->prepare("UPDATE empleado SET Dias = Dias - 1 WHERE Numero_Empleado = ?");
+    $queryUpdateED->bind_param("i", $_SESSION['Numero_Empleado']);
+    $queryUpdateED->execute();
+    $queryUpdateED->close();
+    }
 
     if ($otro)
     {
