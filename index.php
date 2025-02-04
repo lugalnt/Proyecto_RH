@@ -31,7 +31,7 @@ if($_SESSION['Area'] != "RH")
         </div>
         <h2>Revisar solicitudes de prestaciones</h2>
         <br><br>
-        <a class="ccbtn btn-blue btn-rounded" href="solicitudesprestacion.php">Solicitar prestación financiera</a>
+        <a class="ccbtn btn-blue btn-rounded" href="solicitudesprestacion.php"> Revisar solicitudes</a>
     </div>
     <div class="main">
         <div class="header">
