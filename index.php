@@ -162,7 +162,7 @@ if(!isset($_SESSION['Numero_Empleado']))
                   <?php
 
 
-                  $querySPR = $conn->prepare("SELECT * FROM prestacion p ORDER BY Fecha_Solicitada DESC LIMIT 3");
+                  $querySPR = $conn->prepare("SELECT * FROM prestacion ORDER BY Fecha_Solicitada DESC LIMIT 3");
                   $querySPR->execute();
                   $result = $querySPR->get_result();
                   while($row = $result->fetch_assoc())
