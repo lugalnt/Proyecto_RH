@@ -166,10 +166,19 @@ if(!isset($_SESSION['Numero_Empleado']))
                   $querySPR->execute();
                   $result = $querySPR->get_result();
                   while($row = $result->fetch_assoc())
+
+                  $queryANE = $conn->prepare("SELECT Nombre_Empleado FROM empleado WHERE Numero_Empleado = ?");
+                  $queryANE->bind_param("i", $row['Numero_Empleado']);
+                  $queryANE->execute();
+                  $resultANE = $queryANE->get_result();
+                  $rowANE = $resultANE->fetch_assoc();
+                  $NombreEmpleado = $rowANE['Nombre_Empleado'];
+
+
                   {
                     echo "<div class='benefits-container'>";
                     echo "<p>".$row['Tipo']."</p>";
-                    echo "<p>".$row['Id_Empleado'].", ".$row['Nombre_Empleado']."</p>";
+                    echo "<p>".$row['Numero_Empleado'].", ".htmlspecialchars($NombreEmpleado)."</p>";
                     echo "<p>FECHA: ".$row['Fecha_Solicitada']."</p>";
                     echo "</div>";
                   }
