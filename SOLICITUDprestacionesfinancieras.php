@@ -9,7 +9,7 @@
     <h2>Solicitud de Apoyo Financiero</h2>
     <form action="" method="post">
         <label for="nombre_familiar">Nombre del Familiar:</label>
-        <input type="text" id="nombre_familiar" name="nombre_familiar" ><br><br>
+        <input type="text" id="nombre_familiar" name="nombre_familiar"><br><br>
 
         <label for="tipo">Tipo de Prestación:</label>
         <select id="tipo" name="tipo">
@@ -40,6 +40,13 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $tipo_pago = $_POST['tipo_pago'];
     $nombre_familiar = "%".$_POST['nombre_familiar']."%";
     $tipoPF = $_POST['tipo'];
+ 
+    
+
+
+
+
+
     
    $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Numero_Empleado = ?");
     $queryChecarPF->bind_param("si", $nombre_familiar, $_SESSION['Numero_Empleado']);
