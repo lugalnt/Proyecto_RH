@@ -1,3 +1,21 @@
+<?php
+require_once("conn.php");
+session_start();
+
+if(!isset($_SESSION['Numero_Empleado']))
+{
+  header('Location: login.html');
+}
+
+if($_SESSION['Area'] != "RH")
+{
+  header('Location: indexEMP.php');
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
