@@ -74,14 +74,16 @@ while($rowSP = $resultadoSP->fetch_assoc())
         $tipo = "Apoyo financiero: ".$rowCPA['Tipo'];
     }
 
-    $rowCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
-    $rowCFP->bind_param("i", $idPrestacion);
-    $rowCFP->execute();
-    $resultCFP = $rowCFP->get_result();
+    $queryCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
+    $queyCFP->bind_param("i", $idPrestacion);
+    $queryCFP->execute();
+    $resultCFP = $queryCFP->get_result();
+    $rowCFP = $resultCFP->fetch_assoc();
+    
 
     if ($rowCFP->num_rows > 0)
     {
-        $rowCFP = $resultCFP->fetch_assoc();
+
         $idFamiliar = $rowCFP['Id_Familiar'];
 
         $queryCF = $conn->prepare("SELECT Nombre_Familiar FROM familiar_empleado WHERE Id_Familiar = ?");
