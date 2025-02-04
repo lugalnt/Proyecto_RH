@@ -59,7 +59,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $queryInsertarP->close();
 
     $queryInsertarPE = $conn->prepare("INSERT INTO empleado_prestacion (Numero_Empleado, Id_Prestacion, Tipo, Fecha_Solicitada) VALUES (?, ?, ?, CURRENT_DATE)");
-    $queryInsertarPE->bind_param("iis", $_SESSION['Numero_Empleado'], $Id_Prestacion, 'Día');
+    $tipo = 'Día';
+    $queryInsertarPE->bind_param("iis", $_SESSION['Numero_Empleado'], $Id_Prestacion, $tipo);
     $queryInsertarPE->execute();
     $queryInsertarPE->close();
 
