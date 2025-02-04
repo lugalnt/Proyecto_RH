@@ -29,16 +29,16 @@ if(!isset($_SESSION['Numero_Empleado']))
     </div>
     <div class="main">
         <div class="header">
-            
+        </div>    
        
-            <div class="right">
+          <div class="right">
                   <?php
                 echo'<span class="profile">'.htmlspecialchars($_SESSION['Nombre_Empleado']).'</span>';
                 
                 echo'<form method="post"> <button type="submit" name="logout">Log out</button> </form>';
                 ?>
           </div>
-                            </div> 
+                            
         <div class="content">
             <div class="calendar-section">
                 <h3>Mi Calendario</h3>
