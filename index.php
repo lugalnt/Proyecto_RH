@@ -165,17 +165,25 @@ if(!isset($_SESSION['Numero_Empleado']))
                   $querySPR = $conn->prepare("SELECT * FROM prestacion ORDER BY Fecha_Solicitada DESC LIMIT 3");
                   $querySPR->execute();
                   $result = $querySPR->get_result();
+
                   while($row = $result->fetch_assoc())
-
-                  $queryANE = $conn->prepare("SELECT Nombre_Empleado FROM empleado WHERE Numero_Empleado = ?");
-                  $queryANE->bind_param("i", $row['Numero_Empleado']);
-                  $queryANE->execute();
-                  $resultANE = $queryANE->get_result();
-                  $rowANE = $resultANE->fetch_assoc();
-                  $NombreEmpleado = $rowANE['Nombre_Empleado'];
-
-
                   {
+
+                    $queryCNE = $conn->prepare("SELECT Numero_Empleado FROM empleado_prestacion WHERE Id_Prestacion = ?");
+                    $queryCNE->bind_param("i", $row['Numero_Empleado']);
+                    $queryCNE->execute();
+                    $resultCNE = $queryCNE->get_result();
+                    $rowCNE = $resultCNE->fetch_assoc();
+
+                    $queryCNME = $conn->prepare("SELECT Nombre_Empleado FROM empleado WHERE Numero_Empleado = ?");
+                    $queryCNME->bind_param("i", $rowCNE['Numero_Empleado']);
+                    $queryCNME->execute();
+                    $resultCNME = $queryCNME->get_result();
+                    $rowCNME = $resultCNME->fetch_assoc();
+                    $NombreEmpleado = $rowCNME['Nombre_Empleado'];
+
+
+
                     echo "<div class='benefits-container'>";
                     echo "<p>".$row['Tipo']."</p>";
                     echo "<p>".$row['Numero_Empleado'].", ".htmlspecialchars($NombreEmpleado)."</p>";
