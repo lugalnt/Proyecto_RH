@@ -75,13 +75,11 @@ while($rowSP = $resultadoSP->fetch_assoc())
     }
 
     $queryCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
-    $queyCFP->bind_param("i", $idPrestacion);
+    $queryCFP->bind_param("i", $idPrestacion);
     $queryCFP->execute();
     $resultCFP = $queryCFP->get_result();
-    $rowCFP = $resultCFP->fetch_assoc();
-    
 
-    if ($rowCFP->num_rows > 0)
+    if ($resultCFP->num_rows > 0)
     {
 
         $idFamiliar = $rowCFP['Id_Familiar'];
