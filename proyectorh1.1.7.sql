@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-02-2025 a las 09:01:21
+-- Tiempo de generación: 04-02-2025 a las 10:34:41
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -113,8 +113,7 @@ INSERT INTO `empleado_prestacion` (`Numero_Empleado`, `Id_Prestacion`, `Tipo`, `
 (445, 2, 'Academico', '2025-02-02', NULL),
 (445, 3, 'Financiera', '2025-02-03', '2025-02-03'),
 (445, 4, 'Academico', '2025-02-03', NULL),
-(445, 12, 'Día', '2025-02-04', NULL),
-(445, 13, 'Día', '2025-02-04', NULL);
+(445, 14, 'Academico', '2025-02-04', NULL);
 
 -- --------------------------------------------------------
 
@@ -156,7 +155,8 @@ CREATE TABLE `familiar_prestacion` (
 INSERT INTO `familiar_prestacion` (`Id_Familiar`, `Id_Prestacion`, `Tipo`, `Fecha_Otorgada`) VALUES
 (0, 2, 'Academico', '2025-02-03'),
 (0, 3, 'Financiera', '2025-02-03'),
-(0, 4, 'Academico', NULL);
+(0, 4, 'Academico', NULL),
+(0, 14, 'Academico', NULL);
 
 -- --------------------------------------------------------
 
@@ -179,15 +179,7 @@ INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`,
 (2, '2025-02-02', '2025-02-03', 'Academico'),
 (3, '2025-02-03', '2025-02-03', 'Financiera'),
 (4, '2025-02-03', NULL, 'Academico'),
-(5, '2025-02-04', NULL, 'Día'),
-(6, '2025-02-04', NULL, 'Día'),
-(7, '2025-02-04', NULL, 'Día'),
-(8, '2025-02-04', NULL, 'Día'),
-(9, '2025-02-04', NULL, 'Día'),
-(10, '2025-02-04', NULL, 'Día'),
-(11, '2025-02-04', NULL, 'Día'),
-(12, '2025-02-04', NULL, 'Día'),
-(13, '2025-02-04', NULL, 'Día');
+(14, '2025-02-04', NULL, 'Academico');
 
 -- --------------------------------------------------------
 
@@ -210,7 +202,8 @@ CREATE TABLE `prestacion_apoyoacademico` (
 
 INSERT INTO `prestacion_apoyoacademico` (`Id_Prestacion`, `Numero_Empleado`, `Id_Familiar`, `Nivel_Academico`, `Nombre_Institucion`, `Tipo`) VALUES
 (2, 445, 0, 'Secundaria', 'Secundaria uno', 'Utiles'),
-(4, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc');
+(4, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc'),
+(14, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc');
 
 -- --------------------------------------------------------
 
@@ -357,7 +350,7 @@ ALTER TABLE `empleado`
 -- AUTO_INCREMENT de la tabla `prestacion`
 --
 ALTER TABLE `prestacion`
-  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Restricciones para tablas volcadas
