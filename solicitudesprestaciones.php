@@ -28,12 +28,12 @@ require_once("conn.php");
 session_start();
 
 
-$querySP = $conn->prepare("SELECT * FROM prestacion WHERE FechaOtorgada IS NULL");  
+$querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");  
 $querySP->execute();
 $resultadoSP = $querySP->get_result();
 while($rowSP = $resultadoSP->fetch_assoc())
 {
-    $fechaSolicitud = $rowSP['FechaSolicitada'];
+    $fechaSolicitud = $rowSP['Fecha_Solicitada'];
     $idPrestacion = $rowSP['Id_Prestacion'];
 
     $queryCNE = $conn->prepare("SELECT Numero_Empleado FROM empleado_prestacion WHERE Id_Prestacion = ?");
@@ -60,7 +60,7 @@ while($rowSP = $resultadoSP->fetch_assoc())
         $resultCPA = $queryCPA->get_result();
         $rowCPA = $resultCPA->fetch_assoc();
 
-        $tipo = "Apoyo académico: ".$rowCPA['TipoApoyo'];
+        $tipo = "Apoyo académico: ".$rowCPA['Tipo'];
     }
 
     if ($rowSP['Tipo'] == "Financiera")
@@ -71,7 +71,7 @@ while($rowSP = $resultadoSP->fetch_assoc())
         $resultCPA = $queryCPA->get_result();
         $rowCPA = $resultCPA->fetch_assoc();
 
-        $tipo = "Apoyo financiero: ".$rowCPA['TipoApoyo'];
+        $tipo = "Apoyo financiero: ".$rowCPA['Tipo'];
     }
 
     $rowCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
