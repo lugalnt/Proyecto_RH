@@ -30,6 +30,8 @@ if($_SESSION['Area'] != "RH")
             <h2>Recursos Humanos</h2>
         </div>
         <h2>Revisar solicitudes de prestaciones</h2>
+        <br><br>
+        <a class="ccbtn btn-blue btn-rounded" href="solicitudesprestacion.php">Solicitar prestación financiera</a>
     </div>
     <div class="main">
         <div class="header">
