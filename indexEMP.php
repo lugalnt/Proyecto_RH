@@ -32,20 +32,12 @@ if(!isset($_SESSION['Numero_Empleado']))
             
        
             <div class="right">
-                <div class="bell">
-                    <div class="bell-top"></div>
-                    <div class="bell-bot"></div>
-                    <div class="bell-notification">0</div>
-                  </div>
-                  <div class="add-notification">
-                    <button onclick="addNotification()">Add Notification</button>
-                  </div>
                   <?php
                 echo'<span class="profile">'.htmlspecialchars($_SESSION['Nombre_Empleado']).'</span>';
                 
                 echo'<form method="post"> <button type="submit" name="logout">Log out</button> </form>';
                 ?>
-                            </div>
+          </div>
                             </div> 
         <div class="content">
             <div class="calendar-section">
