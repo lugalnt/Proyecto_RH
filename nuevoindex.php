@@ -1,3 +1,21 @@
+<?php
+
+require_once("conn.php");
+session_start();
+
+if(!isset($_SESSION['Numero_Empleado']))
+{
+  header('Location: login.html');
+}
+
+if($_SESSION['Area'] != "RH")
+{
+  header('Location: indexEMP.php');
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,27 +150,75 @@
             <!-- INICIO DE PRESTAMOS RECIENTES TABLA -->
             <div class="prestamos-recientes">
                 <h2>Prestamos Recientes</h2>
+
                 <table>
                     <thead>
                         <tr>
-                            <th>Nombre del Prestamo</th>
-                            <th>Nombre del Empleado</th>
-                            <th>Numero de Prestamo</th>
-                            <th>Estado</th>
-                        </tr>
+                    <th>Tipo</th>
+                    <th>Empleado</th>
+                    <th>Fecha Solicitada</th>
+                    <th>Estado</th>        
                     </thead>
                     <tbody>
-                         <!-- 
-                        <tr>
-                            <td>Prestamos de Lentes</td>
-                            <td>Erick Bojorquez</td>
-                            <td>1</td>
-                            <td class="warning">Pendiente</td>
-                            <td class="primary">Detalles</td>
-                        </tr>
-                        --> 
+            <?php
+
+                    $querySPR = $conn->prepare("SELECT * FROM prestacion ORDER BY Fecha_Solicitada DESC LIMIT 3");
+                    $querySPR->execute();
+                    $resultSPR = $querySPR->get_result();
+
+                    while($rowSPR = $resultSPR->fetch_assoc())
+                    {
+                    
+                      $queryCNE = $conn->prepare("SELECT Numero_Empleado FROM empleado_prestacion WHERE Id_Prestacion = ?");
+                      $queryCNE->bind_param("i", $rowSPR['Id_Prestacion']);
+                      $queryCNE->execute();
+                      $resultCNE = $queryCNE->get_result();
+                      $rowCNE = $resultCNE->fetch_assoc();
+                    
+                      $queryCNME = $conn->prepare("SELECT Nombre_Empleado FROM empleado WHERE Numero_Empleado = ?");
+                      $queryCNME->bind_param("i", $rowCNE['Numero_Empleado']);
+                      $queryCNME->execute();
+                      $resultCNME = $queryCNME->get_result();
+                      $rowCNME = $resultCNME->fetch_assoc();
+                      $NombreEmpleado = $rowCNME['Nombre_Empleado'];
+                    
+                    
+                    
+                      echo "<div class='benefits-container'>";
+                      echo "<td>".$rowSPR['Tipo']."</td>";
+                      echo "<td>".$rowCNE['Numero_Empleado'].", ".htmlspecialchars($NombreEmpleado)."</td>";
+                      echo "<td>FECHA: ".$rowSPR['Fecha_Solicitada']."</td>";
+
+                        if (is_null($rowSPR['Fecha_Otorgada']))
+                        {
+                            echo "<td class=".'warning'.">En espera</td>";
+                        }
+                        else
+                        {
+                            echo "<td class=".'success'.">Concedido</td>";
+                        }
+
+
+
+
+                      echo "</tr>";
+                    }
+
+
+
+
+
+            ?>
+                        
+            
+
                     </tbody>
+                    
                 </table>
+
+            
+
+
                 <a href="#">Mostrar Todos</a>
             </div>
         </main>
@@ -171,8 +237,10 @@
                 </div>
                 <div class="profile">
                     <div class="info">
-                        <p>Hey, <b>Erick</b></p>
-                        <small class="text-muted">Admin</small>
+                    <?php
+                    echo '<p>Hey, <b>'.htmlspecialchars($_SESSION['Nombre_Empleado']).'</b></p>
+                        <small class="text-muted">'.htmlspecialchars($_SESSION['Area']).'</small>';
+                    ?>
                     </div>
                     <div class="profile-photo">
                         <img src="./images/profile-1.jpg.jpeg">
