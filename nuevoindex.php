@@ -257,40 +257,22 @@ if($_SESSION['Area'] != "RH")
                         <div class="profile-photo">
                             <img src="./images/profile-2.jpg.jpeg">
                         </div>
-                        <div class="message">
+
+                    <?php
+
+
+
+
+
+                      echo'  <div class="message">
                             <p><b>Luis Adrian</b> ha registrado un nuevo prestamo de
                             lentes.</p>
                             <small class="text-muted">Hace 5 minutos</small>
-                        </div>
+                        </div>';
+                    ?>
+
                     </div>
-                    <div class="actualizacion">
-                        <div class="profile-photo">
-                            <img src="./images/profile-3.jpg.jpeg">
-                        </div>
-                        <div class="message">
-                            <p><b>Felipe</b> ha registrado un nuevo prestamo de utiles 
-                                escolares.</p>
-                            <small class="text-muted">Hace 24 minutos</small>
-                        </div>
-                    </div>
-                    <div class="actualizacion">
-                        <div class="profile-photo">
-                            <img src="./images/profile-4.jpg.jpeg">
-                        </div>
-                        <div class="message">
-                            <p><b>Polito</b> ha registrado nueva lactancia.</p>
-                            <small class="text-muted">Hace 53 minutos</small>
-                        </div>
-                    </div>
-                    <div class="actualizacion">
-                        <div class="profile-photo">
-                            <img src="./images/profile-4.jpg.jpeg">
-                        </div>
-                        <div class="message">
-                            <p><b>Polito</b> ha registrado nueva lactancia.</p>
-                            <small class="text-muted">Hace 53 minutos</small>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <!-- FIN DE ACTUALIZACIONES RECIENTES-->
@@ -343,7 +325,7 @@ if($_SESSION['Area'] != "RH")
             </div>
         </div> 
     </div>
-    <script src="./prestaciones.js"></script>
+    <!-- <script src="./prestaciones.js"></script> -->
     <script src="./index.js"></script>
 </body>
 </html>
