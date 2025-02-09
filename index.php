@@ -44,11 +44,11 @@ if($_SESSION['Area'] != "RH")
             </div>
 
             <div class="sidebar">
-                <a href="#">
+                <a href="#" class="active">
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Menú</h3>
                 </a>
-                <a href="#" class="active">
+                <a href="#">
                     <span class="material-icons-sharp">groups</span>
                     <h3>Empleados</h3>
                 </a>
