@@ -1,6 +1,7 @@
 <?php
 
 require_once("conn.php");
+require_once("ESTADOempleados.php");
 session_start();
 
 if(!isset($_SESSION['Numero_Empleado']))
@@ -260,7 +261,7 @@ if($_SESSION['Area'] != "RH")
 
                     <?php
 
-                    $querySPR = $conn->prepare("SELECT * FROM prestacion ORDER BY Fecha_Solicitada ASC LIMIT 3");
+                    $querySPR = $conn->prepare("SELECT * FROM prestacion ORDER BY Fecha_Solicitada DESC LIMIT 3");
                     $querySPR->execute();
                     $resultSPR = $querySPR->get_result();
 
@@ -304,6 +305,7 @@ if($_SESSION['Area'] != "RH")
             <!-- INICIO DE -->
             <div class="empleados-ausentes">
                 <h2>Empleados Ausentes</h2>
+                <!--
                 <div class="empleado-ausente">
                     <div class="icon">
                         <span class="material-icons-sharp">person</span>
@@ -328,17 +330,57 @@ if($_SESSION['Area'] != "RH")
                         <small class="danger"> Valido hasta el 1 de Julio del 2025</small>
                     </div>
                 </div>
+                -->
                 <div class="empleado-ausente">
                     <div class="icon">
                         <span class="material-icons-sharp">person</span>
                     </div>
-                    <div class="right">
+
+                    <?php
+                    
+                    $queryGED = $conn->prepare("SELECT * FROM empleado WHERE Estado = 'En Descanso'"); 
+                    $queryGED->execute();
+                    $resultGED = $queryGED->get_result();
+                    
+                    while ($rowGED = $resultGED->fetch_assoc())
+                    {
+                     
+                       $queryGEP = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Fecha_Otorgada IS NOT NULL AND Tipo = 'Día'");
+                       $queryGEP->bind_param("i", $rowGED['Numero_Empleado']);
+                       $queryGEP->execute();
+                       $resultGEP = $queryGEP->get_result();
+                       $rowGEP = $resultGEP->fetch_assoc();
+                       
+                       $queryGPD = $conn->prepare("SELECT * FROM prestacion_dias WHERE Id_Prestacion = ?");
+                       $queryGPD->bind_param("i", $rowGEP['Id_Prestacion']);
+                       $queryGPD->execute();
+                       $resultGPD = $queryGPD->get_result();
+                       $rowGPD = $resultGPD->fetch_assoc();
+
+                       echo'
+
+                          <div class="right">
                         <div class="info">
-                            <h3>Nombre de Empleado</h3>
-                            <small class="text-muted">Vacaciones</small>
+                            <h3>'.htmlspecialchars($rowGED['Nombre_Empleado']).'</h3>
+                            <small class="text-muted">Motivo: '.htmlspecialchars($rowGPD['Motivo']).'</small>
                         </div>
-                        <small class="danger"> Valido hasta el 1 de Julio del 2025</small>
+                        <small class="danger"> Valido el: '.htmlspecialchars($rowGPD['Fecha_Solicitada']).'</small>
                     </div>
+                       
+                       
+                       
+                       ';
+
+
+
+                    }
+
+
+
+                 
+
+                    ?>
+
                 </div>
                 <div class="añadir-empleado">
                     <div onclick="window.location.href='adminPage.php';" style="cursor: pointer;">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-02-2025 a las 10:34:41
+-- Tiempo de generación: 11-02-2025 a las 06:16:54
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -52,7 +52,7 @@ INSERT INTO `empleado` (`Numero_Empleado`, `Nombre_Empleado`, `Contraseña_Emple
 (1, 'Admin', '1', 'Administrador de sistema', 1, 'fem', 'admin', '2025-01-31', 'w', '1', 'N/A', 'Activo', 0, 24),
 (223, 'Vaqui', 'vaqui', 'RH', 4, 'fem', 'Todologa', '2025-01-29', 'Romanza', '233444222', 'N/A', 'Activo', 0, 24),
 (444, 'Curli', '', 'Profesor', 3, 'masc', 'Todologo', '2015-01-01', 'Romanza', '333333333', 'N/A', 'Activo', 8, 24),
-(445, 'Cubry', 'vaqui', 'Area de administracion', 7, 'masc', 'Pendejo', '2015-02-18', 'Aqui', '222333222', 'N/A', 'Activo', 6, 22);
+(445, 'Cubry', 'vaqui', 'Area de administracion', 7, 'masc', 'Pendejo', '2015-02-18', 'Aqui', '222333222', 'N/A', 'En descanso', 5, 22);
 
 --
 -- Disparadores `empleado`
@@ -113,7 +113,9 @@ INSERT INTO `empleado_prestacion` (`Numero_Empleado`, `Id_Prestacion`, `Tipo`, `
 (445, 2, 'Academico', '2025-02-02', NULL),
 (445, 3, 'Financiera', '2025-02-03', '2025-02-03'),
 (445, 4, 'Academico', '2025-02-03', NULL),
-(445, 14, 'Academico', '2025-02-04', NULL);
+(445, 14, 'Academico', '2025-02-04', NULL),
+(445, 15, 'Academico', '2025-02-10', '2025-02-10'),
+(445, 16, 'Día', '2025-02-10', '2025-02-10');
 
 -- --------------------------------------------------------
 
@@ -156,7 +158,8 @@ INSERT INTO `familiar_prestacion` (`Id_Familiar`, `Id_Prestacion`, `Tipo`, `Fech
 (0, 2, 'Academico', '2025-02-03'),
 (0, 3, 'Financiera', '2025-02-03'),
 (0, 4, 'Academico', NULL),
-(0, 14, 'Academico', NULL);
+(0, 14, 'Academico', NULL),
+(0, 15, 'Academico', '2025-02-10');
 
 -- --------------------------------------------------------
 
@@ -168,18 +171,49 @@ CREATE TABLE `prestacion` (
   `Id_Prestacion` int(11) NOT NULL,
   `Fecha_Solicitada` date NOT NULL DEFAULT current_timestamp(),
   `Fecha_Otorgada` date DEFAULT NULL,
-  `Tipo` varchar(40) NOT NULL
+  `Tipo` varchar(40) NOT NULL,
+  `Estado` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `prestacion`
 --
 
-INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`, `Tipo`) VALUES
-(2, '2025-02-02', '2025-02-03', 'Academico'),
-(3, '2025-02-03', '2025-02-03', 'Financiera'),
-(4, '2025-02-03', NULL, 'Academico'),
-(14, '2025-02-04', NULL, 'Academico');
+INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`, `Tipo`, `Estado`) VALUES
+(2, '2025-02-02', '2025-02-03', 'Academico', 'Otorgada'),
+(3, '2025-02-03', '2025-02-03', 'Financiera', 'Otorgada'),
+(4, '2025-02-03', NULL, 'Academico', 'Pendiente'),
+(14, '2025-02-04', NULL, 'Academico', 'Pendiente'),
+(15, '2025-02-10', '2025-02-10', 'Academico', 'Otorgada'),
+(16, '2025-02-10', '2025-02-10', 'Día', 'Otorgada');
+
+--
+-- Disparadores `prestacion`
+--
+DELIMITER $$
+CREATE TRIGGER `before_prestaciones_insert` BEFORE INSERT ON `prestacion` FOR EACH ROW BEGIN
+    IF NEW.Fecha_Otorgada IS NULL THEN
+        SET NEW.Estado = 'Pendiente';
+    ELSE
+        IF NEW.Estado != 'Denegada' THEN
+            SET NEW.Estado = 'Otorgada';
+        END IF;
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `before_prestaciones_update` BEFORE UPDATE ON `prestacion` FOR EACH ROW BEGIN
+    IF NEW.Fecha_Otorgada IS NULL THEN
+        SET NEW.Estado = 'Pendiente';
+    ELSE
+        IF NEW.Estado != 'Denegada' THEN
+            SET NEW.Estado = 'Otorgada';
+        END IF;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -203,7 +237,8 @@ CREATE TABLE `prestacion_apoyoacademico` (
 INSERT INTO `prestacion_apoyoacademico` (`Id_Prestacion`, `Numero_Empleado`, `Id_Familiar`, `Nivel_Academico`, `Nombre_Institucion`, `Tipo`) VALUES
 (2, 445, 0, 'Secundaria', 'Secundaria uno', 'Utiles'),
 (4, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc'),
-(14, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc');
+(14, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc'),
+(15, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc');
 
 -- --------------------------------------------------------
 
@@ -247,7 +282,8 @@ CREATE TABLE `prestacion_dias` (
 
 INSERT INTO `prestacion_dias` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Solicitada`, `Dia_extra`, `Motivo`) VALUES
 (12, 445, '2025-02-12', 0, 'Permiso sindical'),
-(13, 445, '2025-02-13', 0, 'Permiso sindical');
+(13, 445, '2025-02-13', 0, 'Permiso sindical'),
+(16, 445, '2025-02-10', 1, 'Permiso sindical');
 
 -- --------------------------------------------------------
 
@@ -350,7 +386,7 @@ ALTER TABLE `empleado`
 -- AUTO_INCREMENT de la tabla `prestacion`
 --
 ALTER TABLE `prestacion`
-  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Restricciones para tablas volcadas
