@@ -64,6 +64,9 @@
         <br>
         <label>Y/O</label>
         <br>
+        <label for="numero">Numero del Empleado:</label>
+        <input type="text" id="numero" name="numero">
+        <br>
         <button type="submit">Buscar</button>
     </form>
     <table>
@@ -85,6 +88,10 @@ require_once("conn.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $nombre = $_POST["nombre"];
+    $numero = $_POST["numero"];
+
+    if (!empty($nombre) && empty($numero))
+    {
 
         $queryNE = $conn->prepare("SELECT Numero_Empleado FROM empleado WHERE Nombre_Empleado = ?");
         $queryNE->bind_param("s", $nombre);
@@ -113,9 +120,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                     while ($rowGPE = $resultGPE->fetch_assoc()) {
+
                         $idPrestacion = $rowGPE['Id_Prestacion'];
 
-                        $queryCE = $conn->prepare("SELECT Estado from prestacion WHERE Id_Prestacion = ?");
+                        $queryCE = $conn->prepare("SELECT * from prestacion WHERE Id_Prestacion = ?");
                         $queryCE->bind_param("i", $idPrestacion);
                         $queryCE->execute();
                         $resultCE = $queryCE->get_result();
@@ -157,9 +165,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <tr>
                                 <td>' . $rowCIE['Nombre_Empleado'] . '</td>
-                                <td>' . $rowGPE['Fecha_Solicitada'] . '</td>
+                                <td>' . $rowCE['Fecha_Solicitada'] . '</td>
                                 <td>' . $tipo . '</td>
-                                <td>' . $rowGPE['Fecha_Otorgada'] . '</td>
+                                <td>' . $rowCE['Fecha_Otorgada'] . '</td>
                                 <td>' . $rowCE['Estado'] . '</td>
                             </tr>
 
@@ -171,8 +179,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                 }
             }
-        }
+    }        
+
+
+
+}
     
+        
 
 
 ?>
