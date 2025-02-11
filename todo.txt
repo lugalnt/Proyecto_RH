@@ -1,0 +1,6 @@
+To do:
+
+- Hacer sistema para buscar a un empleado y ver sus partes privadas
+- Filtros para que los empleados no se pasen de burger
+    - Cuántas veces puede un empleado pedir una prestación nuevamente?
+- Hacer lista completa de las especificaciones y detalles
