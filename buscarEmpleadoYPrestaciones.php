@@ -62,8 +62,6 @@
         <label for="nombre">Nombre del Empleado:</label>
         <input type="text" id="nombre" name="nombre">
         <br>
-        <label>Y/O</label>
-        <br>
         <label for="numero">Numero del Empleado:</label>
         <input type="text" id="numero" name="numero">
         <br>
@@ -90,8 +88,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST["nombre"];
     $numero = $_POST["numero"];
 
-    if (!empty($nombre) && empty($numero))
-    {
+    
+
+
+    if (!empty($nombre) && empty($numero)) {
 
         $queryNE = $conn->prepare("SELECT Numero_Empleado FROM empleado WHERE Nombre_Empleado = ?");
         $queryNE->bind_param("s", $nombre);
@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $rowNE = $resultNE->fetch_assoc();
 
         if ($rowNE == NULL) {
-            echo "No se encontró el empleado";
+            echo "No se encontró el empleado o no ha solicitado prestaciones.";
         } else {
 
             $numeroEmpleado = $rowNE['Numero_Empleado'];
@@ -110,88 +110,141 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $queryCIE->execute();
             $resultCIE = $queryCIE->get_result();
 
-                while ($rowCIE = $resultCIE->fetch_assoc()) {
-                    $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");
-                    $queryGPE->bind_param("i", $numeroEmpleado);
-                    $queryGPE->execute();
-                    $resultGPE = $queryGPE->get_result();
+            while ($rowCIE = $resultCIE->fetch_assoc()) {
+                $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");
+                $queryGPE->bind_param("i", $numeroEmpleado);
+                $queryGPE->execute();
+                $resultGPE = $queryGPE->get_result();
 
+                while ($rowGPE = $resultGPE->fetch_assoc()) {
 
+                    $idPrestacion = $rowGPE['Id_Prestacion'];
 
+                    $queryCE = $conn->prepare("SELECT * from prestacion WHERE Id_Prestacion = ?");
+                    $queryCE->bind_param("i", $idPrestacion);
+                    $queryCE->execute();
+                    $resultCE = $queryCE->get_result();
+                    $rowCE = $resultCE->fetch_assoc();
 
-                    while ($rowGPE = $resultGPE->fetch_assoc()) {
+                    if ($rowGPE['Tipo'] == "Academico") {
+                        $queryCPA = $conn->prepare("SELECT * FROM prestacion_apoyoacademico WHERE Id_Prestacion = ?");
+                        $queryCPA->bind_param("i", $idPrestacion);
+                        $queryCPA->execute();
+                        $resultCPA = $queryCPA->get_result();
+                        $rowCPA = $resultCPA->fetch_assoc();
 
-                        $idPrestacion = $rowGPE['Id_Prestacion'];
-
-                        $queryCE = $conn->prepare("SELECT * from prestacion WHERE Id_Prestacion = ?");
-                        $queryCE->bind_param("i", $idPrestacion);
-                        $queryCE->execute();
-                        $resultCE = $queryCE->get_result();
-                        $rowCE = $resultCE->fetch_assoc();
-
-                        if ($rowGPE['Tipo'] == "Academico") {
-                            $queryCPA = $conn->prepare("SELECT * FROM prestacion_apoyoacademico WHERE Id_Prestacion = ?");
-                            $queryCPA->bind_param("i", $idPrestacion);
-                            $queryCPA->execute();
-                            $resultCPA = $queryCPA->get_result();
-                            $rowCPA = $resultCPA->fetch_assoc();
-
-                            $tipo = "Apoyo académico: " . $rowCPA['Tipo'];
-                        }
-
-                        if ($rowGPE['Tipo'] == "Financiera") {
-                            $queryCPA = $conn->prepare("SELECT * FROM prestacion_apoyofinanciero WHERE Id_Prestacion = ?");
-                            $queryCPA->bind_param("i", $idPrestacion);
-                            $queryCPA->execute();
-                            $resultCPA = $queryCPA->get_result();
-                            $rowCPA = $resultCPA->fetch_assoc();
-
-                            $tipo = "Apoyo financiero: " . $rowCPA['Tipo'];
-                        }
-
-                        if ($rowGPE['Tipo'] == "Día") {
-                            $queryCPD = $conn->prepare("SELECT * FROM prestacion_dias WHERE Id_Prestacion = ?");
-                            $queryCPD->bind_param("i", $idPrestacion);
-                            $queryCPD->execute();
-                            $resultCPD = $queryCPD->get_result();
-                            $rowCPD = $resultCPD->fetch_assoc();
-
-                            $tipo = "Día: " . $rowCPD['Motivo'];
-                        }
-
-                        echo '
-
-
-
-                            <tr>
-                                <td>' . $rowCIE['Nombre_Empleado'] . '</td>
-                                <td>' . $rowCE['Fecha_Solicitada'] . '</td>
-                                <td>' . $tipo . '</td>
-                                <td>' . $rowCE['Fecha_Otorgada'] . '</td>
-                                <td>' . $rowCE['Estado'] . '</td>
-                            </tr>
-
-                       
-
-
-                        ';
-
+                        $tipo = "Apoyo académico: " . $rowCPA['Tipo'];
                     }
+
+                    if ($rowGPE['Tipo'] == "Financiera") {
+                        $queryCPA = $conn->prepare("SELECT * FROM prestacion_apoyofinanciero WHERE Id_Prestacion = ?");
+                        $queryCPA->bind_param("i", $idPrestacion);
+                        $queryCPA->execute();
+                        $resultCPA = $queryCPA->get_result();
+                        $rowCPA = $resultCPA->fetch_assoc();
+
+                        $tipo = "Apoyo financiero: " . $rowCPA['Tipo'];
+                    }
+
+                    if ($rowGPE['Tipo'] == "Día") {
+                        $queryCPD = $conn->prepare("SELECT * FROM prestacion_dias WHERE Id_Prestacion = ?");
+                        $queryCPD->bind_param("i", $idPrestacion);
+                        $queryCPD->execute();
+                        $resultCPD = $queryCPD->get_result();
+                        $rowCPD = $resultCPD->fetch_assoc();
+
+                        $tipo = "Día: " . $rowCPD['Motivo'];
+                    }
+
+                    echo '
+                        <tr>
+                            <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
+                            <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
+                            <td>' . htmlspecialchars($tipo) . '</td>
+                            <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
+                            <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+                        </tr>
+                    ';
                 }
             }
-    }        
+        }
 
+    } else if (!empty($numero) && empty($nombre)) {
+        $numeroEmpleado = $numero;
 
+        $queryCIE = $conn->prepare("SELECT * FROM empleado WHERE Numero_Empleado = ?");
+        $queryCIE->bind_param("i", $numeroEmpleado);
+        $queryCIE->execute();
+        $resultCIE = $queryCIE->get_result();
 
+        if ($resultCIE->num_rows == 0) {
+            echo "No se encontró el empleado o no ha solicitado prestaciones.";
+            exit();
+        }
+
+        while ($rowCIE = $resultCIE->fetch_assoc()) {
+            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");
+            $queryGPE->bind_param("i", $numeroEmpleado);
+            $queryGPE->execute();
+            $resultGPE = $queryGPE->get_result();
+
+            while ($rowGPE = $resultGPE->fetch_assoc()) {
+
+                $idPrestacion = $rowGPE['Id_Prestacion'];
+
+                $queryCE = $conn->prepare("SELECT * from prestacion WHERE Id_Prestacion = ?");
+                $queryCE->bind_param("i", $idPrestacion);
+                $queryCE->execute();
+                $resultCE = $queryCE->get_result();
+                $rowCE = $resultCE->fetch_assoc();
+
+                if ($rowGPE['Tipo'] == "Academico") {
+                    $queryCPA = $conn->prepare("SELECT * FROM prestacion_apoyoacademico WHERE Id_Prestacion = ?");
+                    $queryCPA->bind_param("i", $idPrestacion);
+                    $queryCPA->execute();
+                    $resultCPA = $queryCPA->get_result();
+                    $rowCPA = $resultCPA->fetch_assoc();
+
+                    $tipo = "Apoyo académico: " . $rowCPA['Tipo'];
+                }
+
+                if ($rowGPE['Tipo'] == "Financiera") {
+                    $queryCPA = $conn->prepare("SELECT * FROM prestacion_apoyofinanciero WHERE Id_Prestacion = ?");
+                    $queryCPA->bind_param("i", $idPrestacion);
+                    $queryCPA->execute();
+                    $resultCPA = $queryCPA->get_result();
+                    $rowCPA = $resultCPA->fetch_assoc();
+
+                    $tipo = "Apoyo financiero: " . $rowCPA['Tipo'];
+                }
+
+                if ($rowGPE['Tipo'] == "Día") {
+                    $queryCPD = $conn->prepare("SELECT * FROM prestacion_dias WHERE Id_Prestacion = ?");
+                    $queryCPD->bind_param("i", $idPrestacion);
+                    $queryCPD->execute();
+                    $resultCPD = $queryCPD->get_result();
+                    $rowCPD = $resultCPD->fetch_assoc();
+
+                    $tipo = "Día: " . $rowCPD['Motivo'];
+                }
+
+                echo '
+                    <tr>
+                        <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
+                        <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
+                        <td>' . htmlspecialchars($tipo) . '</td>
+                        <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
+                        <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+                    </tr>
+                ';
+            }
+        }
+    } else {
+        echo "Por favor, ingrese el nombre o el número del empleado.";
+    }
 }
-    
-        
-
-
 ?>
 </tbody>
 </table>
 </body>
 </html>
-
-<!-- i came to goon -->
