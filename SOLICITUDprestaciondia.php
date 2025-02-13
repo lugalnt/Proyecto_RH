@@ -54,6 +54,16 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $motivo = $_POST['motivo'];
     $otro = $_POST['otro'] ?? null;
 
+    require_once("ESTADOsepuedeprestacion.php");
+$prestacionesPermitidas = verificarPrestaciones($_SESSION['Numero_Empleado']);
+
+if (!$prestacionesPermitidas['Día'][$motivo]) {
+echo "<script>alert('No se puede solicitar este tipo de apoyo académico debido a que ya te lo otorgaron este cuatrimestre');</script>";
+exit;
+echo "<script>location.reload();</script>"; 
+} 
+
+
     $queryCheckFecha = $conn->prepare("SELECT COUNT(*) FROM prestacion_dias WHERE Numero_Empleado = ? AND Fecha_Solicitada = ?");
     $queryCheckFecha->bind_param("is", $_SESSION['Numero_Empleado'], $fecha);
     $queryCheckFecha->execute();

@@ -42,7 +42,15 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $nombre_familiar = "%".$_POST['nombre_familiar']."%";
     $tipoPF = $_POST['tipo'];
  
-    
+    require_once("ESTADOsepuedeprestacion.php");
+$prestacionesPermitidas = verificarPrestaciones($_SESSION['Numero_Empleado']);
+
+if (!$prestacionesPermitidas['Financiera'][$tipoApoyo]) {
+echo "<script>alert('No se puede solicitar este tipo de apoyo académico debido a que ya te lo otorgaron este cuatrimestre');</script>";
+exit;
+echo "<script>location.reload();</script>"; 
+} 
+
 
 
 

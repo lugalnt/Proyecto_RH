@@ -27,6 +27,7 @@
 <?php
 
 require_once("conn.php");
+
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"]=="POST")
@@ -35,6 +36,17 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
 $nombre_familiar = $_POST['nombre_familiar'];
 $nombre_institucion = $_POST['nombre_institucion'];
 $tipoApoyo = $_POST['tipo'];
+
+require_once("ESTADOsepuedeprestacion.php");
+$prestacionesPermitidas = verificarPrestaciones($_SESSION['Numero_Empleado']);
+
+if (!$prestacionesPermitidas['Academico'][$tipoApoyo]) {
+echo "<script>alert('No se puede solicitar este tipo de apoyo académico debido a que ya te lo otorgaron este cuatrimestre');</script>";
+exit;
+echo "<script>location.reload();</script>"; 
+} 
+
+
 
 $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Numero_Empleado = ?");
 $queryChecarPF->bind_param("si", $nombre_familiar, $_SESSION['Numero_Empleado']);
