@@ -14,7 +14,7 @@ function verificarPrestaciones($numeroEmpleado) {
             'Utiles' => true,
             'Tesis' => true
         ],
-        'Apoyo Financiero' => [
+        'Financiera' => [
             'Lentes' => true,
             'Gasto funerario' => true,
             'Guarderia' => true,
@@ -62,7 +62,7 @@ function verificarPrestaciones($numeroEmpleado) {
             }
         }
 
-        if ($rowGAPE['Tipo'] == "Apoyo Financiero") {
+        if ($rowGAPE['Tipo'] == "Financiera") {
             $queryGAPAF = $conn->prepare("SELECT * FROM prestacion_apoyofinanciero WHERE Id_Prestacion = ?");
             $queryGAPAF->bind_param("i", $rowGAPE['Id_Prestacion']);
             $queryGAPAF->execute();

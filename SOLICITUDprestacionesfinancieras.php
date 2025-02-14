@@ -42,17 +42,17 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $nombre_familiar = "%".$_POST['nombre_familiar']."%";
     $tipoPF = $_POST['tipo'];
  
-    require_once("ESTADOsepuedeprestacion.php");
+require_once("ESTADOsepuedeprestacion.php");
 $prestacionesPermitidas = verificarPrestaciones($_SESSION['Numero_Empleado']);
 
-if (!$prestacionesPermitidas['Financiera'][$tipoApoyo]) {
-echo "<script>alert('No se puede solicitar este tipo de apoyo académico debido a que ya te lo otorgaron este cuatrimestre');</script>";
+if (!$prestacionesPermitidas['Financiera'][$tipoPF]) {
+echo "<script>alert('No se puede solicitar este tipo de apoyo financiero debido a que ya te lo otorgaron este cuatrimestre');</script>";
 exit;
 echo "<script>location.reload();</script>"; 
 } 
 
-$queryCheckToday = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Financiera' AND DATE(Fecha_Solicitud) = CURDATE()");
-$queryCheckToday->bind_param("is", $_SESSION['Numero_Empleado']);
+$queryCheckToday = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Financiera' AND DATE(Fecha_Solicitada) = CURDATE()");
+$queryCheckToday->bind_param("i", $_SESSION['Numero_Empleado']);
 $queryCheckToday->execute();
 $resultCheckToday = $queryCheckToday->get_result();
 

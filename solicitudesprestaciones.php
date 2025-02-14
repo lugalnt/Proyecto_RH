@@ -199,19 +199,38 @@ while($rowSP = $resultadoSP->fetch_assoc())
     } 
 
     if ($rowSP['Tipo'] != "Día" && $rowSP['Tipo'] != "Plazo") {
+        echo '
+        <table class="table table-bordered">
+        <thead>
+            <tr>
+            <th>Id Prestación</th>
+            <th>Empleado que la solicitó</th>
+            <th>Fecha solicitada</th>
+            <th>Tipo de prestación</th>
+            <th>Familiar (si aplica)</th>
+            <th>Fecha Otorgada</th>
+            <th>Estado</th>
+            <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>';
         echo "<tr>";
-        echo "<td>".$idPrestacion."</td>";
-        echo "<td>".$numeroEmpleado.", ".htmlspecialchars($nombreEmpleado)."</td>";
-        echo "<td>".$fechaSolicitud."</td>";
-        echo "<td>".$tipo."</td>";
-        echo "<td>".$nombreFamiliar."</td>";
+        echo "<td>".htmlspecialchars($idPrestacion)."</td>";
+        echo "<td>".htmlspecialchars($numeroEmpleado).", ".htmlspecialchars($nombreEmpleado)."</td>";
+        echo "<td>".htmlspecialchars($fechaSolicitud)."</td>";
+        echo "<td>".htmlspecialchars($tipo)."</td>";
+        echo "<td>".htmlspecialchars($nombreFamiliar)."</td>";
+        echo "<td>".htmlspecialchars($rowSP['Fecha_Otorgada'])."</td>";
+        echo "<td>".htmlspecialchars($rowSP['Estado'])."</td>";
         echo "<td>";
         echo "<form action='' method='post'>";
-        echo "<input type='hidden' name='idPrestacion' value='".$idPrestacion."'>";
+        echo "<input type='hidden' name='idPrestacion' value='".htmlspecialchars($idPrestacion)."'>";
         echo "<button type='submit' class='btn btn-primary'>Otorgar prestación</button>";
         echo "</form>";
         echo "</td>";
-        echo "</tr>";
+        echo "</tr>
+        </tbody>
+        </table>";
     }
 }
 
