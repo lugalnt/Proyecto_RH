@@ -156,6 +156,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $tipo = "Día: " . $rowCPD['Motivo'];
                     }
 
+                    if($rowGPE['Tipo'] == "Plazo")
+                    {
+                        $queryCPD = $conn->prepare("SELECT * FROM prestacion_plazos WHERE Id_Prestacion = ?");
+                        $queryCPD->bind_param("i", $idPrestacion);
+                        $queryCPD->execute();
+                        $resultCPD = $queryCPD->get_result();
+                        $rowCPD = $resultCPD->fetch_assoc();
+                
+                        $tipo = "Plazo: ".$rowCPD['Tipo'];
+                    }
+                
+
                     echo '
                         <tr>
                             <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>

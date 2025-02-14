@@ -85,6 +85,17 @@ while($rowSP = $resultadoSP->fetch_assoc())
         $tipo = "Día: ".$rowCPD['Motivo'];
     }
 
+    if($rowSP['Tipo'] == "Plazo")
+    {
+        $queryCPD = $conn->prepare("SELECT * FROM prestacion_plazos WHERE Id_Prestacion = ?");
+        $queryCPD->bind_param("i", $idPrestacion);
+        $queryCPD->execute();
+        $resultCPD = $queryCPD->get_result();
+        $rowCPD = $resultCPD->fetch_assoc();
+
+        $tipo = "Plazo: ".$rowCPD['Tipo'];
+    }
+
     $queryCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
     $queryCFP->bind_param("i", $idPrestacion);
     $queryCFP->execute();

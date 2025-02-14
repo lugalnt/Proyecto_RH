@@ -16,9 +16,10 @@
             }
         }
     </script>
+    <link rel="stylesheet" href="stylesolicitudes.css">
 </head>
 <body>
-    <form action="procesar_solicitud.php" method="post">
+    <form action="" method="post">
         <label for="fecha_inicial">Fecha Inicial:</label>
         <input type="date" id="fecha_inicial" name="fecha_inicial" required><br><br>
 
@@ -48,38 +49,48 @@
 require_once("conn.php");
 session_start();
 
+
+if ($_SERVER["REQUEST_METHOD"]=="POST")
+{
+
 $fechaInicial = $_POST['fecha_inicial'];
 $fechaFinal = $_POST['fecha_final'];
 $motivo = $_POST['motivo'];
 $quitarDias = $_POST['razon_social'] ?? 0;
 
-if ($quitarDias) {
-    $datetime1 = new DateTime($fechaInicial);
-    $datetime2 = new DateTime($fechaFinal);
-    $interval = $datetime1->diff($datetime2);
-    $dias = $interval->days;
+// if ($quitarDias) {
+//     $startDate = new DateTime($fechaInicial);
+//     $endDate = new DateTime($fechaFinal);
+//     $interval = new DateInterval('P1D');
+//     $period = new DatePeriod($startDate, $interval, $endDate->modify('+1 day'));
 
-    $queryCD = $conn->prepare("SELECT Dias FROM empleado WHERE Numero_Empleado = ?");
-    $queryCD->bind_param("i", $_SESSION['Numero_Empleado']);
-    $queryCD->execute();
-    $resultCD = $queryCD->get_result();
-    $rowCD = $resultCD->fetch_assoc();
+//     $dias = 0;
+//     foreach ($period as $date) {
+//         if ($date->format('N') < 6) { 
+//             $dias++;
+//         }
+//     }
 
-    if ($rowCD['Dias'] >= $dias) {
-          
-        $queryUD = $conn->prepare("UPDATE empleado SET Dias = Dias - ? WHERE Numero_Empleado = ?");
-        $queryUD->bind_param("ii", $dias, $_SESSION['Numero_Empleado']);
-        $queryUD->execute();
-        $queryUD->close();
+//     $queryCD = $conn->prepare("SELECT Dias FROM empleado WHERE Numero_Empleado = ?");
+//     $queryCD->bind_param("i", $_SESSION['Numero_Empleado']);
+//     $queryCD->execute();
+//     $resultCD = $queryCD->get_result();
+//     $rowCD = $resultCD->fetch_assoc();
 
-    } 
-    else {
-        
-        echo "<script>alert('No tienes suficientes días disponibles para esta solicitud.'); window.location.href='SOLICITUDprestacionplazo.php';</script>";
-        exit();
-        
-    }
-}
+//     if ($rowCD['Dias'] >= $dias) {
+//         // Update the employee's available days
+//         $queryUD = $conn->prepare("UPDATE empleado SET Dias = Dias - ? WHERE Numero_Empleado = ?");
+//         $queryUD->bind_param("ii", $dias, $_SESSION['Numero_Empleado']);
+//         $queryUD->execute();
+//         $queryUD->close();
+//     } else {
+//         // Alert the user if they do not have enough available days
+//         echo "<script>alert('No tienes suficientes días disponibles para esta solicitud.'); window.location.href='SOLICITUDprestacionplazo.php';</script>";
+//         exit();
+//     }
+// }
+
+//ARRIBA GUARDADO PARA QUE SE HAGA DE UNA FORMA U OTRA DESPUES DE QUE SE OTORGE LOL
 
 $queryInsertarP = $conn->prepare("INSERT INTO prestacion (Tipo, Fecha_Solicitada) VALUES ('Plazo', CURRENT_DATE)");
 $queryInsertarP->execute();
@@ -92,13 +103,14 @@ $queryInsertarPE->bind_param("iis", $_SESSION['Numero_Empleado'], $Id_Prestacion
 $queryInsertarPE->execute();
 $queryInsertarPE->close();
 
-$queryInsertarPP = $conn->prepare("INSERT INTO prestacion_plazos (Id_Prestacion, Numero_Empleado, Fecha_Inicial, Fecha_Final, Motivo) VALUES (?, ?, ?, ?, ?)");
-$queryInsertarPP->bind_param("iss", $Id_Prestacion, $_SESSION['Numero_Empleado'], $fechaInicial, $fechaFinal, $motivo);
+$queryInsertarPP = $conn->prepare("INSERT INTO prestacion_plazos (Id_Prestacion, Numero_Empleado, Fecha_Inicio, Fecha_Final, Tipo) VALUES (?, ?, ?, ?, ?)");
+$queryInsertarPP->bind_param("issss", $Id_Prestacion, $_SESSION['Numero_Empleado'], $fechaInicial, $fechaFinal, $motivo);
 $queryInsertarPP->execute();
 $queryInsertarPP->close();
 
 echo "<script>alert('Solicitud de prestación de plazo enviada correctamente. '); window.location.href='index.php';</script>";
 exit();
 
+}
 
 ?>
