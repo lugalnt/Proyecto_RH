@@ -376,7 +376,16 @@ if($_SESSION['Area'] != "RH")
                     }
 
 
-
+                    if ($resultGED->num_rows == 0)
+                    {
+                        echo '
+                        <div class="right">
+                        <div class="info">
+                            <h3>No hay empleados ausentes</h3>
+                            <small class="text-muted">Por <ahora class=""></ahora></small>
+                        </div>
+                    </div>"';
+                    }
                  
 
                     ?>

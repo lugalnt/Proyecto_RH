@@ -61,7 +61,6 @@
                 <th>Estado</th>
             </tr>
         </thead>
-        <tbody>
 
 <?php
 
@@ -140,15 +139,96 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $tipo = "Día: " . $rowCPD['Motivo'];
                     }
 
-                    echo '
-                        <tr>
-                            <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
-                            <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
-                            <td>' . htmlspecialchars($tipo) . '</td>
-                            <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
-                            <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
-                        </tr>
-                    ';
+                    if($rowGPE['Tipo'] == "Plazo")
+                    {
+                        $queryCPP = $conn->prepare("SELECT * FROM prestacion_plazos WHERE Id_Prestacion = ?");
+                        $queryCPP->bind_param("i", $idPrestacion);
+                        $queryCPP->execute();
+                        $resultCPP = $queryCPP->get_result();
+                        $rowCPP = $resultCPP->fetch_assoc();
+                
+                        $tipo = "Plazo: ".$rowCPP['Tipo'];
+                    }
+                
+
+                    if ($rowGPE['Tipo'] == "Día") {
+
+                        $queryCPD = $conn->prepare("SELECT * FROM prestacion_dias WHERE Id_Prestacion = ?");
+                        $queryCPD->bind_param("i", $idPrestacion);
+                        $queryCPD->execute();
+                        $resultCPD = $queryCPD->get_result();
+                        $rowCPD = $resultCPD->fetch_assoc();
+
+                        echo '
+
+                            <thead>
+                            <tr>
+                                <th>Nombre del Empleado</th>
+                                <th>Fecha de Solicitud</th>
+                                <th>Tipo de Prestación</th>
+                                <th>Fecha Pedida</th>
+                                <th>Fecha de Otorgamiento</th>
+                                <th>Estado</th>
+                            </tr>
+                            </thead>
+
+                            <tr>
+                                <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
+                                <td>' . htmlspecialchars($tipo) . '</td>
+                                <td>' . htmlspecialchars($rowCPD['Fecha_Solicitada']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+                            </tr>
+                        ';
+                    } 
+
+                    if ($rowGPE['Tipo'] == "Plazo") {
+
+                        $queryCPP = $conn->prepare("SELECT * FROM prestacion_plazos WHERE Id_Prestacion = ?");
+                        $queryCPP->bind_param("i", $idPrestacion);
+                        $queryCPP->execute();
+                        $resultCPP = $queryCPP->get_result();
+                        $rowCPP = $resultCPP->fetch_assoc();
+
+                        echo '
+
+                            <thead>
+                            <tr>
+                                <th>Nombre del Empleado</th>
+                                <th>Fecha de Solicitud</th>
+                                <th>Tipo de Prestación</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Final</th>
+                                <th>Fecha de Otorgamiento</th>
+                                <th>Estado</th>
+                            </tr>
+                            </thead>
+                            <tr>
+                                <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
+                                <td>' . htmlspecialchars($tipo) . '</td>
+                                <td>' . htmlspecialchars($rowCPP['Fecha_Inicio']) . '</td>
+                                <td>' . htmlspecialchars($rowCPP['Fecha_Final']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+                            </tr>
+                        ';
+                    } 
+
+
+
+                    if ($rowGPE['Tipo'] != "Plazo" && $rowGPE['Tipo'] != "Día") {
+                        echo '
+                            <tr>
+                                <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
+                                <td>' . htmlspecialchars($tipo) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+                            </tr>
+                        ';
+                    }
                 }
             }
         }
@@ -212,15 +292,96 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $tipo = "Día: " . $rowCPD['Motivo'];
                 }
 
-                echo '
-                    <tr>
-                        <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
-                        <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
-                        <td>' . htmlspecialchars($tipo) . '</td>
-                        <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
-                        <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
-                    </tr>
-                ';
+                if($rowGPE['Tipo'] == "Plazo")
+                    {
+                        $queryCPP = $conn->prepare("SELECT * FROM prestacion_plazos WHERE Id_Prestacion = ?");
+                        $queryCPP->bind_param("i", $idPrestacion);
+                        $queryCPP->execute();
+                        $resultCPP = $queryCPP->get_result();
+                        $rowCPP = $resultCPP->fetch_assoc();
+                
+                        $tipo = "Plazo: ".$rowCPP['Tipo'];
+                    }
+                
+
+                    if ($rowGPE['Tipo'] == "Día") {
+
+                        $queryCPD = $conn->prepare("SELECT * FROM prestacion_dias WHERE Id_Prestacion = ?");
+                        $queryCPD->bind_param("i", $idPrestacion);
+                        $queryCPD->execute();
+                        $resultCPD = $queryCPD->get_result();
+                        $rowCPD = $resultCPD->fetch_assoc();
+
+                        echo '
+
+                            <thead>
+                            <tr>
+                                <th>Nombre del Empleado</th>
+                                <th>Fecha de Solicitud</th>
+                                <th>Tipo de Prestación</th>
+                                <th>Fecha Pedida</th>
+                                <th>Fecha de Otorgamiento</th>
+                                <th>Estado</th>
+                            </tr>
+                            </thead>
+
+                            <tr>
+                                <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
+                                <td>' . htmlspecialchars($tipo) . '</td>
+                                <td>' . htmlspecialchars($rowCPD['Fecha_Solicitada']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+                            </tr>
+                        ';
+                    } 
+
+                    if ($rowGPE['Tipo'] == "Plazo") {
+
+                        $queryCPP = $conn->prepare("SELECT * FROM prestacion_plazos WHERE Id_Prestacion = ?");
+                        $queryCPP->bind_param("i", $idPrestacion);
+                        $queryCPP->execute();
+                        $resultCPP = $queryCPP->get_result();
+                        $rowCPP = $resultCPP->fetch_assoc();
+
+                        echo '
+
+                            <thead>
+                            <tr>
+                                <th>Nombre del Empleado</th>
+                                <th>Fecha de Solicitud</th>
+                                <th>Tipo de Prestación</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Final</th>
+                                <th>Fecha de Otorgamiento</th>
+                                <th>Estado</th>
+                            </tr>
+                            </thead>
+                            <tr>
+                                <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
+                                <td>' . htmlspecialchars($tipo) . '</td>
+                                <td>' . htmlspecialchars($rowCPP['Fecha_Inicio']) . '</td>
+                                <td>' . htmlspecialchars($rowCPP['Fecha_Final']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+                            </tr>
+                        ';
+                    } 
+
+
+
+                    if ($rowGPE['Tipo'] != "Plazo" && $rowGPE['Tipo'] != "Día") {
+                        echo '
+                            <tr>
+                                <td>' . htmlspecialchars($rowCIE['Nombre_Empleado']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
+                                <td>' . htmlspecialchars($tipo) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
+                                <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+                            </tr>
+                        ';
+                    }
             }
         }
     } else {

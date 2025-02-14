@@ -54,6 +54,42 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $motivo = $_POST['motivo'];
     $otro = $_POST['otro'] ?? null;
 
+    $queryCheckDias = $conn->prepare("SELECT Dias, Dias_Extras FROM empleado WHERE Numero_Empleado = ?");
+    $queryCheckDias->bind_param("i", $_SESSION['Numero_Empleado']);
+    $queryCheckDias->execute();
+    $queryCheckDias->bind_result($dias, $diasExtras);
+    $queryCheckDias->fetch();
+    $queryCheckDias->close();
+
+    if ($diaExtra) {
+        if ($diasExtras <= 0) {
+            echo '<script type="text/javascript">
+            alert("No tienes suficientes días extras disponibles para solicitar esta prestación.");
+            </script>';
+            echo("<meta http-equiv='refresh' content='1'>");
+            exit;
+        }
+    } else {
+        if ($dias <= 0) {
+            echo '<script type="text/javascript">
+            alert("No tienes suficientes días disponibles para solicitar esta prestación.");
+            </script>';
+            echo("<meta http-equiv='refresh' content='1'>");
+            exit;
+        }
+    }
+
+
+//Comentado hasta tener especificaciones cuando suficicentes dias han sido otorgados
+// require_once("ESTADOsepuedeprestacion.php");
+// $prestacionesPermitidas = verificarPrestaciones($_SESSION['Numero_Empleado']);
+
+// if (!$prestacionesPermitidas['Día'][$motivo]) {
+// echo "<script>alert('No se puede solicitar este tipo de apoyo académico debido a que ya te lo otorgaron este cuatrimestre');</script>";
+// exit;
+// echo "<script>location.reload();</script>"; 
+// } 
+
     $queryCheckFecha = $conn->prepare("SELECT COUNT(*) FROM prestacion_dias WHERE Numero_Empleado = ? AND Fecha_Solicitada = ?");
     $queryCheckFecha->bind_param("is", $_SESSION['Numero_Empleado'], $fecha);
     $queryCheckFecha->execute();

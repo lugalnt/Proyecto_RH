@@ -1,8 +1,17 @@
 To do:
 
 - Hacer sistema para buscar a un empleado y ver sus partes privadas ✓
-- Filtros para que los empleados no se pasen de burger
+
+- Filtros para que los empleados no se pasen de burger ✓
     - Cuántas veces puede un empleado pedir una prestación nuevamente?
+    Cada 4 meses (Un cuatrimestre)
     -Esto puede ser un archivo que se requiera al empiezo que cada solicitudo que diga aaaaaaaaaaa que onda te has pasado de lanza
     o nel?
+    Listo Needs more testing tho
+
 - Hacer lista completa de las especificaciones y detalles
+    -No lol Pq ni los documentos de los plazos vienen lol 
+
+    Mejor
+
+- Hacer solicitud prestacion de plazo ✓

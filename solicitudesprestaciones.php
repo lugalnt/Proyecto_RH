@@ -85,6 +85,17 @@ while($rowSP = $resultadoSP->fetch_assoc())
         $tipo = "Día: ".$rowCPD['Motivo'];
     }
 
+    if($rowSP['Tipo'] == "Plazo")
+    {
+        $queryCPP = $conn->prepare("SELECT * FROM prestacion_plazos WHERE Id_Prestacion = ?");
+        $queryCPP->bind_param("i", $idPrestacion);
+        $queryCPP->execute();
+        $resultCPP = $queryCPP->get_result();
+        $rowCPP = $resultCPP->fetch_assoc();
+
+        $tipo = "Plazo: ".$rowCPP['Tipo'];
+    }
+
     $queryCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
     $queryCFP->bind_param("i", $idPrestacion);
     $queryCFP->execute();
@@ -108,19 +119,100 @@ while($rowSP = $resultadoSP->fetch_assoc())
         $nombreFamiliar = "N/A";
     }
 
-    echo "<tr>";
-    echo "<td>".$idPrestacion."</td>";
-    echo "<td>".$numeroEmpleado.", ".htmlspecialchars($nombreEmpleado)."</td>";
-    echo "<td>".$fechaSolicitud."</td>";
-    echo "<td>".$tipo."</td>";
-    echo "<td>".$nombreFamiliar."</td>";
-    echo "<td>";
-    echo "<form action='' method='post'>";
-    echo "<input type='hidden' name='idPrestacion' value='".$idPrestacion."'>";
-    echo "<button type='submit' class='btn btn-primary'>Otorgar prestación</button>";
-    echo "</form>";
-    echo "</td>";
-    echo "</tr>";
+
+    if ($rowSP['Tipo'] == "Día") {
+        echo '
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id Prestación</th>
+                        <th>Empleado que la solicitó</th>
+                        <th>Fecha solicitada</th>
+                        <th>Tipo de prestación</th>
+                        <th>Fecha Pedida</th>
+                        <th>Familiar (si aplica)</th>
+                        <th>Fecha Otorgada</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>' . htmlspecialchars($idPrestacion) . '</td>
+                        <td>' . htmlspecialchars($numeroEmpleado) . ', ' . htmlspecialchars($nombreEmpleado) . '</td>
+                        <td>' . htmlspecialchars($fechaSolicitud) . '</td>
+                        <td>' . htmlspecialchars($tipo) . '</td>
+                        <td>' . htmlspecialchars($rowCPD['Fecha_Pedida']) . '</td>
+                        <td>' . htmlspecialchars($nombreFamiliar) . '</td>
+                        <td>' . htmlspecialchars($rowSP['Fecha_Otorgada']) . '</td>
+                        <td>' . htmlspecialchars($rowSP['Estado']) . '</td>
+                        <td>
+                            <form action="" method="post">
+                                <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">
+                                <button type="submit" class="btn btn-primary">Otorgar prestación</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ';
+    } 
+
+    if ($rowSP['Tipo'] == "Plazo") {
+        echo '
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id Prestación</th>
+                        <th>Empleado que la solicitó</th>
+                        <th>Fecha solicitada</th>
+                        <th>Tipo de prestación</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Final</th>
+                        <th>Familiar (si aplica)</th>
+                        <th>Fecha Otorgada</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>' . htmlspecialchars($idPrestacion) . '</td>
+                        <td>' . htmlspecialchars($numeroEmpleado) . ', ' . htmlspecialchars($nombreEmpleado) . '</td>
+                        <td>' . htmlspecialchars($fechaSolicitud) . '</td>
+                        <td>' . htmlspecialchars($tipo) . '</td>
+                        <td>' . htmlspecialchars($rowCPP['Fecha_Inicio']) . '</td>
+                        <td>' . htmlspecialchars($rowCPP['Fecha_Final']) . '</td>
+                        <td>' . htmlspecialchars($nombreFamiliar) . '</td>
+                        <td>' . htmlspecialchars($rowSP['Fecha_Otorgada']) . '</td>
+                        <td>' . htmlspecialchars($rowSP['Estado']) . '</td>
+                        <td>
+                            <form action="" method="post">
+                                <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">
+                                <button type="submit" class="btn btn-primary">Otorgar prestación</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ';
+    } 
+
+    if ($rowSP['Tipo'] != "Día" && $rowSP['Tipo'] != "Plazo") {
+        echo "<tr>";
+        echo "<td>".$idPrestacion."</td>";
+        echo "<td>".$numeroEmpleado.", ".htmlspecialchars($nombreEmpleado)."</td>";
+        echo "<td>".$fechaSolicitud."</td>";
+        echo "<td>".$tipo."</td>";
+        echo "<td>".$nombreFamiliar."</td>";
+        echo "<td>";
+        echo "<form action='' method='post'>";
+        echo "<input type='hidden' name='idPrestacion' value='".$idPrestacion."'>";
+        echo "<button type='submit' class='btn btn-primary'>Otorgar prestación</button>";
+        echo "</form>";
+        echo "</td>";
+        echo "</tr>";
+    }
 }
 
 ?>
