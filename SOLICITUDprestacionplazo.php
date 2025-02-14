@@ -97,7 +97,7 @@ $queryInsertarPP->bind_param("iss", $Id_Prestacion, $_SESSION['Numero_Empleado']
 $queryInsertarPP->execute();
 $queryInsertarPP->close();
 
-echo "<script>alert('Solicitud de prestación de plazo enviada correctamente.'); window.location.href='index.php';</script>";
+echo "<script>alert('Solicitud de prestación de plazo enviada correctamente. '); window.location.href='index.php';</script>";
 exit();
 
 
