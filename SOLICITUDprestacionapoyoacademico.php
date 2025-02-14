@@ -46,6 +46,17 @@ exit;
 echo "<script>location.reload();</script>"; 
 } 
 
+$queryCheckToday = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Academico' AND DATE(Fecha_Solicitud) = CURDATE()");
+$queryCheckToday->bind_param("is", $_SESSION['Numero_Empleado']);
+$queryCheckToday->execute();
+$resultCheckToday = $queryCheckToday->get_result();
+
+if ($resultCheckToday->num_rows > 0) {
+    echo "<script>alert('Ya has solicitado este tipo de apoyo académico el día de hoy.');</script>";
+    exit;
+}
+
+$queryCheckToday->close();
 
 
 $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Numero_Empleado = ?");

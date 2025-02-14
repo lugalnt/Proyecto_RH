@@ -51,7 +51,17 @@ exit;
 echo "<script>location.reload();</script>"; 
 } 
 
+$queryCheckToday = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Financiera' AND DATE(Fecha_Solicitud) = CURDATE()");
+$queryCheckToday->bind_param("is", $_SESSION['Numero_Empleado']);
+$queryCheckToday->execute();
+$resultCheckToday = $queryCheckToday->get_result();
 
+if ($resultCheckToday->num_rows > 0) {
+    echo "<script>alert('Ya has solicitado este tipo de apoyo Financiero el día de hoy.');</script>";
+    exit;
+}
+
+$queryCheckToday->close();
 
 
 
