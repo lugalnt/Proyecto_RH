@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-02-2025 a las 08:49:14
+-- Tiempo de generación: 14-02-2025 a las 09:10:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -122,7 +122,9 @@ INSERT INTO `empleado_prestacion` (`Numero_Empleado`, `Id_Prestacion`, `Tipo`, `
 (445, 24, 'Plazo', '2025-02-13', NULL),
 (445, 25, 'Plazo', '2025-02-13', NULL),
 (566, 26, 'Día', '2025-02-14', '2025-02-14'),
-(566, 27, 'Plazo', '2025-02-14', '2025-02-14');
+(566, 27, 'Plazo', '2025-02-14', '2025-02-14'),
+(566, 28, 'Financiera', '2025-02-14', '2025-02-14'),
+(566, 29, 'Academico', '2025-02-14', '2025-02-14');
 
 -- --------------------------------------------------------
 
@@ -163,12 +165,14 @@ CREATE TABLE `familiar_prestacion` (
 --
 
 INSERT INTO `familiar_prestacion` (`Id_Familiar`, `Id_Prestacion`, `Tipo`, `Fecha_Otorgada`) VALUES
-(0, 2, 'Academico', '2025-02-03'),
-(0, 3, 'Financiera', '2025-02-03'),
-(0, 4, 'Academico', NULL),
-(0, 14, 'Academico', NULL),
-(0, 15, 'Academico', '2025-02-10'),
-(0, 17, 'Academico', '2025-02-12');
+(1, 2, 'Academico', '2025-02-03'),
+(1, 3, 'Financiera', '2025-02-03'),
+(1, 4, 'Academico', NULL),
+(1, 14, 'Academico', NULL),
+(1, 15, 'Academico', '2025-02-10'),
+(1, 17, 'Academico', '2025-02-12'),
+(2, 28, 'Financiera', '2025-02-14'),
+(2, 29, 'Academico', '2025-02-14');
 
 -- --------------------------------------------------------
 
@@ -199,7 +203,9 @@ INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`,
 (24, '2025-02-13', NULL, 'Plazo', 'Pendiente'),
 (25, '2025-02-13', NULL, 'Plazo', 'Pendiente'),
 (26, '2025-02-14', '2025-02-14', 'Día', 'Otorgada'),
-(27, '2025-02-14', '2025-02-14', 'Plazo', 'Otorgada');
+(27, '2025-02-14', '2025-02-14', 'Plazo', 'Otorgada'),
+(28, '2025-02-14', '2025-02-14', 'Financiera', 'Otorgada'),
+(29, '2025-02-14', '2025-02-14', 'Academico', 'Otorgada');
 
 --
 -- Disparadores `prestacion`
@@ -249,11 +255,12 @@ CREATE TABLE `prestacion_apoyoacademico` (
 --
 
 INSERT INTO `prestacion_apoyoacademico` (`Id_Prestacion`, `Numero_Empleado`, `Id_Familiar`, `Nivel_Academico`, `Nombre_Institucion`, `Tipo`) VALUES
-(2, 445, 0, 'Secundaria', 'Secundaria uno', 'Utiles'),
-(4, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc'),
-(14, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc'),
-(15, 445, 0, 'Secundaria', 'UTN', 'Exencion de inscripc'),
-(17, 445, 0, 'Secundaria', 'Secundaria uno', 'Utiles');
+(2, 445, 1, 'Secundaria', 'Secundaria uno', 'Utiles'),
+(4, 445, 1, 'Secundaria', 'UTN', 'Exencion de inscripc'),
+(14, 445, 1, 'Secundaria', 'UTN', 'Exencion de inscripc'),
+(15, 445, 1, 'Secundaria', 'UTN', 'Exencion de inscripc'),
+(17, 445, 1, 'Secundaria', 'Secundaria uno', 'Utiles'),
+(29, 566, 2, 'Universidad', 'UTN', 'Exencion de inscripc');
 
 -- --------------------------------------------------------
 
@@ -275,7 +282,8 @@ CREATE TABLE `prestacion_apoyofinanciero` (
 --
 
 INSERT INTO `prestacion_apoyofinanciero` (`Id_Prestacion`, `Numero_Empleado`, `Id_Familiar`, `Deposito`, `Reembolso`, `Tipo`) VALUES
-(3, 445, 0, 1, 0, 'Gastos funerarios');
+(3, 445, 1, 1, 0, 'Gastos funerarios'),
+(28, 566, 2, 1, 0, 'Lentes');
 
 -- --------------------------------------------------------
 
@@ -417,7 +425,7 @@ ALTER TABLE `familiar_empleado`
 -- AUTO_INCREMENT de la tabla `prestacion`
 --
 ALTER TABLE `prestacion`
-  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Restricciones para tablas volcadas
