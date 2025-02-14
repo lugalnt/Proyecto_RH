@@ -11,7 +11,7 @@ if(!isset($_SESSION['Numero_Empleado']))
 
 if($_SESSION['Area'] != "RH")
 {
-  header('Location: indexEMP.php');
+  header('Location: indexEmpleado.php');
 }
 
 ?>

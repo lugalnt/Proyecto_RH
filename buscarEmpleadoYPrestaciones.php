@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscar Empleado y Prestaciones</title>
+    <link rel="stylesheet" href="./nuevostyle.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         body {
@@ -35,29 +36,10 @@
         button:hover {
             background-color: #0056b3;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
     </style>
 </head>
 <body>
-    <h1>Buscar Empleado y Prestaciones</h1>
+    <h2>Buscar Empleado y Prestaciones</h2>
     <form action="" method="post">
         <label for="nombre">Nombre del Empleado:</label>
         <input type="text" id="nombre" name="nombre">
@@ -67,6 +49,8 @@
         <br>
         <button type="submit">Buscar</button>
     </form>
+    <main>
+    <div class="prestamos-recientes">
     <table>
         <thead>
             <tr>
@@ -246,5 +230,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 </tbody>
 </table>
+</div>
+</main>
 </body>
 </html>
