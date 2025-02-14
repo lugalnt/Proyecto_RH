@@ -142,7 +142,7 @@ while($rowSP = $resultadoSP->fetch_assoc())
                         <td>' . htmlspecialchars($numeroEmpleado) . ', ' . htmlspecialchars($nombreEmpleado) . '</td>
                         <td>' . htmlspecialchars($fechaSolicitud) . '</td>
                         <td>' . htmlspecialchars($tipo) . '</td>
-                        <td>' . htmlspecialchars($rowCPD['Fecha_Pedida']) . '</td>
+                        <td>' . htmlspecialchars($rowCPD['Fecha_Solicitada']) . '</td>
                         <td>' . htmlspecialchars($nombreFamiliar) . '</td>
                         <td>' . htmlspecialchars($rowSP['Fecha_Otorgada']) . '</td>
                         <td>' . htmlspecialchars($rowSP['Estado']) . '</td>

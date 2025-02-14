@@ -36,6 +36,31 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        h3 {
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+
+        ul li.permitido {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        ul li.no-permitido {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
@@ -51,16 +76,6 @@
     </form>
     <main>
     <div class="prestamos-recientes">
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre del Empleado</th>
-                <th>Fecha de Solicitud</th>
-                <th>Tipo de Prestación</th>
-                <th>Fecha de Otorgamiento</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
 
 <?php
 
@@ -71,7 +86,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST["nombre"];
     $numero = $_POST["numero"];
 
-    
+
+ 
+
+
+    echo '
+        <table>
+        <thead>
+            <tr>
+                <th>Nombre del Empleado</th>
+                <th>Fecha de Solicitud</th>
+                <th>Tipo de Prestación</th>
+                <th>Fecha de Otorgamiento</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+    ';
+
 
 
     if (!empty($nombre) && empty($numero)) {
@@ -87,6 +118,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
 
             $numeroEmpleado = $rowNE['Numero_Empleado'];
+
+            require_once("ESTADOsepuedeprestacion.php");
+        
+            if ($numeroEmpleado) {
+                $prestacionesPermitidas = verificarPrestaciones($numeroEmpleado);
+        
+                echo '<h3>Prestaciones Permitidas</h3>';
+                echo '<ul>';
+                foreach ($prestacionesPermitidas as $categoria => $prestaciones) {
+                    foreach ($prestaciones as $prestacion => $permitido) {
+                        if ($permitido) {
+                            echo '<li class="permitido">' . htmlspecialchars($categoria . ': ' . $prestacion) . '</li>';
+                        }
+                    }
+                }
+                echo '</ul>';
+        
+                echo '<h3>Prestaciones No Permitidas</h3>';
+                echo '<ul>';
+                foreach ($prestacionesPermitidas as $categoria => $prestaciones) {
+                    foreach ($prestaciones as $prestacion => $permitido) {
+                        if (!$permitido) {
+                            echo '<li class="no-permitido">' . htmlspecialchars($categoria . ': ' . $prestacion) . '</li>';
+                        }
+                    }
+                }
+                echo '</ul>';
+            }
+
 
             $queryCIE = $conn->prepare("SELECT * FROM empleado WHERE Numero_Empleado = ?");
             $queryCIE->bind_param("i", $numeroEmpleado);
@@ -245,6 +305,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "No se encontró el empleado o no ha solicitado prestaciones.";
             exit();
         }
+
+        require_once("ESTADOsepuedeprestacion.php");
+
+        $numeroEmpleado = !empty($numero) ? $numero : null;
+    
+        if ($numeroEmpleado) {
+            $prestacionesPermitidas = verificarPrestaciones($numeroEmpleado);
+    
+            echo '<h3>Prestaciones Permitidas</h3>';
+            echo '<ul>';
+            foreach ($prestacionesPermitidas as $categoria => $prestaciones) {
+                foreach ($prestaciones as $prestacion => $permitido) {
+                    if ($permitido) {
+                        echo '<li class="permitido">' . htmlspecialchars($categoria . ': ' . $prestacion) . '</li>';
+                    }
+                }
+            }
+            echo '</ul>';
+    
+            echo '<h3>Prestaciones No Permitidas</h3>';
+            echo '<ul>';
+            foreach ($prestacionesPermitidas as $categoria => $prestaciones) {
+                foreach ($prestaciones as $prestacion => $permitido) {
+                    if (!$permitido) {
+                        echo '<li class="no-permitido">' . htmlspecialchars($categoria . ': ' . $prestacion) . '</li>';
+                    }
+                }
+            }
+            echo '</ul>';
+        }
+
+
 
         while ($rowCIE = $resultCIE->fetch_assoc()) {
             $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");

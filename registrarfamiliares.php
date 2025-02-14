@@ -27,7 +27,7 @@ session_start();
 
             <div class="form-group">
                 <label for="name" id="email-label">Nombre de tu familiar</label>
-                <input type="text" name="nombre" id="Direccion" placeholder="Nombre de empleado" required>
+                <input type="text" name="nombre" id="Direccion" placeholder="Nombre de tu familiar" required>
             </div>
             <div class="form-group">
                 <label for="occupation">Nivel academico</label>
@@ -42,7 +42,7 @@ session_start();
             
             <div class="form-group">
                 <label for="edad" id="number-label">Edad</label>
-                <input type="number" name="edad" id="edad" min="1" max="99" placeholder="Introduce tu edad">
+                <input type="number" name="edad" id="edad" min="1" max="99" placeholder="Introduce su edad">
             </div>
             
             <div class="form-group">

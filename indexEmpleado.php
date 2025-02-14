@@ -1,7 +1,6 @@
 <?php
 
 require_once("conn.php");
-require_once("ESTADOempleados.php");
 session_start();
 
 if(!isset($_SESSION['Numero_Empleado']))
@@ -17,7 +16,7 @@ if(!isset($_SESSION['Numero_Empleado']))
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recursos Humanos</title>
+    <title>Empleado</title>
     <!-- ASIGNACION DE CSS -->
     <link rel="stylesheet" href="./styleEmpleado.css">
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
@@ -31,8 +30,8 @@ if(!isset($_SESSION['Numero_Empleado']))
             <div class="top">
                 <div class="logo">
                         <img src="./images/logo.png.png">
-                        <h2>Recursos<span class="danger">
-                            Humanos</span> </h2>
+                        <h2>Empleado<span class="danger">
+                            UTN</span> </h2>
                 </div>
                 <div class="close" id="close-btn">
                     <span class="material-icons-sharp">close</span>
@@ -44,22 +43,25 @@ if(!isset($_SESSION['Numero_Empleado']))
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Menú</h3>
                 </a>
-                <a href="buscarEmpleadoYPrestaciones.php">
-                    <span class="material-icons-sharp">groups</span>
-                    <h3>Empleados</h3>
+                <a href="registrarfamiliares.php">
+                    <span class="material-icons-sharp">people</span>
+                    <h3>Registrar familiar para prestamo</h3>
                 </a>
-                <a href="#">
-                    <span class="material-icons-sharp">email</span>
-                    <h3>Notificaciones</h3>
-                    <span class="message-count">2</span>
-                </a>
-                <a href="solicitudesprestaciones.php">
+                <a href="SOLICITUDprestacionesfinancieras.php">
                     <span class="material-icons-sharp">payments</span>
-                    <h3>Prestaciones</h3>
+                    <h3>Solicitud de prestacion: Apoyo financiero</h3>
                 </a>
-                <a href="#">
+                <a href="SOLICITUDprestacionapoyoacademico.php">
+                    <span class="material-icons-sharp">school</span>
+                    <h3>Solicitud de prestacion: Apoyo academico</h3>
+                </a>
+                <a href="SOLICITUDprestaciondia.php">
+                    <span class="material-icons-sharp">today</span>
+                    <h3>Solicitar un dia</h3>
+                </a>
+                <a href="SOLICITUDprestacionplazo.php">
                     <span class="material-icons-sharp">date_range</span>
-                    <h3>Descansos</h3>
+                    <h3>Solicitar un plazo</h3>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span class="material-icons-sharp">logout</span>
@@ -109,38 +111,24 @@ if(!isset($_SESSION['Numero_Empleado']))
                     <thead>
                         <tr>
                     <th>Tipo</th>
-                    <th>Empleado</th>
                     <th>Fecha Solicitada</th>
                     <th>Estado</th>        
                     </thead>
                     <tbody>
             <?php
 
-                    $querySPR = $conn->prepare("SELECT * FROM prestacion ORDER BY Fecha_Solicitada DESC LIMIT 6");
+                    $querySPR = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? ORDER BY Fecha_Solicitada DESC LIMIT 6");
+                    $querySPR->bind_param("i", $_SESSION['Numero_Empleado']);
                     $querySPR->execute();
                     $resultSPR = $querySPR->get_result();
 
                     while($rowSPR = $resultSPR->fetch_assoc())
                     {
-                    
-                      $queryCNE = $conn->prepare("SELECT Numero_Empleado FROM empleado_prestacion WHERE Id_Prestacion = ?");
-                      $queryCNE->bind_param("i", $rowSPR['Id_Prestacion']);
-                      $queryCNE->execute();
-                      $resultCNE = $queryCNE->get_result();
-                      $rowCNE = $resultCNE->fetch_assoc();
-                    
-                      $queryCNME = $conn->prepare("SELECT Nombre_Empleado FROM empleado WHERE Numero_Empleado = ?");
-                      $queryCNME->bind_param("i", $rowCNE['Numero_Empleado']);
-                      $queryCNME->execute();
-                      $resultCNME = $queryCNME->get_result();
-                      $rowCNME = $resultCNME->fetch_assoc();
-                      $NombreEmpleado = $rowCNME['Nombre_Empleado'];
-                    
+                      $NombreEmpleado = htmlspecialchars($_SESSION['Nombre_Empleado']);
                     
                     
                       echo "<div class='benefits-container'>";
                       echo "<td>".$rowSPR['Tipo']."</td>";
-                      echo "<td>".$rowCNE['Numero_Empleado'].", ".htmlspecialchars($NombreEmpleado)."</td>";
                       echo "<td>FECHA: ".$rowSPR['Fecha_Solicitada']."</td>";
 
                         if (is_null($rowSPR['Fecha_Otorgada']))

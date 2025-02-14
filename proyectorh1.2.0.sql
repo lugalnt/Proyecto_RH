@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-02-2025 a las 05:54:30
+-- Tiempo de generación: 14-02-2025 a las 08:49:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -52,7 +52,8 @@ INSERT INTO `empleado` (`Numero_Empleado`, `Nombre_Empleado`, `Contraseña_Emple
 (1, 'Admin', '1', 'Administrador de sistema', 1, 'fem', 'admin', '2025-01-31', 'w', '1', 'N/A', 'Activo', 0, 24),
 (223, 'Vaqui', 'vaqui', 'RH', 4, 'fem', 'Todologa', '2025-01-29', 'Romanza', '233444222', 'N/A', 'Activo', 0, 24),
 (444, 'Curli', '', 'Profesor', 3, 'masc', 'Todologo', '2015-01-01', 'Romanza', '333333333', 'N/A', 'Activo', 8, 24),
-(445, 'Cubry', 'vaqui', 'Area de administracion', 7, 'masc', 'Pendejo', '2015-02-18', 'Aqui', '222333222', 'N/A', 'Activo', 5, 15);
+(445, 'Cubry', 'vaqui', 'Area de administracion', 7, 'masc', 'Pendejo', '2015-02-18', 'Aqui', '222333222', 'N/A', 'Activo', 5, 15),
+(566, 'Prueba1', 'vaqui', 'Profesor', 20, 'masc', 'Si', '2014-11-20', 'Aqui', '123123123', 'N/A', 'Activo', 8, 23);
 
 --
 -- Disparadores `empleado`
@@ -89,7 +90,8 @@ CREATE TABLE `empleado_familiar` (
 --
 
 INSERT INTO `empleado_familiar` (`Numero_Empleado`, `Id_Familiar`, `Relacion`) VALUES
-(445, 0, 'Esposo');
+(445, 1, 'Esposo'),
+(566, 2, 'Esposo');
 
 -- --------------------------------------------------------
 
@@ -118,7 +120,9 @@ INSERT INTO `empleado_prestacion` (`Numero_Empleado`, `Id_Prestacion`, `Tipo`, `
 (445, 16, 'Día', '2025-02-10', '2025-02-10'),
 (445, 17, 'Academico', '2025-02-12', '2025-02-12'),
 (445, 24, 'Plazo', '2025-02-13', NULL),
-(445, 25, 'Plazo', '2025-02-13', NULL);
+(445, 25, 'Plazo', '2025-02-13', NULL),
+(566, 26, 'Día', '2025-02-14', '2025-02-14'),
+(566, 27, 'Plazo', '2025-02-14', '2025-02-14');
 
 -- --------------------------------------------------------
 
@@ -138,7 +142,8 @@ CREATE TABLE `familiar_empleado` (
 --
 
 INSERT INTO `familiar_empleado` (`Id_Familiar`, `Nombre_Familiar`, `Nivel_academico`, `Edad`) VALUES
-(0, 'Primo de vaqui', 'Secundaria', 3);
+(1, 'Primo de vaqui', 'Secundaria', 3),
+(2, 'Angel Gutierrez', 'Universidad', 19);
 
 -- --------------------------------------------------------
 
@@ -192,7 +197,9 @@ INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`,
 (16, '2025-02-10', '2025-02-10', 'Día', 'Otorgada'),
 (17, '2025-02-12', '2025-02-12', 'Academico', 'Otorgada'),
 (24, '2025-02-13', NULL, 'Plazo', 'Pendiente'),
-(25, '2025-02-13', NULL, 'Plazo', 'Pendiente');
+(25, '2025-02-13', NULL, 'Plazo', 'Pendiente'),
+(26, '2025-02-14', '2025-02-14', 'Día', 'Otorgada'),
+(27, '2025-02-14', '2025-02-14', 'Plazo', 'Otorgada');
 
 --
 -- Disparadores `prestacion`
@@ -291,7 +298,8 @@ CREATE TABLE `prestacion_dias` (
 INSERT INTO `prestacion_dias` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Solicitada`, `Dia_extra`, `Motivo`) VALUES
 (12, 445, '2025-02-12', 0, 'Permiso sindical'),
 (13, 445, '2025-02-13', 0, 'Permiso sindical'),
-(16, 445, '2025-02-10', 1, 'Permiso sindical');
+(16, 445, '2025-02-10', 1, 'Permiso sindical'),
+(26, 566, '2025-02-17', 0, 'Permiso sindical');
 
 -- --------------------------------------------------------
 
@@ -313,7 +321,8 @@ CREATE TABLE `prestacion_plazos` (
 
 INSERT INTO `prestacion_plazos` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Inicio`, `Fecha_Final`, `Tipo`) VALUES
 (24, 445, '2025-02-14', '2025-02-19', ''),
-(25, 445, '2025-02-24', '2025-03-04', 'Boda de una hermana');
+(25, 445, '2025-02-24', '2025-03-04', 'Boda de una hermana'),
+(27, 566, '2025-02-24', '2025-02-28', '');
 
 --
 -- Índices para tablas volcadas
@@ -396,13 +405,19 @@ ALTER TABLE `prestacion_plazos`
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `Numero_Empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=446;
+  MODIFY `Numero_Empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=567;
+
+--
+-- AUTO_INCREMENT de la tabla `familiar_empleado`
+--
+ALTER TABLE `familiar_empleado`
+  MODIFY `Id_Familiar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `prestacion`
 --
 ALTER TABLE `prestacion`
-  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Restricciones para tablas volcadas
