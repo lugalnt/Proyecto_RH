@@ -14,4 +14,4 @@ To do:
 
     Mejor
 
-- Hacer solicitud prestacion de plazo
+- Hacer solicitud prestacion de plazo ✓
