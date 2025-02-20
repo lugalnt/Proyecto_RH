@@ -1,14 +1,16 @@
 To do:
 
-- Hacer lista completa de las especificaciones y detalles
+- Hacer lista completa de las especificaciones y detalles (Listo por ahora) ✓
     -Que (Mas que la disponibilidad) impide a un empleado ser otorgado un dia y un plazo?
 
 -Implementar lista a filtro
+    -Para hacer esto se necesitan anadir mas tipos de empleado (Leer hoja)
 
 -Tweaks
 
--Get those pdf done
+-Get those pdf done, polo on it.
+
+-Si se puede hacer la chingadera esa de dar un corte, Ya hay plan depende de:
+    -Para erick: Hacer que los circulos sean el numero de prestamos del mes y asi lol
 
 -Get started on those web views
-
--Si se puede hacer la chingadera esa de dar un corte.
