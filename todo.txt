@@ -1,17 +1,14 @@
 To do:
 
-- Hacer sistema para buscar a un empleado y ver sus partes privadas ✓
-
-- Filtros para que los empleados no se pasen de burger ✓
-    - Cuántas veces puede un empleado pedir una prestación nuevamente?
-    Cada 4 meses (Un cuatrimestre)
-    -Esto puede ser un archivo que se requiera al empiezo que cada solicitudo que diga aaaaaaaaaaa que onda te has pasado de lanza
-    o nel?
-    Listo Needs more testing tho
-
 - Hacer lista completa de las especificaciones y detalles
-    -No lol Pq ni los documentos de los plazos vienen lol 
+    -Que (Mas que la disponibilidad) impide a un empleado ser otorgado un dia y un plazo?
 
-    Mejor
+-Implementar lista a filtro
 
-- Hacer solicitud prestacion de plazo ✓
+-Tweaks
+
+-Get those pdf done
+
+-Get started on those web views
+
+-Si se puede hacer la chingadera esa de dar un corte.
