@@ -79,6 +79,20 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
         }
     }
 
+    $numeroEmpleado = $_SESSION['Numero_Empleado'];
+    $queryCount = $conn->prepare("SELECT COUNT(*) as count FROM prestacion_dias pd INNER JOIN empleado_prestacion ep ON pd.Id_Prestacion = ep.Id_Prestacion INNER JOIN empleado e ON ep.Numero_Empleado = e.Numero_Empleado INNER JOIN prestacion p ON pd.Id_Prestacion = p.Id_Prestacion WHERE pd.Motivo = ? AND pd.Fecha_Solicitada = ? AND p.Estado = 'Otorgada' AND e.Area = (SELECT Area FROM empleado WHERE Numero_Empleado = ?)");
+    $queryCount->bind_param("ssi",$motivo, $fecha, $numeroEmpleado);
+    $queryCount->execute();
+    $resultCount = $queryCount->get_result();
+    $rowCount = $resultCount->fetch_assoc();
+
+    if ($rowCount['count'] >= 2) {
+        echo '<script type="text/javascript">
+        alert("Lo sentimos, hay demasiados empleados de tu área que se le han otorgado esta prestación para la fecha seleccionada.");
+        </script>';
+        echo("<meta http-equiv='refresh' content='1'>");
+        exit;
+    }
 
 //Comentado hasta tener especificaciones cuando suficicentes dias han sido otorgados
 // require_once("ESTADOsepuedeprestacion.php");

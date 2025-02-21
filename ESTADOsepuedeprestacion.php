@@ -101,18 +101,6 @@ function verificarPrestaciones($numeroEmpleado) {
 
             if ($rowGAPAD) {
                 if ($rowGAPAD['Motivo'] == "Permiso Sindical") {
-
-                    $queryCount = $conn->prepare("SELECT COUNT(*) as count FROM prestacion_dias pd INNER JOIN empleado_prestacion ep ON pd.Id_Prestacion = ep.Id_Prestacion INNER JOIN empleado e ON ep.Numero_Empleado = e.Numero_Empleado WHERE e.Area = (SELECT Area FROM empleado WHERE Numero_Empleado = ?)");
-                    $queryCount->bind_param("i", $numeroEmpleado);
-                    $queryCount->execute();
-                    $resultCount = $queryCount->get_result();
-                    $rowCount = $resultCount->fetch_assoc();
-
-                    if ($rowCount['count'] > 2) {
-                        $prestacionesPermitidas['Dias']['Permiso Sindical'] = false;
-                    }
-
-
                     $prestacionesPermitidas['Dias']['Permiso Sindical'] = false;
                 }
 

@@ -3,7 +3,7 @@ To do:
 - Hacer lista completa de las especificaciones y detalles (Listo por ahora) ✓
     -Que (Mas que la disponibilidad) impide a un empleado ser otorgado un dia y un plazo?
 
--Implementar lista a filtro
+-Implementar lista a filtro ✓
     -Para hacer esto se necesitan anadir mas tipos de empleado (Leer hoja)
 
 -Tweaks

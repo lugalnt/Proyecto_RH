@@ -58,37 +58,34 @@ $fechaFinal = $_POST['fecha_final'];
 $motivo = $_POST['motivo'];
 $quitarDias = $_POST['razon_social'] ?? 0;
 
-// if ($quitarDias) {
-//     $startDate = new DateTime($fechaInicial);
-//     $endDate = new DateTime($fechaFinal);
-//     $interval = new DateInterval('P1D');
-//     $period = new DatePeriod($startDate, $interval, $endDate->modify('+1 day'));
+if ($quitarDias) {
+    $startDate = new DateTime($fechaInicial);
+    $endDate = new DateTime($fechaFinal);
+    $interval = new DateInterval('P1D');
+    $period = new DatePeriod($startDate, $interval, $endDate->modify('+1 day'));
 
-//     $dias = 0;
-//     foreach ($period as $date) {
-//         if ($date->format('N') < 6) { 
-//             $dias++;
-//         }
-//     }
+    $dias = 0;
+    foreach ($period as $date) {
+        if ($date->format('N') < 6) { 
+            $dias++;
+        }
+    }
 
-//     $queryCD = $conn->prepare("SELECT Dias FROM empleado WHERE Numero_Empleado = ?");
-//     $queryCD->bind_param("i", $_SESSION['Numero_Empleado']);
-//     $queryCD->execute();
-//     $resultCD = $queryCD->get_result();
-//     $rowCD = $resultCD->fetch_assoc();
+    $queryCD = $conn->prepare("SELECT Dias FROM empleado WHERE Numero_Empleado = ?");
+    $queryCD->bind_param("i", $_SESSION['Numero_Empleado']);
+    $queryCD->execute();
+    $resultCD = $queryCD->get_result();
+    $rowCD = $resultCD->fetch_assoc();
 
-//     if ($rowCD['Dias'] >= $dias) {
-//         // Update the employee's available days
-//         $queryUD = $conn->prepare("UPDATE empleado SET Dias = Dias - ? WHERE Numero_Empleado = ?");
-//         $queryUD->bind_param("ii", $dias, $_SESSION['Numero_Empleado']);
-//         $queryUD->execute();
-//         $queryUD->close();
-//     } else {
-//         // Alert the user if they do not have enough available days
-//         echo "<script>alert('No tienes suficientes días disponibles para esta solicitud.'); window.location.href='SOLICITUDprestacionplazo.php';</script>";
-//         exit();
-//     }
-// }
+    if ($rowCD['Dias'] >= $dias) {
+        // Update the employee's available days
+
+    } else {
+        // Alert the user if they do not have enough available days
+        echo "<script>alert('No tienes suficientes días disponibles para esta solicitud.'); window.location.href='SOLICITUDprestacionplazo.php';</script>";
+        exit();
+    }
+}
 
 //ARRIBA GUARDADO PARA QUE SE HAGA DE UNA FORMA U OTRA DESPUES DE QUE SE OTORGE LOL
 
