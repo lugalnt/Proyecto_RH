@@ -99,21 +99,12 @@ function verificarPrestaciones($numeroEmpleado) {
             $resultGAPAD = $queryGAPAD->get_result();
             $rowGAPAD = $resultGAPAD->fetch_assoc();
 
-            $querySEPD = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Tipo = ?");
-            $querySEPD->bind_param("s", "Dias");
-            $querySEPD->execute();
-            $resultSEPD = $querySEPD->get_result();
-            
-            while($rowSEPD = $resultSEPD->fetch_assoc()) {
-
-                $querySFRA = $conn->prepare("SELECT Area FROM Empleado WHERE Id_Empleado = ?");
-
-
-            }
-
-
             if ($rowGAPAD) {
                 if ($rowGAPAD['Motivo'] == "Permiso Sindical") {
+
+                    
+
+
                     $prestacionesPermitidas['Dias']['Permiso Sindical'] = false;
                 }
 
