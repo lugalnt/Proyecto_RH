@@ -48,7 +48,7 @@ function verificarPrestaciones($numeroEmpleado) {
             $rowGAPAA = $resultGAPAA->fetch_assoc();
 
             if ($rowGAPAA) {
-                if ($rowGAPAA['Tipo'] == "Exencion de inscripc") {
+                if ($rowGAPAA['Tipo'] == "Exencion de inscripc") { //Esto es asi porque en la base de datos se queda sin espacio para nombre completo lol
                     $prestacionesPermitidas['Academico']['Exencion de inscripcion'] = false;
                 }
 
