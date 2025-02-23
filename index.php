@@ -81,9 +81,23 @@ if($_SESSION['Area'] != "RH")
         <main>
             <h1>Menú</h1>
 
+
+
+<!-- INICIO DE Preview de Costos -->
             <div class="date">
-                <input type="date">
+                <form method="POST" action="">
+                <h2>Costos</h2>
+                <label for="FechaInicio">Fecha de Inicio</label>
+                <input type="date" name ="FechaInicio">
+                <label for="FechaFin">Fecha de Fin</label>
+                <input type="date" name ="FechaFin">
+                <input type="hidden" name="Costos" value="1">
+                <button type="submit">Revisar</button>
+                </form>
             </div>
+<!-- FIN DE Preview de costos -->
+
+
 
             <!-- INICIO DE CIRCULOS -->
             <div class="insights">
@@ -416,6 +430,51 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   echo("<meta http-equiv='refresh' content='1'>");
   }
 
+
+    if(isset($_POST["Costos"]))
+    {
+      require_once("conn.php");
+      require_once("preciosPrestaciones.php");
+      $FechaInicio = $_POST['FechaInicio'];
+      $FechaFin = $_POST['FechaFin'];
+
+      $queryCostos = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada BETWEEN ? AND ?");
+      $queryCostos->bind_param("ss", $FechaInicio, $FechaFin);
+      $queryCostos->execute();
+      $resultCostos = $queryCostos->get_result();
+
+      while($rowCostos = $resultCostos->fetch_assoc())
+      {
+        
+        if ($rowCostos['Tipo'] == "Financiera")
+        {
+          $queryCostosF = $conn->prepare("SELECT Tipo, COUNT(*) as count FROM prestacion_apoyofinanciero WHERE Id_Prestacion = ? GROUP BY Tipo");
+          $queryCostosF->bind_param("i",$rowCostos['Id_Prestacion']);
+          $queryCostosF->execute();
+          $resultCostosF = $queryCostosF->get_result();
+          $rowCostosF = $resultCostosF->fetch_assoc();
+          $CostosF = (int)obtenerPrecioPrestacion($rowCostosF['Tipo'])*(int)$rowCostosF['count'];
+        }
+        else if ($rowCostos['Tipo'] == "Academico")
+        {
+          $queryCostosA = $conn->prepare("SELECT Tipo, COUNT(*) as count FROM prestacion_apoyoacademico WHERE Id_Prestacion = ? GROUP BY Tipo");
+          $queryCostosA->bind_param("i",$rowCostos['Id_Prestacion']);
+          $queryCostosA->execute();
+          $resultCostosA = $queryCostosA->get_result();
+          $rowCostosA = $resultCostosA->fetch_assoc();
+          $CostosA = (int)obtenerPrecioPrestacion($rowCostosA['Tipo'])*(int)$rowCostosA['count'];
+        }
+
+      }
+
+      $costoTotal = $CostosF + $CostosA;
+        echo "<script>alert('El costo total de las prestaciones otorgadas entre ".$FechaInicio." y ".$FechaFin." es de: $".$costoTotal."');</script>";
+        echo "<script>alert('Prestaciones financieras: $".$CostosF." y Prestaciones Academicas: $".$CostosA."');</script>";
+
+
+
+    }
+  
 
 }
 

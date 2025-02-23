@@ -4,7 +4,7 @@ To do:
     -Que (Mas que la disponibilidad) impide a un empleado ser otorgado un dia y un plazo?
 
 -Implementar lista a filtro ✓
-    -Para hacer esto se necesitan anadir mas tipos de empleado (Leer hoja)
+    -Para hacer esto se necesitan anadir mas tipos de empleado (Leer hoja), Usar el campo de titulo para diferenciar?
 
 -Tweaks
 
@@ -14,3 +14,6 @@ To do:
     -Para erick: Hacer que los circulos sean el numero de prestamos del mes y asi lol
 
 -Get started on those web views
+
+
+
