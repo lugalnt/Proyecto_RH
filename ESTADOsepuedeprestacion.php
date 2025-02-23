@@ -99,6 +99,10 @@ function verificarPrestaciones($numeroEmpleado) {
             $resultGAPAD = $queryGAPAD->get_result();
             $rowGAPAD = $resultGAPAD->fetch_assoc();
 
+            //Cheqar aca que en los ultimos 4 meses no haya mas de dos pretsacion de dia dadas a empleados del misma
+            //area que el empleado a checar y el mismo dia
+
+
             if ($rowGAPAD) {
                 if ($rowGAPAD['Motivo'] == "Permiso Sindical") {
                     $prestacionesPermitidas['Dias']['Permiso Sindical'] = false;
