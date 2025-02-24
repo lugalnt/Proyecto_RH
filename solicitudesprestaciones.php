@@ -8,7 +8,10 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class="mb-4">Solicitudes de Prestaciones</h2>
+        <div class="d-flex justify-content-end mb-4">
+            <a href="buscarEmpleadoYPrestaciones.php" class="btn btn-primary">Buscar Empleado y Prestaciones</a>
+        </div>
+        <h2 class="mb-4">Solicitudes de Prestaciones recientes</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
