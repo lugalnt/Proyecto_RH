@@ -49,7 +49,7 @@ if($_SESSION['Area'] != "RH")
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Menú</h3>
                 </a>
-                <a href="">
+                <a href="empleados.php">
                     <span class="material-icons-sharp">groups</span>
                     <h3>Empleados</h3>
                 </a>
