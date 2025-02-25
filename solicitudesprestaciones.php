@@ -12,8 +12,24 @@
             <a href="buscarEmpleadoYPrestaciones.php" class="btn btn-primary">Buscar Empleado y Prestaciones</a>
         </div>
         <h2 class="mb-4">Solicitudes de Prestaciones recientes</h2>
-        
+
 <?php
+
+//INFORMACION UTIL PARA ERICK
+//
+//
+
+
+
+
+
+
+
+
+
+
+
+
 
 require_once("conn.php");
 session_start();
@@ -109,6 +125,8 @@ while($rowSP = $resultadoSP->fetch_assoc())
     {
         $nombreFamiliar = "N/A";
     }
+
+///DESMADRE TABLA/////////////////////////////////////////////////////////////////////////////////////
 
 
     if ($rowSP['Tipo'] == "Día") {
