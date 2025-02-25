@@ -470,12 +470,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
       $costoTotal = $CostosF + $CostosA;
         echo "<script>alert('El costo total de las prestaciones otorgadas entre ".$FechaInicio." y ".$FechaFin." es de: $".$costoTotal."');</script>";
         echo "<script>alert('Prestaciones financieras: $".$CostosF." y Prestaciones Academicas: $".$CostosA."');</script>";
-
-
-
     }
-  
-
 }
 
 
