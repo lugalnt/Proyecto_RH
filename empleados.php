@@ -1,74 +1,118 @@
+<?php
+require_once("conn.php");
+session_start();
+
+if(!isset($_SESSION['Numero_Empleado']))
+{
+  header('Location: login.html');
+}
+?>
+
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empleados</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
+    <title>Busqueda De Empleado</title>
+    <!-- ASIGNACION DE CSS -->
+    <link rel="stylesheet" href="./styleEmpleado.css">
+    <!-- SIMBOLOS QUE SE UTILIZARAN -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+    rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h2>Empleados</h2>
+
+  <!-- BARRA LATERAL -->
+  <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                        <img src="./images/logo.png.png">
+                        <h2>Recursos<span class="danger">
+                            Humanos</span> </h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="index.php">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Menú</h3>
+                </a>
+                <a href="BusquedaDeEmpleadoYPrestaciones.php" class="active">
+                    <span class="material-icons-sharp">groups</span>
+                    <h3>Empleados</h3>
+                </a>
+                <a href="#">
+                    <span class="material-icons-sharp">email</span>
+                    <h3>Notificaciones</h3>
+                    <span class="message-count">2</span>
+                </a>
+                <a href="solicitudesprestaciones.php">
+                    <span class="material-icons-sharp">payments</span>
+                    <h3>Prestaciones</h3>
+                </a>
+                <a href="#">
+                    <span class="material-icons-sharp">date_range</span>
+                    <h3>Descansos</h3>
+                </a>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Cerrar Sesión</h3>
+                </a>
+                <form id="logout-form" action="" method="POST" style="display: none;">
+                    <input type="hidden" name="logout" value="1">
+                </form>
+            </div>
+        </aside>
+    <!-- FIN DE BARRA LATERAL -->
+
+    <!-- APARTADO DE CUENTA Y CAMBIO DE MODO CLARO/OSCURO -->
+    <div class="contenido"> 
+            <div class="top">
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">menu</span>
+                </button>
+                <div class="theme-toggler">
+                    <span class="material-icons-sharp active">light_mode</span>
+                    <span class="material-icons-sharp">dark_mode</span>
+                </div>
+                <div class="profile">
+                    <div class="info">
+                    <?php
+                    echo '<p>Hey, <b>'.htmlspecialchars($_SESSION['Nombre_Empleado']).'</b></p>
+                        <small class="text-muted">'.htmlspecialchars($_SESSION['Area']).'</small>';
+                    ?>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="./images/profile-1.jpg.jpeg">
+                    </div>
+                </div>
+            </div> 
+    <!-- FIN DE CONTENIDO PRINCIPAL -->
+
+    <!-- BUSQUEDA DE EMPLEADOS -->
+    <div class="contenido"> 
+        <h1>Empleados</h1>
+        <br> 
         <form action="" method="post">
-            <label for="nombre">Nombre del Empleado:</label>
-            <input type="text" id="nombre" name="nombre">
+            <input type="text" id="nombre" name="nombre" class="search-input" placeholder="Nombre Del Empleado..." />
             <br>
-            <label for="numero">Número del Empleado:</label>
-            <input type="text" id="numero" name="numero">
             <br>
-            <button type="submit">Buscar</button>
-            <button type="button" onclick="window.location.href='empleados.php'">Ver Todos</button>
+            <input type="text" id="numero" name="numero" class="search-input" placeholder="Número Del Empleado..." />   
+            <br>
+            <br>
+            <div class="button-container">
+            <button type="submit"><h2>Buscar</h2></button>
+            <br>
+            <br>
+            <button type="button" onclick="window.location.href='empleados.php'"><h2>Ver Todos</h2></button>
+            <br>
+            </div>
         </form>
+           
 
         <?php
         require_once("conn.php");
@@ -93,9 +137,11 @@
 
         $query->execute();
         $result = $query->get_result();
-
+    
         if ($result->num_rows > 0) {
-            echo '<table class="table table-striped">';
+            echo '<main>';
+            echo '<div class="prestamos-recientes">';
+            echo '<table class="table">';
             echo '<thead>';
             echo '<tr>';
             echo '<th>Número de Empleado</th>';
@@ -137,6 +183,8 @@
 
             echo '</tbody>';
             echo '</table>';
+            echo '</div>';
+            echo '</main>';
         } else {
             echo '<p>No se encontraron empleados.</p>';
         }
@@ -144,6 +192,15 @@
         $query->close();
         $conn->close();
         ?>
-    </div>
+    <!-- FIN DE BUSQUEDA DE EMPLEADOS -->
+    <script src="./index.js"></script> 
+    <script>
+        const themeToggler = document.querySelector('.theme-toggler');
+        const body = document.querySelector('body');
+
+        themeToggler.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+        });
+    </script> 
 </body>
 </html>
