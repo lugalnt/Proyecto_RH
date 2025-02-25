@@ -59,7 +59,7 @@
 <body>
     <div class="container">
         <h2>Empleados</h2>
-        <form action="" method="post">
+        <form action="" method="post"> <!--ESTE ES EL FORMULARIO QUE SE UTILIZA PARA BUSCAR EMPLEADOS-->
             <label for="nombre">Nombre del Empleado:</label>
             <input type="text" id="nombre" name="nombre">
             <br>
@@ -95,7 +95,7 @@
         $result = $query->get_result();
 
         if ($result->num_rows > 0) {
-            echo '<table class="table table-striped">';
+            echo '<table class="table table-striped">'; //ESTA ES LA TABLA QUE MUESTRA LOS EMPLEADOS
             echo '<thead>';
             echo '<tr>';
             echo '<th>Número de Empleado</th>';

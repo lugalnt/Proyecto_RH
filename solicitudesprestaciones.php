@@ -12,19 +12,7 @@
             <a href="buscarEmpleadoYPrestaciones.php" class="btn btn-primary">Buscar Empleado y Prestaciones</a>
         </div>
         <h2 class="mb-4">Solicitudes de Prestaciones recientes</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Id Prestación</th>
-                    <th>Empleado que la solicitó</th>
-                    <th>Fecha solicitada</th>
-                    <th>Tipo de prestación</th>
-                    <th>Familiar (si aplica)</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-
+        
 <?php
 
 require_once("conn.php");
