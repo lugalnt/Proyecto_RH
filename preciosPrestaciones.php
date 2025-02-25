@@ -3,7 +3,7 @@
 
 $preciosPrestaciones = array(
     "Guarderia" => 1500.00,
-    "Lentes" => 800.00,
+    "Lentes" => 2000.00,
     "Apoyo Funerario" => 5000.00,
     "Utiles" => 1200.00,
     "Exencion de inscripc" => 2000.00, //Esto es asi porque en la base de datos se queda sin espacio para nombre completo lol
