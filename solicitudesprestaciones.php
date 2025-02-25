@@ -12,20 +12,16 @@
             <a href="buscarEmpleadoYPrestaciones.php" class="btn btn-primary">Buscar Empleado y Prestaciones</a>
         </div>
         <h2 class="mb-4">Solicitudes de Prestaciones recientes</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Id Prestación</th>
-                    <th>Empleado que la solicitó</th>
-                    <th>Fecha solicitada</th>
-                    <th>Tipo de prestación</th>
-                    <th>Familiar (si aplica)</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
 
 <?php
+
+//INFORMACION UTIL PARA ERICK
+//
+//*Donde estan la(s) tabla(s)? Estan encerradas en un bloque de comentarios llama "DESMADRE TABLA"
+//
+//*Como que "las tablas" no solo es una cabron? No, hay 3 tablas, una para cada tipo de prestacion
+//estan referenciadas obvio, a cada una se le tiene que poner la clase o id para que llamen el estilo
+//ya que son independientes de si.
 
 require_once("conn.php");
 session_start();
@@ -122,7 +118,9 @@ while($rowSP = $resultadoSP->fetch_assoc())
         $nombreFamiliar = "N/A";
     }
 
+///DESMADRE TABLA/////////////////////////////////////////////////////////////////////////////////////
 
+//Aqui se imprime la tabla con la columna extra si es de tipo dia
     if ($rowSP['Tipo'] == "Día") {
         echo '
             <table class="table table-bordered">
@@ -161,6 +159,7 @@ while($rowSP = $resultadoSP->fetch_assoc())
         ';
     } 
 
+//Aqui se imprime la tabla con la columna extra si es de tipo plazo
     if ($rowSP['Tipo'] == "Plazo") {
         echo '
             <table class="table table-bordered">
@@ -203,6 +202,7 @@ while($rowSP = $resultadoSP->fetch_assoc())
         
     } 
 
+//Aqui se imprime la tabla de los otros tipos de prestaciones
     if ($rowSP['Tipo'] != "Día" && $rowSP['Tipo'] != "Plazo") {
         echo '
         <table class="table table-bordered">
@@ -244,6 +244,9 @@ while($rowSP = $resultadoSP->fetch_assoc())
 
             </tbody>
         </table>
+
+<!--/// DESMADRE TABLA///////////////////////////////////////////////////////////////////////////////////// -->
+
     </div>
 </body>
 </html>

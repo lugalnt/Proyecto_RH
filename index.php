@@ -430,6 +430,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   echo("<meta http-equiv='refresh' content='1'>");
   }
 
+  //AQUI SE OBTIENEN LOS COSTOS DE LAS PRESTACIONES
+  //CON LOS DATOS ESTO SON LOS QUE SE VAN A ACTUALIZAR LAS GRAFICAS
 
     if(isset($_POST["Costos"]))
     {

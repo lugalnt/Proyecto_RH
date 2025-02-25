@@ -139,6 +139,32 @@ require_once("conn.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    // INFORMACION UTIL PARA ERICK
+    //
+    //*Porque se muestra 2 veces la tabla?, Porque hay dos metodos para buscar y mostrar los datos,
+    //estos metodos son independientes, osea, las tablas actuan como si fueran dos tablas diferentes
+    //duplica los estilos para estas tablas, ya que, aunque actuen que son diferentes, son iguales.
+    //
+    //*Que es todo ese JS? El JS es para mostrar las columnas de la tabla dependiendo del tipo de prestacion
+    //que se esta mostrando, por ejemplo en el php, si la prestacion es de tipo "Día", se crea adicionalmente la columna de "Dia solicitado"
+    //y si la prestacion es de tipo "Plazo", se crean las columnas de "Fecha de Inicio" y "Fecha de Finalización",
+    //esto por si solo hace que las tabla se vea mal, por lo que el JS se encarga de cambiar el estilo dependiendo
+    //de cada una para que se vea bien. Favor de adaptarlo al nuevo estilo o encontrar nueva solucion.
+    //
+    //*Con que me guio? Todo el desmadre de las tablas esta encerrado entre dos bloques de comentario asi:
+    // //DESMADRE TABLA/////////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////DESMADRE TABLA/////////
+    //
+    //*Con que se muestran las prestaciones permitidas y denegadas? Son dos listas, una para negada y otra para permitida
+    //estas listas se crean con un foreach que recorre un array asociativo que se crea en el archivo ESTADOsepuedeprestacion.php
+    //Creo que seria solo un estilo de lista, pero no estoy seguro, favor de revisar.
+    //Tambien debe estar entre bloques de comentario.
+
+
+
+
+
+
     $nombre = $_POST["nombre"];
     $numero = $_POST["numero"];
 
@@ -160,6 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($numeroEmpleado) {
                 $prestacionesPermitidas = verificarPrestaciones($numeroEmpleado);
 
+            //DESMADRE LISTAS //////////////////////////////////////////////////////////////////////////////////////////////    
                 echo '<h3>Prestaciones Permitidas</h3>';
                 echo '<ul>';
                 foreach ($prestacionesPermitidas as $categoria => $prestaciones) {
@@ -181,6 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                 }
                 echo '</ul>';
+            //DESMADRE LISTAS //////////////////////////////////////////////////////////////////////////////////////////////
             }
 
             $queryCIE = $conn->prepare("SELECT * FROM empleado WHERE Numero_Empleado = ?");
@@ -244,22 +272,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 //DESMADRE TABLA////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     echo '
-                    <table>
+                    <table> <!--ESTA ES LA TABLA, AVECES TIENE 1 COLUMNA O 2 COLUMNAS MAS, VER ABAJO-->
                     <thead>
                         <tr>
                             <th>Nombre del Empleado</th>';
 
                 if ($rowGPE['Tipo'] == "Día") {
                     echo'        
-                            <th>Dia solicitado</th>';
+                            <th>Dia solicitado</th>'; //ESTA COLUMNA SE MUESTRA CUANDO LA PRESTACION ES DE DIA
                 }
                 else if ($rowGPE['Tipo'] == "Plazo") {
                     echo'        
                             <th>Fecha de Inicio</th>
-                            <th>Fecha de Finalización</th>';
+                            <th>Fecha de Finalización</th>'; 
+                            //ESTAS COLUMNAS SE MUESTRAN CUANDO LA PRESTACION ES DE PLAZO
                 }            
 
-
+                            //ESTAS SIEMPRE LAS MUESTRA
                 echo'        
                         <th>Fecha de Solicitud</th>
                         <th>Tipo de Prestación</th>
@@ -408,7 +437,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 //DESMADRE TABLA////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     echo '
-    <table>
+    <table> <!--ESTA ES LA TABLA QUE MUESTRA LAS PRESTACIONES CUANDO SON DE DIA O DE PLAZO-->
     <thead>
         <tr>
             <th>Nombre del Empleado</th>';
