@@ -684,6 +684,8 @@ main table tbody tr:last-child td {
     color: var(--color-dark);
    }
 
+
+
 /* ========================== QUERIES DE MEDIA ===========================*/
 @media screen and (max-width: 1200px) {
     .container {
@@ -850,4 +852,10 @@ main table tbody tr:last-child td {
     .right .top button span {
         font-size: 2rem;
     }
+}
+
+#mas_chico {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    width: 2em;
 }

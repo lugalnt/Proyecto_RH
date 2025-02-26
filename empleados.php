@@ -158,6 +158,7 @@ if(!isset($_SESSION['Numero_Empleado']))
             echo '<th>Estado</th>';
             echo '<th>Días Extras</th>';
             echo '<th>Días</th>';
+            echo '<th>Actualizar Estado</th>';
             echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
@@ -178,6 +179,19 @@ if(!isset($_SESSION['Numero_Empleado']))
                 echo '<td>' . htmlspecialchars($row['Estado']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['Dias_Extras']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['Dias']) . '</td>';
+                echo '<td>';
+                echo '<td>';
+                echo '<form action="update_status.php" method="post">';
+                echo '<input type="hidden" name="Numero_Empleado" value="' . htmlspecialchars($row['Numero_Empleado']) . '">';
+                echo '<input type="hidden" name="CambiarEstado" value="1">';
+                echo '<select name="Estado">';
+                echo '<option value="Activo">Activo</option>';
+                echo '<option value="Ausente">Ausente</option>';
+                echo '<option value="Incumplimiento">Incumplimiento</option>';
+                echo '</select>';
+                echo '<button type="submit" id="mas_chico">Actualizar</button>';
+                echo '</form>';
+                echo '</td>';
                 echo '</tr>';
             }
 
