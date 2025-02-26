@@ -135,6 +135,18 @@ if(!isset($_SESSION['Numero_Empleado']))
             $query = $conn->prepare("SELECT * FROM empleado");
         }
 
+        if (isset($_POST["CambiarEstado"]))
+        {
+            $numeroEmpleado = $_POST["Numero_Empleado"];
+            $estado = $_POST["Estado"];
+
+            
+        }
+
+
+
+
+
         $query->execute();
         $result = $query->get_result();
     
