@@ -152,9 +152,6 @@ if(!isset($_SESSION['Numero_Empleado']))
         }
 
 
-
-
-
         $query->execute();
         $result = $query->get_result();
     
@@ -200,16 +197,19 @@ if(!isset($_SESSION['Numero_Empleado']))
                 echo '<td>' . htmlspecialchars($row['Dias_Extras']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['Dias']) . '</td>';
                 echo '<td>';
-                echo '<td>';
                 echo '<form action="" method="post">';
                 echo '<input type="hidden" name="Numero_Empleado" value="' . htmlspecialchars($row['Numero_Empleado']) . '">';
                 echo '<input type="hidden" name="CambiarEstado" value="1">';
+                echo '<div class="button.act-container">';
                 echo '<select name="Estado">';
                 echo '<option value="Activo">Activo</option>';
                 echo '<option value="En descanso">En descanso</option>';
                 echo '<option value="Incumplimiento">Incumplimiento</option>';
                 echo '</select>';
-                echo '<button type="submit" id="mas_chico">Actualizar</button>';
+                echo '<button type="submit" id="mas_chico" class="act"><span class="material-icons-sharp">
+                restart_alt
+                </span></button>';
+                echo '</div>';
                 echo '</form>';
                 echo '</td>';
                 echo '</tr>';

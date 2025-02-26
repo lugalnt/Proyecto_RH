@@ -642,7 +642,7 @@ main table tbody tr:last-child td {
     animation: inputPulse 0.5s ease;
   }
   
-  /* ========================== Botones ===========================*/
+/* ========================== Botones ===========================*/
   button {
     background-color: var(--color-white);
     border: none;
@@ -685,6 +685,43 @@ main table tbody tr:last-child td {
    }
 
 
+button.act {
+    background-color: var(--color-white);
+    border: none;
+    padding: 0.5rem; /* Ajustar el padding */
+    font-size: 1.5rem; /* Ajustar el tamaño de la fuente */
+    border-radius: var(--border-radius-2);
+    color: var(--color-primary);
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    display: inline-flex; /* Asegurar que el contenido esté centrado */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+button.act:active {
+    color: var(--color-white);
+    box-shadow: 0 0.2rem var(--color-light);
+    transform: translateY(0.2rem);
+}
+
+button.act:hover:not(:disabled) {
+    background: var(--color-primary);
+    color: var(--color-white);
+    text-shadow: 0 0.1rem var(--color-dark-variant);
+}
+
+button.act:disabled {
+    cursor: auto;
+    color: grey;
+}
+
+.button.act-container {
+    display: flex;
+    align-items: center; /* Alinear elementos verticalmente */
+    gap: 30px;
+}
 
 /* ========================== QUERIES DE MEDIA ===========================*/
 @media screen and (max-width: 1200px) {
