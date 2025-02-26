@@ -140,6 +140,14 @@ if(!isset($_SESSION['Numero_Empleado']))
             $numeroEmpleado = $_POST["Numero_Empleado"];
             $estado = $_POST["Estado"];
 
+            $queryUEE = $conn->prepare("UPDATE empleado SET Estado = ? WHERE Numero_Empleado = ? ");
+            $queryUEE->bind_param("si",$estado,$numeroEmpleado);
+            if($queryUEE->execute())
+            {
+                echo'<script>alert("Se ha cambiado el estado")</script>';
+                echo("<meta http-equiv='refresh' content='1'>");
+            }
+            $queryUEE->close();
             
         }
 
@@ -193,12 +201,12 @@ if(!isset($_SESSION['Numero_Empleado']))
                 echo '<td>' . htmlspecialchars($row['Dias']) . '</td>';
                 echo '<td>';
                 echo '<td>';
-                echo '<form action="update_status.php" method="post">';
+                echo '<form action="" method="post">';
                 echo '<input type="hidden" name="Numero_Empleado" value="' . htmlspecialchars($row['Numero_Empleado']) . '">';
                 echo '<input type="hidden" name="CambiarEstado" value="1">';
                 echo '<select name="Estado">';
                 echo '<option value="Activo">Activo</option>';
-                echo '<option value="Ausente">Ausente</option>';
+                echo '<option value="En descanso">En descanso</option>';
                 echo '<option value="Incumplimiento">Incumplimiento</option>';
                 echo '</select>';
                 echo '<button type="submit" id="mas_chico">Actualizar</button>';
