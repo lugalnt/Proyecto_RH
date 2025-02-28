@@ -91,7 +91,7 @@ if(!isset($_SESSION['Numero_Empleado']))
                     </div>
                 </div>
             </div> 
-    <!-- FIN DE CONTENIDO PRINCIPAL -->
+    <!-- FIN DE APARTADO DE CUENTA Y CAMBIO DE MODO CLARO/OSCURO -->
 
     <!-- BUSQUEDA DE EMPLEADOS -->
     <div class="contenido"> 
