@@ -28,6 +28,27 @@
 
         <button type="submit">Enviar Solicitud</button>
     </form>
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputs = document.querySelectorAll("input[type='text']");
+
+            inputs.forEach(input => {
+                input.addEventListener("input", function() {
+                    // Limitar a 40 caracteres
+                    if (this.value.length > 40) {
+                        this.value = this.value.slice(0, 40);
+                    }
+
+                    // Eliminar números y caracteres especiales
+                    this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+                });
+            });
+        });
+    </script>
+
+
 </body>
 </html>
 
