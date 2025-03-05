@@ -1,5 +1,6 @@
 <?php
 require_once("conn.php");
+include_once("error_handler.php");
 
 // Actualizar estado a 'En descanso' para empleados con prestacion otorgada y fecha solicitada igual a hoy
 $queryUpdateDescanso = $conn->prepare("

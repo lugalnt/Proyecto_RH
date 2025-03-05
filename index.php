@@ -2,6 +2,7 @@
 
 require_once("conn.php");
 require_once("ESTADOempleados.php");
+include_once("error_handler.php");
 session_start();
 
 if(!isset($_SESSION['Numero_Empleado']))

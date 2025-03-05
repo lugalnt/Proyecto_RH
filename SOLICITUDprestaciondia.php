@@ -65,6 +65,7 @@
 <?php
 
 require_once("conn.php");
+include_once("error_handler.php");
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"]=="POST")

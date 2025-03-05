@@ -1,6 +1,7 @@
 <?php
 
 require_once("conn.php");
+include_once("error_handler.php");
 session_start();
 if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["nombre"]) && !empty($_POST["pass"]) && !empty($_POST["numero"]))
 {
