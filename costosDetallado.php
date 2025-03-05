@@ -44,13 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fecha_inicio']) && is
     $resultados = $stmt->get_result();
 
     // Consulta para obtener las prestaciones de apoyo académico
-    $stmt_academico = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyoacademico WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo NOT IN ('Día', 'Plazo')) GROUP BY Tipo");
+    $stmt_academico = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyoacademico WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo = 'Academico') GROUP BY Tipo");
     $stmt_academico->bind_param('ss', $fecha_inicio, $fecha_fin);
     $stmt_academico->execute();
     $resultados_academico = $stmt_academico->get_result();
 
     // Consulta para obtener las prestaciones de apoyo financiero
-    $stmt_financiero = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyofinanciero WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo NOT IN ('Día', 'Plazo')) GROUP BY Tipo");
+    $stmt_financiero = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyofinanciero WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo = 'Financiera') GROUP BY Tipo");
     $stmt_financiero->bind_param('ss', $fecha_inicio, $fecha_fin);
     $stmt_financiero->execute();
     $resultados_financiero = $stmt_financiero->get_result();
@@ -63,43 +63,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fecha_inicio']) && is
             <tr>
                 <th>Tipo de Prestación</th>
                 <th>Cantidad</th>
+                <th>Costo Unitario</th>
                 <th>Costo Total</th>
             </tr>
         </thead>
         <tbody>
-            <?php if ($resultados->num_rows > 0): ?>
-                <tr>
-                    <th colspan="3">Generales</th>
-                </tr>
-                <?php while ($fila = $resultados->fetch_assoc()): ?>
-                    <?php
-                    $tipo = $fila['Tipo'];
-                    $cantidad = $fila['cantidad'];
-                    $costo_unitario = obtenerPrecioPrestacion($tipo);
-                    $costo_total = is_numeric($costo_unitario) ? $costo_unitario * $cantidad : $costo_unitario;
-                    ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($tipo); ?></td>
-                        <td><?php echo htmlspecialchars($cantidad); ?></td>
-                        <td><?php echo htmlspecialchars($costo_total); ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php endif; ?>
 
             <?php if ($resultados_academico->num_rows > 0): ?>
                 <tr>
-                    <th colspan="3">Académicas</th>
+                    <th colspan="4">Académicas</th>
                 </tr>
                 <?php while ($fila = $resultados_academico->fetch_assoc()): ?>
                     <?php
+                    $contA = $contA + $fila['cantidad'];
                     $tipo = $fila['Tipo'];
                     $cantidad = $fila['cantidad'];
                     $costo_unitario = obtenerPrecioPrestacion($tipo);
                     $costo_total = is_numeric($costo_unitario) ? $costo_unitario * $cantidad : $costo_unitario;
+                    $costo_totalA = $costo_totalA + $costo_total;
                     ?>
                     <tr>
                         <td><?php echo htmlspecialchars($tipo); ?></td>
                         <td><?php echo htmlspecialchars($cantidad); ?></td>
+                        <td><?php echo htmlspecialchars($costo_unitario); ?></td>
                         <td><?php echo htmlspecialchars($costo_total); ?></td>
                     </tr>
                 <?php endwhile; ?>
@@ -107,22 +93,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fecha_inicio']) && is
 
             <?php if ($resultados_financiero->num_rows > 0): ?>
                 <tr>
-                    <th colspan="3">Financieras</th>
+                    <th colspan="4">Financieras</th>
                 </tr>
                 <?php while ($fila = $resultados_financiero->fetch_assoc()): ?>
                     <?php
+                    $contF = $contF + $fila['cantidad'];
                     $tipo = $fila['Tipo'];
                     $cantidad = $fila['cantidad'];
                     $costo_unitario = obtenerPrecioPrestacion($tipo);
                     $costo_total = is_numeric($costo_unitario) ? $costo_unitario * $cantidad : $costo_unitario;
+                    $costo_totalF = $costo_totalF + $costo_total;
                     ?>
                     <tr>
                         <td><?php echo htmlspecialchars($tipo); ?></td>
                         <td><?php echo htmlspecialchars($cantidad); ?></td>
+                        <td><?php echo htmlspecialchars($costo_unitario); ?></td>
                         <td><?php echo htmlspecialchars($costo_total); ?></td>
                     </tr>
                 <?php endwhile; ?>
             <?php endif; ?>
+
+            <tr>
+                <th colspan="4">Totales</th>
+            </tr>
+            <tr>
+                <td>Académicas</td>
+                <td><?php echo htmlspecialchars($contA); ?></td>
+                <td></td>
+                <td><?php echo htmlspecialchars($costo_totalA); ?></td>
+            </tr>
+            <tr>
+                <td>Financieras</td>
+                <td><?php echo htmlspecialchars($contF); ?></td>
+                <td></td>
+                <td><?php echo htmlspecialchars($costo_totalF); ?></td>
+            </tr>
+            <tr>
+                <td>Total en General</td>
+                <td><?php echo htmlspecialchars($contF+$contA); ?></td>
+                <td></td>
+                <td><?php echo htmlspecialchars($costo_totalF+$costo_totalA); ?></td>
+            </tr>
         </tbody>
     </table>
 <?php else: ?>
