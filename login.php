@@ -1,7 +1,8 @@
 <?php
 session_start();
-require_once("conn.php");
 include_once("error_handler.php");
+require_once("conn.php");
+
 if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["pass"]) && !empty($_POST["numero"])){
 
     $numero = $_POST["numero"];

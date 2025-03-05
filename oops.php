@@ -61,7 +61,11 @@
                     echo "<br>";
                     echo "<p><strong>Mensaje:</strong>".$mensaje."</p>";
                     echo "<br>";
-                    echo "<p><strong>Archivo:</strong>".$archivo."</p>";
+                    if (strpos($archivo, 'conn') !== false) {
+                        echo "<h1> Es posible que el servidor no está iniciado, contactar con RH</h1>";
+                    } else {
+                        echo "<p><strong>Archivo:</strong>".$archivo."</p>";
+                    }
                     echo "<br>";
                     echo "<p><strong>Línea:</strong>".$linea."</p>";
 
@@ -74,6 +78,8 @@
 
 
         </div>
+        <a> <a href="javascript:history.back()">Regresar</a>
     </div>
+    
 </body>
 </html>
