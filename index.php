@@ -112,7 +112,7 @@ if($_SESSION['Area'] != "RH")
                         </div>
                         <div class="progress">
                             <svg>
-                                <circle cx='38' cy='38' r='36'></circle>
+                                <circle id="circuloTotal" cx='38' cy='38' r='36'></circle>
                             </svg>
                             <div class="number">
                                 <p>81%</p>
@@ -128,12 +128,12 @@ if($_SESSION['Area'] != "RH")
                     <span class="material-icons-sharp">bar_chart</span>
                     <div class="middle">
                         <div class="left">
-                            <h3>Gastos Totales</h3>
-                            <h1>$12,056</h1>
+                            <h3>Gastos en prestaciones Financieras</h3>
+                            <h1>$3,840</h1>
                         </div>
                         <div class="progress">
                             <svg>
-                                <circle cx='38' cy='38' r='36'></circle>
+                                <circle id="circuloFinancieras" cx='38' cy='38' r='36'></circle>
                             </svg>
                             <div class="number">
                                 <p>34%</p>
@@ -149,12 +149,12 @@ if($_SESSION['Area'] != "RH")
                     <span class="material-icons-sharp">stacked_line_chart</span>
                     <div class="middle">
                         <div class="left">
-                            <h3>Ingresos Totales</h3>
+                            <h3>Gastos prestaciones academicas</h3>
                             <h1>$21,236</h1>
                         </div>
                         <div class="progress">
                             <svg>
-                                <circle cx='38' cy='38' r='36'></circle>
+                                <circle id="circuloAcademicas" cx='38' cy='38' r='36'></circle>
                             </svg>
                             <div class="number">
                                 <p>81%</p>
@@ -417,6 +417,19 @@ if($_SESSION['Area'] != "RH")
     </div>
     <!-- <script src="./prestaciones.js"></script> -->
     <script src="./index.js"></script>
+
+     <script>
+        function setCircleProgress(circle, percentage) {
+  const radius = circle.r.baseVal.value;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (percentage / 100) * circumference;
+  
+  circle.style.strokeDasharray = `${circumference}`;
+  circle.style.strokeDashoffset = `${offset}`;
+}
+     </script>               
+
+
 </body>
 </html>
 
@@ -470,9 +483,44 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
       }
 
-      $costoTotal = $CostosF + $CostosA;
-        echo "<script>alert('El costo total de las prestaciones otorgadas entre ".$FechaInicio." y ".$FechaFin." es de: $".$costoTotal."');</script>";
-        echo "<script>alert('Prestaciones financieras: $".$CostosF." y Prestaciones Academicas: $".$CostosA."');</script>";
+    $costoTotal = $CostosF + $CostosA;
+    $porcentajeF = ($CostosF / $costoTotal) * 100;
+    $porcentajeA = ($CostosA / $costoTotal) * 100;
+
+      echo "<script>alert('El costo total de las prestaciones otorgadas entre ".$FechaInicio." y ".$FechaFin." es de: $".$costoTotal."');</script>";
+      echo "<script>alert('Prestaciones financieras: $".$CostosF." y Prestaciones Academicas: $".$CostosA."');</script>";
+
+    echo'
+    <script>
+
+    const circuloTotal = document.querySelector("#circuloTotal");
+    const circuloFinancieras = document.querySelector("#circuloFinancieras"); 
+    const circuloAcademicas = document.querySelector("#circuloAcademicas");
+    
+    function setCircleProgress(circle, percentage) {
+    const radius = circle.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (percentage / 100) * circumference;
+  
+    circle.style.strokeDasharray = `${circumference}`;
+    circle.style.strokeDashoffset = `${offset}`;
+    }
+
+    setCircleProgress(circuloTotal, 100); // Ajusta el círculo al 100%
+    setCircleProgress(circuloFinancieras, '.$porcentajeF.'); // Ajusta el círculo al porcentaje de financieras
+    setCircleProgress(circuloAcademicas, '.$porcentajeA.'); // Ajusta el círculo al porcentaje de académicas
+
+    document.querySelector(".prestaciones .number p").textContent = "100%";
+    document.querySelector(".gastos .number p").textContent = "'.$porcentajeF.'%";
+    document.querySelector(".ingresos .number p").textContent = "'.$porcentajeA.'%";
+
+    document.querySelector(".prestaciones h1").textContent = "$'.$costoTotal.'";
+    document.querySelector(".gastos h1").textContent = "$'.$CostosF.'";
+    document.querySelector(".ingresos h1").textContent = "$'.$CostosA.'";
+
+    </script>
+    ';
+
     }
 }
 
