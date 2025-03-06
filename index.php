@@ -103,18 +103,17 @@ if($_SESSION['Area'] != "RH")
                     <div class="middle">
                         <div class="left">
                             <h3>Prestamos Totales</h3>
-                            <h1>$25,076</h1>
+                            <h1>$0</h1>
                         </div>
                         <div class="progress">
                             <svg>
-                                <circle cx='38' cy='38' r='36'></circle>
+                                <circle id="circuloTotal" cx='38' cy='38' r='36'></circle>
                             </svg>
                             <div class="number">
-                                <p>81%</p>
+                                <p>0%</p>
                             </div>
                         </div>
                     </div>
-                    <small class="text-muted">Ultimo mes.</small>
                 </div>
                 <!-- FIN DE PRESTACIONES -->
 
@@ -123,19 +122,18 @@ if($_SESSION['Area'] != "RH")
                     <span class="material-icons-sharp">bar_chart</span>
                     <div class="middle">
                         <div class="left">
-                            <h3>Gastos Totales</h3>
-                            <h1>$12,056</h1>
+                            <h3>Gastos Financieras</h3>
+                            <h1>$0</h1>
                         </div>
                         <div class="progress">
                             <svg>
-                                <circle cx='38' cy='38' r='36'></circle>
+                                <circle id="circuloFinancieras" cx='38' cy='38' r='36'></circle>
                             </svg>
                             <div class="number">
-                                <p>34%</p>
+                                <p>0%</p>
                             </div>
                         </div>
                     </div>
-                    <small class="text-muted">Ultimo mes.</small>
                 </div>
                 <!-- FIN DE GASTOS -->
 
@@ -144,20 +142,20 @@ if($_SESSION['Area'] != "RH")
                     <span class="material-icons-sharp">stacked_line_chart</span>
                     <div class="middle">
                         <div class="left">
-                            <h3>Ingresos Totales</h3>
-                            <h1>$21,236</h1>
+                            <h3>Gastos academicas</h3>
+                            <h1>$0</h1>
                         </div>
                         <div class="progress">
                             <svg>
-                                <circle cx='38' cy='38' r='36'></circle>
+                                <circle id="circuloAcademicas" cx='38' cy='38' r='36'></circle>
                             </svg>
                             <div class="number">
-                                <p>81%</p>
+                                <p>0%</p>
                             </div>
                         </div>
                     </div>
-                    <small class="text-muted">Ultimo mes.</small>
                 </div>
+                <a href="costosDetallado.php">Generar un reporte mas detallado</a>
             </div>
                 <!-- FIN DE INGRESOS -->
 
@@ -412,6 +410,19 @@ if($_SESSION['Area'] != "RH")
     </div>
     <!-- <script src="./prestaciones.js"></script> -->
     <script src="./index.js"></script>
+
+     <script>
+        function setCircleProgress(circle, percentage) {
+  const radius = circle.r.baseVal.value;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (percentage / 100) * circumference;
+  
+  circle.style.strokeDasharray = `${circumference}`;
+  circle.style.strokeDashoffset = `${offset}`;
+}
+     </script>               
+
+
 </body>
 </html>
 
@@ -431,43 +442,76 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     if(isset($_POST["Costos"]))
     {
-      require_once("conn.php");
-      require_once("preciosPrestaciones.php");
-      $FechaInicio = $_POST['FechaInicio'];
-      $FechaFin = $_POST['FechaFin'];
+    require_once("conn.php");
+    require_once("preciosPrestaciones.php");
+    $FechaInicio = $_POST['FechaInicio'];
+    $FechaFin = $_POST['FechaFin'];
 
-      $queryCostos = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada BETWEEN ? AND ?");
-      $queryCostos->bind_param("ss", $FechaInicio, $FechaFin);
-      $queryCostos->execute();
-      $resultCostos = $queryCostos->get_result();
+    $CostosF = 0;
+    $CostosA = 0;
 
-      while($rowCostos = $resultCostos->fetch_assoc())
-      {
-        
-        if ($rowCostos['Tipo'] == "Financiera")
-        {
-          $queryCostosF = $conn->prepare("SELECT Tipo, COUNT(*) as count FROM prestacion_apoyofinanciero WHERE Id_Prestacion = ? GROUP BY Tipo");
-          $queryCostosF->bind_param("i",$rowCostos['Id_Prestacion']);
-          $queryCostosF->execute();
-          $resultCostosF = $queryCostosF->get_result();
-          $rowCostosF = $resultCostosF->fetch_assoc();
-          $CostosF = (int)obtenerPrecioPrestacion($rowCostosF['Tipo'])*(int)$rowCostosF['count'];
-        }
-        else if ($rowCostos['Tipo'] == "Academico")
-        {
-          $queryCostosA = $conn->prepare("SELECT Tipo, COUNT(*) as count FROM prestacion_apoyoacademico WHERE Id_Prestacion = ? GROUP BY Tipo");
-          $queryCostosA->bind_param("i",$rowCostos['Id_Prestacion']);
-          $queryCostosA->execute();
-          $resultCostosA = $queryCostosA->get_result();
-          $rowCostosA = $resultCostosA->fetch_assoc();
-          $CostosA = (int)obtenerPrecioPrestacion($rowCostosA['Tipo'])*(int)$rowCostosA['count'];
-        }
+    // Consulta para obtener las prestaciones de apoyo académico
+    $stmt_academico = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyoacademico WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo = 'Academico') GROUP BY Tipo");
+    $stmt_academico->bind_param('ss', $FechaInicio, $FechaFin);
+    $stmt_academico->execute();
+    $resultados_academico = $stmt_academico->get_result();
 
-      }
+    while ($fila = $resultados_academico->fetch_assoc()) {
+        $cantidad = $fila['cantidad'];
+        $costo_unitario = obtenerPrecioPrestacion($fila['Tipo']);
+        $CostosA += is_numeric($costo_unitario) ? $costo_unitario * $cantidad : 0;
+    }
 
-      $costoTotal = $CostosF + $CostosA;
-        echo "<script>alert('El costo total de las prestaciones otorgadas entre ".$FechaInicio." y ".$FechaFin." es de: $".$costoTotal."');</script>";
-        echo "<script>alert('Prestaciones financieras: $".$CostosF." y Prestaciones Academicas: $".$CostosA."');</script>";
+    // Consulta para obtener las prestaciones de apoyo financiero
+    $stmt_financiero = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyofinanciero WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo = 'Financiera') GROUP BY Tipo");
+    $stmt_financiero->bind_param('ss', $FechaInicio, $FechaFin);
+    $stmt_financiero->execute();
+    $resultados_financiero = $stmt_financiero->get_result();
+
+    while ($fila = $resultados_financiero->fetch_assoc()) {
+        $cantidad = $fila['cantidad'];
+        $costo_unitario = obtenerPrecioPrestacion($fila['Tipo']);
+        $CostosF += is_numeric($costo_unitario) ? $costo_unitario * $cantidad : 0;
+    }
+
+    $costoTotal = $CostosF + $CostosA;
+    $porcentajeF = round(($CostosF / $costoTotal) * 100);
+    $porcentajeA = round(($CostosA / $costoTotal) * 100);
+
+      echo "<script>alert('El costo total de las prestaciones otorgadas entre ".$FechaInicio." y ".$FechaFin." es de: $".$costoTotal."');</script>";
+      echo "<script>alert('Prestaciones financieras: $".$CostosF." y Prestaciones Academicas: $".$CostosA."');</script>";
+
+    echo'
+    <script>
+
+    const circuloTotal = document.querySelector("#circuloTotal");
+    const circuloFinancieras = document.querySelector("#circuloFinancieras"); 
+    const circuloAcademicas = document.querySelector("#circuloAcademicas");
+    
+    function setCircleProgress(circle, percentage) {
+    const radius = circle.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (percentage / 100) * circumference;
+  
+    circle.style.strokeDasharray = `${circumference}`;
+    circle.style.strokeDashoffset = `${offset}`;
+    }
+
+    setCircleProgress(circuloTotal, 100); // Ajusta el círculo al 100%
+    setCircleProgress(circuloFinancieras, '.$porcentajeF.'); // Ajusta el círculo al porcentaje de financieras
+    setCircleProgress(circuloAcademicas, '.$porcentajeA.'); // Ajusta el círculo al porcentaje de académicas
+
+    document.querySelector(".prestaciones .number p").textContent = "100%";
+    document.querySelector(".gastos .number p").textContent = "'.$porcentajeF.'%";
+    document.querySelector(".ingresos .number p").textContent = "'.$porcentajeA.'%";
+
+    document.querySelector(".prestaciones h1").textContent = "$'.$costoTotal.'";
+    document.querySelector(".gastos h1").textContent = "$'.$CostosF.'";
+    document.querySelector(".ingresos h1").textContent = "$'.$CostosA.'";
+
+    </script>
+    ';
+
     }
 }
 
