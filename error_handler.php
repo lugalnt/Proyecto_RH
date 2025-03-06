@@ -1,8 +1,10 @@
 <?php
-try {
-    session_start();  // Asegurar que la sesión está activa
-} catch (Exception $e) {
-    error_log("Error al iniciar la sesión: " . $e->getMessage());
+if (session_status() == PHP_SESSION_NONE) {
+    try {
+        session_start();  // Asegurar que la sesión está activa
+    } catch (Exception $e) {
+        error_log("Error al iniciar la sesión: " . $e->getMessage());
+    }
 }
 
 // Función para manejar errores no fatales

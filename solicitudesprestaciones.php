@@ -7,6 +7,17 @@ if(!isset($_SESSION['Numero_Empleado']))
 {
   header('Location: login.html');
 }
+
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    if(isset($_POST["logout"]))
+    {
+    session_destroy();
+    header('Location: login.html');
+    exit();
+    }
+}
+   
 ?>
 
 

@@ -36,10 +36,12 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST["pass"]) && !empty($_POS
 }
 else
 {
+  if($_SERVER["REQUEST_METHOD"]=="POST"){
     echo '<script type="text/javascript">
     alert("Favor de completar los campos");
     history.back();
   </script>';
+  }
 }
 
 
