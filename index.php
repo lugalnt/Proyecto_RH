@@ -46,18 +46,13 @@ if($_SESSION['Area'] != "RH")
             </div>
 
             <div class="sidebar">
-                <a href="#" class="active">
+                <a href="index.php" class="active">
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Menú</h3>
                 </a>
                 <a href="empleados.php">
                     <span class="material-icons-sharp">groups</span>
                     <h3>Empleados</h3>
-                </a>
-                <a href="#">
-                    <span class="material-icons-sharp">email</span>
-                    <h3>Notificaciones</h3>
-                    <span class="message-count">2</span>
                 </a>
                 <a href="solicitudesprestaciones.php">
                     <span class="material-icons-sharp">payments</span>

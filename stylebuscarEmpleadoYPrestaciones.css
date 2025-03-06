@@ -71,7 +71,7 @@ body {
     width: 96%;
     margin: 0 auto;
     gap: 1.8rem;
-    grid-template-columns: 14rem auto 23rem;
+    grid-template-columns: 14rem auto;
 }
 
 /* COLOR DE LOS BOTONES DE LA BARRA LATERAL */
@@ -220,6 +220,13 @@ b {
         background: var(--color-light);
         color: var(--color-primary);
         margin-left: 0;
+    }
+
+    aside .sidebar a.active:before {
+        content: "";
+        width: 6px; 
+        height: 100%;
+        background: var(--color-primary);
     }
 
     aside .sidebar a.active span {
@@ -435,6 +442,7 @@ main .prestamos-recientes table {
     box-shadow: var(--box-shadow);
     transition: all 300ms ease;
     justify-content: center;
+    padding: 5;
 }
 
 main .prestamos-recientes table:hover {
@@ -445,6 +453,7 @@ main table tbody td {
     height: 2.8rem;
     border-bottom: 1px solid var(--color-light);
     color: var(--color-dark-variants);
+    padding: 5;
 }
 
 main table tbody tr:last-child td {
@@ -634,15 +643,16 @@ main table tbody tr:last-child td {
     animation: inputPulse 0.5s ease;
   }
 
-  .prestaciones-container {
+.prestaciones-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 2rem;
     margin-top: 1rem;
 }
 
 .prestaciones-permitidas, .prestaciones-no-permitidas {
     flex: 1;
+    max-width: 45%;
 }
 
 .prestaciones-permitidas ul, .prestaciones-no-permitidas ul {

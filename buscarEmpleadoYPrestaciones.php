@@ -16,7 +16,7 @@ if(!isset($_SESSION['Numero_Empleado']))
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Busqueda De Empleado</title>
     <!-- ASIGNACION DE CSS -->
-    <link rel="stylesheet" href="./styleSolicitudDePrestaciones.css">
+    <link rel="stylesheet" href="./stylebuscarEmpleadoYPrestaciones.css">
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
     rel="stylesheet">
@@ -45,11 +45,6 @@ if(!isset($_SESSION['Numero_Empleado']))
                 <a href="empleados.php">
                     <span class="material-icons-sharp">groups</span>
                     <h3>Empleados</h3>
-                </a>
-                <a href="#">
-                    <span class="material-icons-sharp">email</span>
-                    <h3>Notificaciones</h3>
-                    <span class="message-count">2</span>
                 </a>
                 <a href="solicitudesprestaciones.php" class="active">
                     <span class="material-icons-sharp">payments</span>
@@ -290,7 +285,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 //DESMADRE TABLA////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     echo '
-                    <table> <!--ESTA ES LA TABLA, AVECES TIENE 1 COLUMNA O 2 COLUMNAS MAS, VER ABAJO-->
+                    <table style="margin-top: 20px;">  <!--ESTA ES LA TABLA, AVECES TIENE 1 COLUMNA O 2 COLUMNAS MAS, VER ABAJO-->
                     <thead>
                         <tr>
                             <th>Nombre del Empleado</th>';
@@ -344,7 +339,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <td>
                             <form action="" method="post">
                                 <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">
-                                <button type="submit" class="btn btn-primary">Otorgar prestación</button>
+                                <button type="submit" class="btn btn-primary">Otorgar Prestación</button>
                             </form>
                         </td>
                     </tr>
@@ -455,7 +450,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 //DESMADRE TABLA////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     echo '
-    <table> <!--ESTA ES LA TABLA QUE MUESTRA LAS PRESTACIONES CUANDO SON DE DIA O DE PLAZO-->
+    <table style="margin-top: 20px;"> <!--ESTA ES LA TABLA QUE MUESTRA LAS PRESTACIONES CUANDO SON DE DIA O DE PLAZO-->
     <thead>
         <tr>
             <th>Nombre del Empleado</th>';
@@ -530,6 +525,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 ?>
+<script src="./index.js"></script> 
 </div>
 </main>
 </body>

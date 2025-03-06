@@ -40,7 +40,7 @@ if(!isset($_SESSION['Numero_Empleado']))
             </div>
 
             <div class="sidebar">
-                <a href="#">
+                <a href="index.php" class="active">
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Menú</h3>
                 </a>
@@ -99,10 +99,6 @@ if(!isset($_SESSION['Numero_Empleado']))
         </div> 
         <main>
             <h1>Menú</h1>
-
-            <div class="date">
-                <input type="date">
-            </div>
 
             <!-- INICIO DE PRESTAMOS RECIENTES TABLA -->
             <div class="prestamos-recientes">

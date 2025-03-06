@@ -1,66 +1,153 @@
 <?php
-require_once("conn.php");
 include_once("error_handler.php");
+require_once("conn.php");
+
 session_start();
+
+if(!isset($_SESSION['Numero_Empleado']))
+{
+  header('Location: login.html');
+}
 ?>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="styleLogin.css">
-    <link rel="stylesheet" href="styleencuesta.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleado</title>
+    <!-- ASIGNACION DE CSS -->
+    <link rel="stylesheet" href="./styleRegistrarFamiliares.css">
+    <!-- SIMBOLOS QUE SE UTILIZARAN -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+    rel="stylesheet">
 </head>
+<body>
+    <!-- BARRA LATERAL -->
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                        <img src="./images/logo.png.png">
+                        <h2>Empleado<span class="danger">
+                            UTN</span> </h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
 
+            <div class="sidebar">
+                <a href="index.php">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Menú</h3>
+                </a>
+                <a href="registrarfamiliares.php"  class="active">
+                    <span class="material-icons-sharp">people</span>
+                    <h3>Registrar familiar para prestamo</h3>
+                </a>
+                <a href="SOLICITUDprestacionesfinancieras.php">
+                    <span class="material-icons-sharp">payments</span>
+                    <h3>Solicitud de prestacion: Apoyo financiero</h3>
+                </a>
+                <a href="SOLICITUDprestacionapoyoacademico.php">
+                    <span class="material-icons-sharp">school</span>
+                    <h3>Solicitud de prestacion: Apoyo academico</h3>
+                </a>
+                <a href="SOLICITUDprestaciondia.php">
+                    <span class="material-icons-sharp">today</span>
+                    <h3>Solicitar un dia</h3>
+                </a>
+                <a href="SOLICITUDprestacionplazo.php">
+                    <span class="material-icons-sharp">date_range</span>
+                    <h3>Solicitar un plazo</h3>
+                </a>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Cerrar Sesión</h3>
+                </a>
+                <form id="logout-form" action="" method="POST" style="display: none;">
+                    <input type="hidden" name="logout" value="1">
+                </form>
+            </div>
+        </aside>
+    <!-- FIN DE BARRA LATERAL -->
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="contenido"> 
+        <div class="top">
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">menu</span>
+                </button>
+                <div class="theme-toggler">
+                    <span class="material-icons-sharp active">light_mode</span>
+                    <span class="material-icons-sharp">dark_mode</span>
+                </div>
+                <div class="profile">
+                    <div class="info">
+                    <?php
+                    echo '<p>Hey, <b>'.htmlspecialchars($_SESSION['Nombre_Empleado']).'</b></p>
+                        <small class="text-muted">'.htmlspecialchars($_SESSION['Area']).'</small>';
+                    ?>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="./images/profile-1.jpg.jpeg">
+                    </div>
+                </div>
+        </div> 
+
+            <h1>Registro de tus familiares  </h1>
 <body>
 
-    <div role="region" tabindex="0">
-        <center>
-        
 
-                <main>
+<div role="region" tabindex="0">
+    <main>
         <header>
-            <h1 id="title">Registro de tus familiares</h1>
-            <p id="description">Registra a un familiar para procesamiento en prestaciones necesarias.</p>
+            <p id="description"><h2>Registra a un familiar para procesamiento en prestaciones necesarias.</h2></p>
         </header>
         <form id="survey-form" method="post" action="">
-
-
-
-
-            <div class="form-group">
-                <label for="name" id="email-label">Nombre de tu familiar</label>
-                <input type="text" name="nombre" id="Direccion" placeholder="Nombre de tu familiar" required>
-            </div>
-            <div class="form-group">
-                <label for="occupation">Nivel academico</label>
-                <select name="nivelacademico" id="dropdown">
-                    <option value="Primaria">Primaria</option>
-                    <option value="Secundaria">Secundaria</option>
-                    <option value="Preparatoria">Preparatoria</option>
-                    <option value="Universidad">Universidad</option>
-                    <option value="No-estudiante">No-estudiante</option>
-                  </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="edad" id="number-label">Edad</label>
-                <input type="number" name="edad" id="edad" min="1" max="99" placeholder="Introduce su edad">
-            </div>
-            
-            <div class="form-group">
-                <label for="occupation">Relacion con tu familiar</label>
-                <select name="relacion" id="dropdown">
-                    <option value="Esposo">Esposo/a</option>
-                    <option value="Pareja">Pareja/a</option>
-                    <option value="Hijo">Hijo/a</option>
-                    <option value="Padre">Madre/Padre</option>
-                    <option value="Otro">Otro</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <button id="submit" type="post">Terminar registro</button>
-            </div>
+            <table class="prestamos-recientes">
+                <tr>
+                    <td><label for="name" id="email-label">Nombre de tu familiar</label></td>
+                    <td><input type="text" name="nombre" id="Direccion" class="serach-input" placeholder="Nombre de tu familiar" required></td>
+                </tr>
+                <tr>
+                    <td><label for="occupation">Nivel academico</label></td>
+                    <td>
+                        <select name="nivelacademico" id="dropdown">
+                            <option value="Primaria">Primaria</option>
+                            <option value="Secundaria">Secundaria</option>
+                            <option value="Preparatoria">Preparatoria</option>
+                            <option value="Universidad">Universidad</option>
+                            <option value="No-estudiante">No-estudiante</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="edad" id="number-label">Edad</label></td>
+                    <td><input type="number" name="edad" id="edad" min="1" max="99" placeholder="Introduce su edad"></td>
+                </tr>
+                <tr>
+                    <td><label for="occupation">Relacion con tu familiar</label></td>
+                    <td>
+                        <select name="relacion" id="dropdown">
+                            <option value="Esposo">Esposo/a</option>
+                            <option value="Pareja">Pareja/a</option>
+                            <option value="Hijo">Hijo/a</option>
+                            <option value="Padre">Madre/Padre</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <button id="submit" type="post">Terminar registro</button>
+                    </td>
+                </tr>
+            </table>
         </form>
+    </main>
+</div>
 
         <?php
 

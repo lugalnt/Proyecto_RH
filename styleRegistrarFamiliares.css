@@ -71,7 +71,7 @@ body {
     width: 96%;
     margin: 0 auto;
     gap: 1.8rem;
-    grid-template-columns: 14rem auto 23rem;
+    grid-template-columns: 14rem auto;
 }
 
 /* COLOR DE LOS BOTONES DE LA BARRA LATERAL */
@@ -220,6 +220,13 @@ b {
         background: var(--color-light);
         color: var(--color-primary);
         margin-left: 0;
+    }
+
+    aside .sidebar a.active:before {
+        content: "";
+        width: 6px; 
+        height: 100%;
+        background: var(--color-primary);
     }
 
     aside .sidebar a.active span {
@@ -451,6 +458,8 @@ main table tbody tr:last-child td {
     border: none;
 }
 
+
+
 /* ========================== PARTE DERECHA (TOP) ===========================*/
 .right {
     margin-top: 1.4rem;
@@ -497,6 +506,7 @@ main table tbody tr:last-child td {
     gap: 2rem;
     text-align: right;
 }
+
 
 /* ========================== Barra de Busqueda ===========================*/
 .search-container {
@@ -633,38 +643,14 @@ main table tbody tr:last-child td {
   .search-input:focus {
     animation: inputPulse 0.5s ease;
   }
-
-  .prestaciones-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-    margin-top: 1rem;
-}
-
-.prestaciones-permitidas, .prestaciones-no-permitidas {
-    flex: 1;
-}
-
-.prestaciones-permitidas ul, .prestaciones-no-permitidas ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.prestaciones-permitidas li {
-    color: green;
-}
-
-.prestaciones-no-permitidas li {
-    color: red;
-}
-
+  
 /* ========================== Botones ===========================*/
-button {
+  button {
     background-color: var(--color-white);
     border: none;
     padding: 1rem;
     font-size: 1rem;
-    width: auto;
+    width: 15em;
     border-radius: var(--border-radius-2);
     color: var(--color-primary);
     box-shadow: var(--box-shadow);
@@ -740,6 +726,44 @@ button.act:disabled {
 }
 
 
+.prestamos-recientes {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.prestamos-recientes th, .prestamos-recientes td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.prestamos-recientes th {
+    background-color: var(--color-primary);
+    color: white;
+    text-align: left;
+}
+
+.prestamos-recientes tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
+.prestamos-recientes td {
+    text-align: center;
+}
+
+.prestamos-recientes button {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.prestamos-recientes button:hover {
+    background-color: var(--color-primary-dark);
+}
 /* ========================== QUERIES DE MEDIA ===========================*/
 @media screen and (max-width: 1200px) {
     .container {

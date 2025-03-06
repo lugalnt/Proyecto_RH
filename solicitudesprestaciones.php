@@ -26,7 +26,7 @@ if(!isset($_SESSION['Numero_Empleado']))
 
     <!-- BARRA LATERAL -->
     <div class="container">
-        <aside>
+    <aside>
             <div class="top">
                 <div class="logo">
                         <img src="./images/logo.png.png">
@@ -47,12 +47,7 @@ if(!isset($_SESSION['Numero_Empleado']))
                     <span class="material-icons-sharp">groups</span>
                     <h3>Empleados</h3>
                 </a>
-                <a href="#">
-                    <span class="material-icons-sharp">email</span>
-                    <h3>Notificaciones</h3>
-                    <span class="message-count">2</span>
-                </a>
-                <a href="solicitudesprestaciones.php" class="active">
+                <a href="solicitudesprestaciones.php"  class="active">
                     <span class="material-icons-sharp">payments</span>
                     <h3>Prestaciones</h3>
                 </a>
