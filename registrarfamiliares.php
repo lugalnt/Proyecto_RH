@@ -29,7 +29,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empleado</title>
+    <title>Registra un familiar</title>
     <!-- ASIGNACION DE CSS -->
     <link rel="stylesheet" href="./styleRegistrarFamiliares.css">
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
