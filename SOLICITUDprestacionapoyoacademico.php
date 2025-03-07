@@ -8,6 +8,9 @@
 </head>
 <body>
     <h2>Solicitud de Apoyo Académico</h2>
+    <br>
+    <h1>Se recuerda que se necesita presentar el comprobante de inscripcion del beneficiado</h1>
+    <br>
     <form action="" method="post">
         <label for="nombre_familiar">Nombre del Familiar:</label>
         <input type="text" id="nombre_familiar" name="nombre_familiar" required><br><br>
