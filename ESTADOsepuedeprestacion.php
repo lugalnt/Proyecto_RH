@@ -7,7 +7,7 @@ function verificarPrestaciones($numeroEmpleado) {
     global $conn;
 
     $fecha_actual = date('Y-m-d');
-    $fecha_limite = date('Y-m-d', strtotime('-4 months', strtotime($fecha_actual)));
+    $fecha_limite = date('Y-m-d', strtotime('-12 months', strtotime($fecha_actual)));
 
     $prestacionesPermitidas = [
         'Academico' => [
@@ -102,6 +102,7 @@ function verificarPrestaciones($numeroEmpleado) {
 
             //Cheqar aca que en los ultimos 4 meses no haya mas de dos pretsacion de dia dadas a empleados del misma
             //area que el empleado a checar y el mismo dia
+            //esto se hace en el mismo archivo de la solicitud de prestacion
 
 
             if ($rowGAPAD) {
