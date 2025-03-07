@@ -256,6 +256,7 @@ main {
     margin-top: 1.4rem;
 }
 
+/* ========================== PARTE IZQUIERDA (MAIN) ===========================*/
 main .date {
     display: inline-block;
     background: var(--color-light);
@@ -269,6 +270,55 @@ main .date input {
     color: var(--color-dark);
 }
 
+.date form h2,
+.date form h3 {
+    display: inline-block;
+    margin: 0;
+}
+
+.datos {
+    padding: 10px;           
+    margin-top: 10px;       
+    text-align: left;
+}
+
+.fecha-group {
+    display: inline-block;
+    margin-right: 20px;      
+}
+  
+.datos button {
+    display: block;
+    margin-top: 10px;
+}
+
+button {
+    margin: 0 auto;
+    display: block;
+    width: fit-content;
+    min-width: 100px;
+    height: 35px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2.5px solid #E0E1E4;
+    box-shadow: 0px 0px 20px -20px;
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.2s ease-in-out 0ms;
+    user-select: none;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  button:hover {
+    background-color: #F2F2F2;
+    box-shadow: 0px 0px 20px -18px;
+  }
+  
+  button:active {
+    transform: scale(0.95);
+  }
+
+/* ========================== INSIGHTS ===========================*/
 main .insights {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -365,6 +415,7 @@ main .insights small {
     margin-top: 1.6rem;
     display: block;
 }
+
 
 /* ========================== PRESTAMOS RECIENTES ===========================*/
 main .prestamos-recientes {

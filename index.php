@@ -29,6 +29,9 @@ if($_SESSION['Area'] != "RH")
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
     rel="stylesheet">
+    <style>
+
+    </style>
 </head>
 <body>
     <!-- BARRA LATERAL -->
@@ -77,23 +80,26 @@ if($_SESSION['Area'] != "RH")
         <main>
             <h1>Menú</h1>
 
-
-
+                
 <!-- INICIO DE Preview de Costos -->
-            <div class="date">
-                <form method="POST" action="">
-                <h2>Costos</h2>
-                <label for="FechaInicio">Fecha de Inicio</label>
-                <input type="date" name ="FechaInicio">
-                <label for="FechaFin">Fecha de Fin</label>
-                <input type="date" name ="FechaFin">
-                <input type="hidden" name="Costos" value="1">
-                <button type="submit">Revisar</button>
-                </form>
-            </div>
+<div class="date">
+  <form method="POST" action="">
+    <h2>Costos</h2>
+    <div class="datos">
+      <div class="fecha-group">
+        <label for="FechaInicio"><h3>Fecha de Inicio:</h3></label>
+        <input type="date" id="FechaInicio" name="FechaInicio">
+      </div>
+      <div class="fecha-group">
+        <label for="FechaFin"><h3>Fecha de Fin:</h3></label>
+        <input type="date" id="FechaFin" name="FechaFin">
+      </div>
+      <input type="hidden" name="Costos" value="1">
+      <button type="submit">Revisar</button>
+    </div>
+  </form>
+</div>
 <!-- FIN DE Preview de costos -->
-
-
 
             <!-- INICIO DE CIRCULOS -->
             <div class="insights">

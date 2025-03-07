@@ -71,7 +71,7 @@ body {
     width: 96%;
     margin: 0 auto;
     gap: 1.8rem;
-    grid-template-columns: 14rem auto 23rem;
+    grid-template-columns: 14rem auto;
 }
 
 /* COLOR DE LOS BOTONES DE LA BARRA LATERAL */
@@ -220,6 +220,16 @@ b {
         background: var(--color-light);
         color: var(--color-primary);
         margin-left: 0;
+    }
+
+    aside .sidebar a.active:before {
+        content: "";
+        width: 6px; 
+        height: 100%;
+        background: var(--color-primary);
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 
     aside .sidebar a.active span {
