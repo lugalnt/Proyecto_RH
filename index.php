@@ -15,6 +15,7 @@ if($_SESSION['Area'] != "RH")
   header('Location: indexEmpleado.php');
 }
 
+
 ?>
 
 
@@ -109,14 +110,14 @@ if($_SESSION['Area'] != "RH")
                     <div class="middle">
                         <div class="left">
                             <h3>Prestamos Totales</h3>
-                            <h1>$0</h1>
+                            <h1></h1>
                         </div>
                         <div class="progress">
                             <svg>
                                 <circle id="circuloTotal" cx='38' cy='38' r='36'></circle>
                             </svg>
                             <div class="number">
-                                <p>0%</p>
+                                <p></p>
                             </div>
                         </div>
                     </div>
@@ -129,14 +130,14 @@ if($_SESSION['Area'] != "RH")
                     <div class="middle">
                         <div class="left">
                             <h3>Gastos Financieras</h3>
-                            <h1>$0</h1>
+                            <h1></h1>
                         </div>
                         <div class="progress">
                             <svg>
                                 <circle id="circuloFinancieras" cx='38' cy='38' r='36'></circle>
                             </svg>
                             <div class="number">
-                                <p>0%</p>
+                                <p></p>
                             </div>
                         </div>
                     </div>
@@ -149,14 +150,14 @@ if($_SESSION['Area'] != "RH")
                     <div class="middle">
                         <div class="left">
                             <h3>Gastos academicas</h3>
-                            <h1>$0</h1>
+                            <h1></h1>
                         </div>
                         <div class="progress">
                             <svg>
                                 <circle id="circuloAcademicas" cx='38' cy='38' r='36'></circle>
                             </svg>
                             <div class="number">
-                                <p>0%</p>
+                                <p></p>
                             </div>
                         </div>
                     </div>
@@ -483,9 +484,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $costoTotal = $CostosF + $CostosA;
     $porcentajeF = round(($CostosF / $costoTotal) * 100);
     $porcentajeA = round(($CostosA / $costoTotal) * 100);
-
-      echo "<script>alert('El costo total de las prestaciones otorgadas entre ".$FechaInicio." y ".$FechaFin." es de: $".$costoTotal."');</script>";
-      echo "<script>alert('Prestaciones financieras: $".$CostosF." y Prestaciones Academicas: $".$CostosA."');</script>";
 
     echo'
     <script>

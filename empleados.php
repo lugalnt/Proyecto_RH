@@ -7,6 +7,18 @@ if(!isset($_SESSION['Numero_Empleado']))
 {
   header('Location: login.html');
 }
+
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    if(isset($_POST["logout"]))
+    {
+    session_destroy();
+    header('Location: login.html');
+    exit();
+    }
+}
+   
+
 ?>
 
 <!DOCTYPE html>
@@ -116,6 +128,7 @@ if(!isset($_SESSION['Numero_Empleado']))
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nombre = $_POST["nombre"];
             $numero = $_POST["numero"];
+
 
             if (!empty($nombre)) {
                 $query = $conn->prepare("SELECT * FROM empleado WHERE Nombre_Empleado LIKE ?");
