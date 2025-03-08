@@ -1,6 +1,6 @@
 <?php
 require_once("conn.php");
-include_once("error_handler.php");
+//include_once("error_handler.php");
 session_start();
 
 if(!isset($_SESSION['Numero_Empleado'])) {
@@ -217,9 +217,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                     <td>' . htmlspecialchars($rowSP['Fecha_Otorgada']) . '</td>
                                     <td>' . htmlspecialchars($rowSP['Estado']) . '</td>
                                     <td>
-                                        <form action="" method="post">
-                                            <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">
-                                            <button type="submit" class="btn btn-primary">Otorgar prestación</button>
+                                        <form action="otorgarPrestaciones.php" method="post">
+                                            <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">';
+                                            echo "<input type='hidden' name='tipoPrestacion' value='".htmlspecialchars($tipo)."'>";        
+                                   echo'         <button type="submit" class="btn btn-primary">Otorgar prestación</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -262,7 +263,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                     <td>' . htmlspecialchars($rowSP['Fecha_Otorgada']) . '</td>
                                     <td>' . htmlspecialchars($rowSP['Estado']) . '</td>
                                     <td>
-                                        <form action="" method="post">
+                                        <form action="otorgarPrestaciones.php" method="post">
                                             <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">';
                                             echo "<input type='hidden' name='tipoPrestacion' value='".htmlspecialchars($tipo)."'>";        
                                    echo'         <button type="submit" class="btn btn-primary">Otorgar prestación</button>
@@ -304,9 +305,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 echo "<td>".htmlspecialchars($rowSP['Fecha_Otorgada'])."</td>";
                 echo "<td>".htmlspecialchars($rowSP['Estado'])."</td>";
                 echo "<td>";
-                echo "<form action='' method='post'>";
+                echo "<form action='otorgarPrestaciones.php' method='post'>";
                 echo "<input type='hidden' name='idPrestacion' value='".htmlspecialchars($idPrestacion)."'>";
-
+                echo "<input type='hidden' name='tipoPrestacion' value='".htmlspecialchars($tipo)."'>";
                 echo "<button type='submit' class='btn btn-primary'>Otorgar prestación</button>";
                 echo "</form>";
                 echo "</td>";
@@ -329,88 +330,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 </body>
 </html>
 
-<?php
-
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $idPrestacion = $_POST['idPrestacion'];
-    
-    if (isset($_POST['tipoPrestacion'])) {
-        $tipoPrestacion = $_POST['tipoPrestacion'];
-
-        if (strpos($tipoPrestacion, 'Embarazo') !== false || strpos($tipoPrestacion, 'Incapacidad') !== false || strpos($tipoPrestacion, 'Permiso por duelo') !== false) {
-
-            $queryFechas = $conn->prepare("SELECT Fecha_Inicio, Fecha_Final FROM prestacion_plazos WHERE Id_Prestacion = ?");
-            $queryFechas->bind_param("i", $idPrestacion);
-            $queryFechas->execute();
-            $resultFechas = $queryFechas->get_result();
-            $rowFechas = $resultFechas->fetch_assoc();
-            $queryFechas->close();
-
-            $fechaInicial = $rowFechas['Fecha_Inicio'];
-            $fechaFinal = $rowFechas['Fecha_Final'];
-
-            // Calcular los días hábiles entre las fechas
-            $startDate = new DateTime($fechaInicial);
-            $endDate = new DateTime($fechaFinal);
-            $interval = new DateInterval('P1D');
-            $period = new DatePeriod($startDate, $interval, $endDate->modify('+1 day'));
-
-            $dias = 0;
-            foreach ($period as $date) {
-                if ($date->format('N') < 6) { 
-                    $dias++;
-                }
-            }
-
-            $queryCD = $conn->prepare("SELECT Dias FROM empleado WHERE Numero_Empleado = ?");
-            $queryCD->bind_param("i", $_SESSION['Numero_Empleado']);
-            $queryCD->execute();
-            $resultCD = $queryCD->get_result();
-            $rowCD = $resultCD->fetch_assoc();
-            $queryCD->close();
-        
-            if ($rowCD['Dias'] >= $dias) {
-                // Actualizar los días disponibles del empleado
-                $queryUD = $conn->prepare("UPDATE empleado SET Dias = Dias - ? WHERE Numero_Empleado = ?");
-                $queryUD->bind_param("ii", $dias, $_SESSION['Numero_Empleado']);
-                $queryUD->execute();
-                $queryUD->close();
-            } else {
-                // Alertar al usuario si no tiene suficientes días disponibles
-                echo "<script>alert('No tiene suficientes días disponibles para esa solicitud. Debio haber pedido un dia entre que se otrogaba la prestacion'); window.location.href='SOLICITUDprestacionplazo.php';</script>";
-                exit();
-            }
-        }
-    }
-
-    $queryOP = $conn->prepare("UPDATE prestacion SET Fecha_Otorgada = CURRENT_DATE WHERE Id_Prestacion = ?");
-    $queryOP->bind_param("i", $idPrestacion);
-    $queryOP->execute();
-    $queryOP->close();
-
-    $queryOPE = $conn->prepare("UPDATE empleado_prestacion SET Fecha_Otorgada = CURRENT_DATE WHERE Id_Prestacion = ?");
-    $queryOPE->bind_param("i", $idPrestacion);
-    $queryOPE->execute();
-    $queryOPE->close();
-    
-    $queryCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
-    $queryCFP->bind_param("i", $idPrestacion);
-    $queryCFP->execute();
-    $resultCFP = $queryCFP->get_result();
-
-    if ($resultCFP->num_rows > 0) {
-        $queryOPF = $conn->prepare("UPDATE familiar_prestacion SET Fecha_Otorgada = CURRENT_DATE WHERE Id_Prestacion = ?");
-        $queryOPF->bind_param("i", $idPrestacion);
-        $queryOPF->execute();
-        $queryOPF->close();
-    }
-
-    echo '<script type="text/javascript">
-    alert("Prestación otorgada");
-    </script>';
-    echo("<meta http-equiv='refresh' content='1'>");
-}
-?>
 
 <script src="./index.js"></script>
