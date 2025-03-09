@@ -348,8 +348,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($rowCE['Estado'] == "Pendiente") {
                 echo'
                         <td>
-                            <form action="" method="post">
+                            <form action="otorgarPrestaciones.php" method="post">
                                 <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">
+                                <input type="hidden" name="tipoPrestacion" value="'.htmlspecialchars($tipo).'"> 
                                 <button type="submit" class="btn btn-primary">Otorgar Prestación</button>
                             </form>
                         </td>
@@ -512,8 +513,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($rowCE['Estado'] == "Pendiente") {
     echo'
         <td>
-            <form action="" method="post">
+            <form action="otorgarPrestaciones.php" method="post">
                 <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">
+                <input type="hidden" name="tipoPrestacion" value="'.htmlspecialchars($tipo).'">
                 <button type="submit" class="btn btn-primary">Otorgar prestación</button>
             </form>
         </td>
