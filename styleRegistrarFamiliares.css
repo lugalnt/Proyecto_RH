@@ -15,6 +15,7 @@
     --color-primary-variant: #111e88;
     --color-dark-variant: #677483;
     --color-background: #f6f6f9;
+    --color-newbackground: white;
 
     --card-border-radius: 2rem;
     --border-radius-1: 0.4rem;
@@ -30,6 +31,7 @@
 /* COLORES PRINCIPALES DEL MODO OSCURO */
 .dark-theme-variables {
     --color-background: #181a1e;
+    --color-newbackground: #202528;
     --color-white: #202528;
     --color-dark: #edeffd;
     --color-dark-variant: #a3bdcc;
@@ -227,6 +229,9 @@ b {
         width: 6px; 
         height: 100%;
         background: var(--color-primary);
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 
     aside .sidebar a.active span {
@@ -459,6 +464,69 @@ main table tbody tr:last-child td {
 }
 
 
+/* ========================== ESTILO DE LA TABLA DE FAMILIARES ===========================*/
+form {
+    background-color: var(--color-newbackground);
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h5{
+    font-size: 0.97rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color:var(--color-darksa);
+    text-align: center;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.button-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+button,
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: var(--color-primary-variant);
+}
+
+#otroMotivo {
+    display: none;
+}
 
 /* ========================== PARTE DERECHA (TOP) ===========================*/
 .right {

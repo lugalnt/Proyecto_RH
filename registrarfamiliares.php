@@ -113,56 +113,43 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <h1>Registro de tus familiares  </h1>
 <body>
 
-
 <div role="region" tabindex="0">
-    <main>
-        <header>
-            <p id="description"><h2>Registra a un familiar para procesamiento en prestaciones necesarias.</h2></p>
-        </header>
-        <form id="survey-form" method="post" action="">
-            <table class="prestamos-recientes">
-                <tr>
-                    <td><label for="name" id="email-label">Nombre de tu familiar</label></td>
-                    <td><input type="text" name="nombre" id="Direccion" class="serach-input" placeholder="Nombre de tu familiar" required></td>
-                </tr>
-                <tr>
-                    <td><label for="occupation">Nivel academico</label></td>
-                    <td>
-                        <select name="nivelacademico" id="dropdown">
-                            <option value="Primaria">Primaria</option>
-                            <option value="Secundaria">Secundaria</option>
-                            <option value="Preparatoria">Preparatoria</option>
-                            <option value="Universidad">Universidad</option>
-                            <option value="No-estudiante">No-estudiante</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="edad" id="number-label">Edad</label></td>
-                    <td><input type="number" name="edad" id="edad" min="1" max="99" placeholder="Introduce su edad"></td>
-                </tr>
-                <tr>
-                    <td><label for="occupation">Relacion con tu familiar</label></td>
-                    <td>
-                        <select name="relacion" id="dropdown">
-                            <option value="Esposo">Esposo/a</option>
-                            <option value="Pareja">Pareja/a</option>
-                            <option value="Hijo">Hijo/a</option>
-                            <option value="Padre">Madre/Padre</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <button id="submit" type="post">Terminar registro</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </main>
-</div>
+            <main>
+                <header>
+                    <br>
+                    <p id="description"><h2>Registra a un familiar para procesamiento en prestaciones necesarias.</h2></p>
+                </header>
+                <form id="survey-form" method="post" action="">
+                    <label for="name" id="email-label"><h5>Nombre Del Familiar</h5></label>
+                    <input type="text" name="nombre" id="Direccion" class="serach-input" placeholder="Nombre Del Familiar" required>
 
+                    <label for="occupation"><h5>Nivel Academico</h5></label>
+                    <select name="nivelacademico" id="dropdown">
+                        <option value="Primaria">Primaria</option>
+                        <option value="Secundaria">Secundaria</option>
+                        <option value="Preparatoria">Preparatoria</option>
+                        <option value="Universidad">Universidad</option>
+                        <option value="No-estudiante">No-Estudiante</option>
+                    </select>
+
+                    <label for="edad" id="number-label"><h5>Edad</h5></label>
+                    <input type="number" name="edad" id="edad" min="1" max="99" placeholder="Introduce La Edad Del Familiar">
+
+                    <label for="occupation"><h5>Relacion Con El Familiar</h5></label>
+                    <select name="relacion" id="dropdown">
+                        <option value="Esposo">Esposo/a</option>
+                        <option value="Pareja">Pareja/a</option>
+                        <option value="Hijo">Hijo/a</option>
+                        <option value="Padre">Madre/Padre</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                    <div class="button-container">
+                    <button id="submit" type="submit">Terminar registro</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    <script src="./index.js"></script>
         <?php
 
         if ($_SERVER["REQUEST_METHOD"]=="POST")
@@ -221,5 +208,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
                 </tr> 
                     </form>
+                    
 </body>
 </html>

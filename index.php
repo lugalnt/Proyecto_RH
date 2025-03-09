@@ -31,7 +31,9 @@ if($_SESSION['Area'] != "RH")
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
     rel="stylesheet">
     <style>
-
+    body.dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+    }
     </style>
 </head>
 <body>
@@ -427,6 +429,14 @@ if($_SESSION['Area'] != "RH")
   circle.style.strokeDasharray = `${circumference}`;
   circle.style.strokeDashoffset = `${offset}`;
 }
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggler = document.querySelector('.theme-toggler');
+    const body = document.body;
+
+    themeToggler.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+    });
+});
      </script>               
 
 
