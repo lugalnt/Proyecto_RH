@@ -398,18 +398,18 @@ main .insights svg circle {
 }
 
 main .insights .prestaciones svg circle {
-    stroke-dashoffset: -30;
-    stroke-dasharray: 200;
+    stroke-dashoffset: 0;
+    stroke-dasharray: 0;
 }
 
 main .insights .gastos svg circle {
-    stroke-dashoffset: 20;
-    stroke-dasharray: 130;
+    stroke-dashoffset: 0;
+    stroke-dasharray: 0;
 }
 
 main .insights .ingresos svg circle {
-    stroke-dashoffset: 35;   
-    stroke-dasharray: 200;
+    stroke-dashoffset: 0;   
+    stroke-dasharray: 0;
 }
 
 main .insights .progress .number {
