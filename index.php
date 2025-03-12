@@ -409,7 +409,7 @@ if($_SESSION['Area'] != "RH")
                             <h3>No hay empleados ausentes</h3>
                             <small class="text-muted">Por ahora...</small>
                         </div>
-                    </div>"';
+                    </div>';
                     }
                  
 
