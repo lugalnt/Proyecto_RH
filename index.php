@@ -85,22 +85,37 @@ if($_SESSION['Area'] != "RH")
 
                 
 <!-- INICIO DE Preview de Costos -->
-<div class="date">
-  <form method="POST" action="">
-    <h2>Costos</h2>
-    <div class="datos">
-      <div class="fecha-group">
-        <label for="FechaInicio"><h3>Fecha de Inicio:</h3></label>
-        <input type="date" id="FechaInicio" name="FechaInicio">
+<div class="date-container">
+  <div class="date">
+    <form method="POST" action="">
+      <h2>Costos</h2>
+      <div class="datos">
+        <div class="fecha-group">
+          <label for="FechaInicio"><h3>Fecha de Inicio:</h3></label>
+          <input type="date" id="FechaInicio" name="FechaInicio">
+        </div>
+        <div class="fecha-group">
+          <label for="FechaFin"><h3>Fecha de Fin:</h3></label>
+          <input type="date" id="FechaFin" name="FechaFin">
+        </div>
+        <input type="hidden" name="Costos" value="1">
+        <button type="submit">Revisar</button>
       </div>
-      <div class="fecha-group">
-        <label for="FechaFin"><h3>Fecha de Fin:</h3></label>
-        <input type="date" id="FechaFin" name="FechaFin">
+    </form>
+  </div>
+
+  <div class="date2">
+    <form method="POST" action="">
+      <h2>Información Extra</h2>
+      <div class="datos">
+        <input type="hidden" name="Costos" value="1">
+        <div class="button-container">
+          <button type="submit">Reiniciar</button>
+          <button onclick="window.location.href='costosDetallado.php'">Reporte Más Detallado</button>
+        </div>
       </div>
-      <input type="hidden" name="Costos" value="1">
-      <button type="submit">Revisar</button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
 <!-- FIN DE Preview de costos -->
 
@@ -164,7 +179,6 @@ if($_SESSION['Area'] != "RH")
                         </div>
                     </div>
                 </div>
-                <a href="costosDetallado.php">Generar un reporte mas detallado</a>
             </div>
                 <!-- FIN DE INGRESOS -->
 
@@ -225,14 +239,8 @@ if($_SESSION['Area'] != "RH")
                       echo "</tr>";
                     }
 
-
-
-
-
             ?>
                         
-            
-
                     </tbody>
                     
                 </table>
@@ -240,7 +248,7 @@ if($_SESSION['Area'] != "RH")
             
 
 
-                <a href="">Mostrar Todos</a>
+                <a href="solicitudesprestaciones.php">Mostrar Todos</a>
             </div>
         </main>
         <!-- FIN DE PRESTAMOS RECIENTES TABLA -->
