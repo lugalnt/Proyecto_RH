@@ -192,56 +192,54 @@ $queryCheckToday->close();
 
 
 
-     $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Numero_Empleado = ?");
+    if ($nombre_familiar !== "%N/A%") {
+        $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Numero_Empleado = ?");
         $queryChecarPF->bind_param("si", $nombre_familiar, $_SESSION['Numero_Empleado']);
         $queryChecarPF->execute();
         $result = $queryChecarPF->get_result();
         $row = $result->fetch_assoc();
         $queryChecarPF->close();
-        
-        if ($row)
-        {
-                $tipo = "Financiera";
-                $queryInsertP = $conn->prepare("INSERT INTO prestacion (Tipo) VALUES (?)");
-                $queryInsertP->bind_param("s", $tipo);
-                $queryInsertP->execute();
-                $id_prestacion = $conn->insert_id;
-                $queryInsertP->close();
-                
-                $queryInsertPE = $conn->prepare("INSERT INTO empleado_prestacion (Numero_Empleado, Id_Prestacion, Tipo) VALUES (?, ?, ?)");
-                $queryInsertPE->bind_param("iis", $_SESSION['Numero_Empleado'], $id_prestacion, $tipo);
-                $queryInsertPE->execute();
-                $queryInsertPE->close();
 
-                $queryInsertPEE = $conn->prepare("INSERT INTO familiar_prestacion (Id_Familiar,Id_Prestacion,Tipo) VALUES (?, ?, ?)");
-                $queryInsertPEE->bind_param("iis", $row['Id_Familiar'], $id_prestacion, $tipo);
-                $queryInsertPEE->execute();
-                $queryInsertPEE->close();
-
-
-                if ($tipo_pago == "Deposito")
-                {
-                        $deposito = 1;
-                        $reembolso = 0;
-                }
-                else
-                {
-                        $deposito = 0;
-                        $reembolso = 1;
-                }
-
-
-
-                $queryInsertPF = $conn->prepare("INSERT INTO prestacion_apoyofinanciero (Id_Prestacion,Numero_Empleado,Id_Familiar,Tipo,Deposito,Reembolso) VALUES (?,?,?,?,?,?)");
-                $queryInsertPF->bind_param("iiisii", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $tipoPF, $deposito, $reembolso);
-                $queryInsertPF->execute();
-                $queryInsertPF->close();
-                echo "Solicitud enviada correctamente";
+        if (!$row) {
+            echo "Error, no se encontró el familiar";
+            exit;
         }
-        else
-        {
-                echo "Error, no se encontró el familiar";
-        }
+    } else {
+        $row = ['Id_Familiar' => null];
+    }
+
+    $tipo = "Financiera";
+    $queryInsertP = $conn->prepare("INSERT INTO prestacion (Tipo) VALUES (?)");
+    $queryInsertP->bind_param("s", $tipo);
+    $queryInsertP->execute();
+    $id_prestacion = $conn->insert_id;
+    $queryInsertP->close();
+
+    $queryInsertPE = $conn->prepare("INSERT INTO empleado_prestacion (Numero_Empleado, Id_Prestacion, Tipo) VALUES (?, ?, ?)");
+    $queryInsertPE->bind_param("iis", $_SESSION['Numero_Empleado'], $id_prestacion, $tipo);
+    $queryInsertPE->execute();
+    $queryInsertPE->close();
+
+    if ($nombre_familiar !== "%N/A%") {
+        $queryInsertPEE = $conn->prepare("INSERT INTO familiar_prestacion (Id_Familiar,Id_Prestacion,Tipo) VALUES (?, ?, ?)");
+        $queryInsertPEE->bind_param("iis", $row['Id_Familiar'], $id_prestacion, $tipo);
+        $queryInsertPEE->execute();
+        $queryInsertPEE->close();
+    }
+
+    if ($tipo_pago == "Deposito") {
+        $deposito = 1;
+        $reembolso = 0;
+    } else {
+        $deposito = 0;
+        $reembolso = 1;
+    }
+
+    $queryInsertPF = $conn->prepare("INSERT INTO prestacion_apoyofinanciero (Id_Prestacion,Numero_Empleado,Id_Familiar,Tipo,Deposito,Reembolso) VALUES (?,?,?,?,?,?)");
+    $queryInsertPF->bind_param("iiisii", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $tipoPF, $deposito, $reembolso);
+    $queryInsertPF->execute();
+    $queryInsertPF->close();
+    echo "Solicitud enviada correctamente";
 
      
 
