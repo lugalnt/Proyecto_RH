@@ -18,10 +18,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     exit();
     }
 }
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -110,13 +106,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 </div>
         </div> 
 
-            <h1>Registro de tus familiares  </h1>
+            <h1>Registro De Tus Familiares</h1>
 <body>
 
 <div role="region" tabindex="0">
             <main>
                 <header>
-                    <br>
                     <p id="description"><h2>Registra a un familiar para procesamiento en prestaciones necesarias.</h2></p>
                 </header>
                 <form id="survey-form" method="post" action="">
