@@ -176,17 +176,33 @@ exit;
 echo "<script>location.reload();</script>"; 
 } 
 
+
+/////////////////////////////////////CHECAR SI YA SE SOLICITO EL MISMO TIPO DE APOYO FINANCIERO EL MISMO DIA/////////////////////////////////////
 $queryCheckToday = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Financiera' AND DATE(Fecha_Solicitada) = CURDATE()");
 $queryCheckToday->bind_param("i", $_SESSION['Numero_Empleado']);
 $queryCheckToday->execute();
 $resultCheckToday = $queryCheckToday->get_result();
 
-if ($resultCheckToday->num_rows > 0) {
-        echo "<script>alert('Ya has solicitado este tipo de apoyo Financiero el día de hoy.');</script>";
-        exit;
-}
+while($rowCheckToday = $resultCheckToday->fetch_assoc()) {
+    $queryCheckTodayPlus = $conn->prepare("SELECT * FROM prestacion_apoyofinanciero WHERE Id_Prestacion = ? AND Tipo = ?");
+    $queryCheckTodayPlus->bind_param("is", $rowCheckToday['Id_Prestacion'], $tipoPF);
+    $queryCheckTodayPlus->execute();
+    $resultCheckTodayPlus = $queryCheckTodayPlus->get_result();
+    $rowCheckTodayPlus = $resultCheckTodayPlus->fetch_assoc();
 
+        if ($rowCheckTodayPlus) {
+                echo "<script>alert('Ya has solicitado este tipo de apoyo Financiero el día de hoy.');</script>";
+                exit;
+                $queryCheckTodayPlus->close();
+        }
+}
 $queryCheckToday->close();
+
+/////////////////////////////////////CHECAR SI YA SE SOLICITO EL MISMO TIPO DE APOYO FINANCIERO EL MISMO DIA/////////////////////////////////////
+
+
+
+
 
 
 
@@ -198,6 +214,7 @@ $queryCheckToday->close();
         $queryChecarPF->execute();
         $result = $queryChecarPF->get_result();
         $row = $result->fetch_assoc();
+        $id_familiar = $row['Id_Familiar'] ?? 0;
         $queryChecarPF->close();
 
         if (!$row) {
@@ -205,7 +222,7 @@ $queryCheckToday->close();
             exit;
         }
     } else {
-        $row = ['Id_Familiar' => null];
+        $id_familiar = 0;
     }
 
     $tipo = "Financiera";
@@ -220,12 +237,18 @@ $queryCheckToday->close();
     $queryInsertPE->execute();
     $queryInsertPE->close();
 
-    if ($nombre_familiar !== "%N/A%") {
+if ($nombre_familiar !== "%N/A%") {
         $queryInsertPEE = $conn->prepare("INSERT INTO familiar_prestacion (Id_Familiar,Id_Prestacion,Tipo) VALUES (?, ?, ?)");
         $queryInsertPEE->bind_param("iis", $row['Id_Familiar'], $id_prestacion, $tipo);
         $queryInsertPEE->execute();
         $queryInsertPEE->close();
-    }
+} else {
+        $id_familiar = 0;
+        $queryInsertPEE = $conn->prepare("INSERT INTO familiar_prestacion (Id_Familiar,Id_Prestacion,Tipo) VALUES (?, ?, ?)");
+        $queryInsertPEE->bind_param("iis", $id_familiar, $id_prestacion, $tipo);
+        $queryInsertPEE->execute();
+        $queryInsertPEE->close();
+}
 
     if ($tipo_pago == "Deposito") {
         $deposito = 1;
@@ -235,11 +258,12 @@ $queryCheckToday->close();
         $reembolso = 1;
     }
 
-    $queryInsertPF = $conn->prepare("INSERT INTO prestacion_apoyofinanciero (Id_Prestacion,Numero_Empleado,Id_Familiar,Tipo,Deposito,Reembolso) VALUES (?,?,?,?,?,?)");
-    $queryInsertPF->bind_param("iiisii", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $tipoPF, $deposito, $reembolso);
-    $queryInsertPF->execute();
-    $queryInsertPF->close();
-    echo "Solicitud enviada correctamente";
+
+$queryInsertPF = $conn->prepare("INSERT INTO prestacion_apoyofinanciero (Id_Prestacion,Numero_Empleado,Id_Familiar,Tipo,Deposito,Reembolso) VALUES (?,?,?,?,?,?)");
+$queryInsertPF->bind_param("iiisii", $id_prestacion, $_SESSION['Numero_Empleado'], $id_familiar, $tipoPF, $deposito, $reembolso);
+$queryInsertPF->execute();
+$queryInsertPF->close();
+echo "Solicitud enviada correctamente";
 
      
 
