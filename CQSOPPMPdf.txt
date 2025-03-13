@@ -1,0 +1,38 @@
+    <script>
+        function mostrarPDF(rutaPDF) {
+
+    document.getElementById('pdfViewer').src = rutaPDF;
+
+
+    document.getElementById('pdfLightbox').style.display = 'flex';
+}
+
+function cerrarPDF() {
+
+    document.getElementById('pdfLightbox').style.display = 'none';
+
+   
+    document.getElementById('pdfViewer').src = '';
+}
+
+    </script>
+
+    <div id="pdfLightbox" class="lightbox" style="display: none;">
+        <div class="lb-outerContainer">
+          
+            <embed id="pdfViewer" src="" type="application/pdf" width="100%" height="100%">
+    
+            
+            <a href="#carreras" class="lb-close" onclick="cerrarPDF()">x</a>
+        </div>
+    </div>
+
+
+<!-- jQuery (necesario para Lightbox) -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- Lightbox CSS -->
+<link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+<!-- Lightbox JS -->
+<script src="lib/lightbox/js/lightbox.min.js"></script>
