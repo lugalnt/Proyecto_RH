@@ -359,62 +359,69 @@ if($_SESSION['Area'] != "RH")
                     </div>
                 </div>
                 -->
-                <div class="empleado-ausente">
-                    <div class="icon">
-                        <span class="material-icons-sharp">person</span>
-                    </div>
+
 
                     <?php
                     
-                    $queryGED = $conn->prepare("SELECT * FROM empleado WHERE Estado = 'En Descanso'"); 
+                    $queryGED = $conn->prepare("
+                        SELECT e.Nombre_Empleado, ep.Tipo, pd.Fecha_Solicitada, pp.Fecha_Inicio, pp.Fecha_Final, pp.Tipo AS Motivo
+                        FROM empleado e
+                        LEFT JOIN empleado_prestacion ep ON e.Numero_Empleado = ep.Numero_Empleado
+                        LEFT JOIN prestacion_dias pd ON ep.Id_Prestacion = pd.Id_Prestacion AND ep.Tipo = 'Día'
+                        LEFT JOIN prestacion_plazos pp ON ep.Id_Prestacion = pp.Id_Prestacion AND ep.Tipo = 'Plazo'
+                        WHERE e.Estado = 'En descanso'
+                    ");
                     $queryGED->execute();
                     $resultGED = $queryGED->get_result();
-                    
-                    while ($rowGED = $resultGED->fetch_assoc())
-                    {
-                     
-                       $queryGEP = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Fecha_Otorgada IS NOT NULL AND Tipo = 'Día'");
-                       $queryGEP->bind_param("i", $rowGED['Numero_Empleado']);
-                       $queryGEP->execute();
-                       $resultGEP = $queryGEP->get_result();
-                       $rowGEP = $resultGEP->fetch_assoc();
-                       
-                       $queryGPD = $conn->prepare("SELECT * FROM prestacion_dias WHERE Id_Prestacion = ?");
-                       $queryGPD->bind_param("i", $rowGEP['Id_Prestacion']);
-                       $queryGPD->execute();
-                       $resultGPD = $queryGPD->get_result();
-                       $rowGPD = $resultGPD->fetch_assoc();
 
-                       echo'
-
-                          <div class="right">
-                        <div class="info">
-                            <h3>'.htmlspecialchars($rowGED['Nombre_Empleado']).'</h3>
-                            <small class="text-muted">Motivo: '.htmlspecialchars($rowGPD['Motivo']).'</small>
-                        </div>
-                        <small class="danger"> Valido el: '.htmlspecialchars($rowGPD['Fecha_Solicitada']).'</small>
+                    if ($resultGED->num_rows > 0) {
+                        while ($rowGED = $resultGED->fetch_assoc()) {
+                            if ($rowGED['Tipo'] === 'Día' && strtotime($rowGED['Fecha_Solicitada']) >= strtotime(date('Y-m-d'))) {
+                                echo '
+                                                 <div class="empleado-ausente">
+                    <div class="icon">
+                        <span class="material-icons-sharp">person</span>
                     </div>
-                       
-                       
-                       
-                       ';
-
-
-
-                    }
-
-
-                    if ($resultGED->num_rows == 0)
-                    {
+                                    <div class="right">
+                                        <div class="info">
+                                            <h3>' . htmlspecialchars($rowGED['Nombre_Empleado']) . '</h3>
+                                            <small class="text-muted">Motivo: <b>' . htmlspecialchars($rowGED['Motivo']) . '</b></small>
+                                        </div>
+                                        <small class="danger">Válido el: <b>' . htmlspecialchars($rowGED['Fecha_Solicitada']) . '</b></small>
+                                    </div>
+                                    </div>
+                                ';
+                            } elseif ($rowGED['Tipo'] === 'Plazo' && strtotime($rowGED['Fecha_Final']) >= strtotime(date('Y-m-d'))) {
+                                echo '
+                                                <div class="empleado-ausente">
+                    <div class="icon">
+                        <span class="material-icons-sharp">person</span>
+                    </div>
+                                    <div class="right">
+                                        <div class="info">
+                                            <h3>' . htmlspecialchars($rowGED['Nombre_Empleado']) . '</h3>
+                                            <small class="text-muted">Motivo: <b>' . htmlspecialchars($rowGED['Motivo']) . '</b></small>
+                                        </div>
+                                        <small class="danger">Válido desde: <b>' . htmlspecialchars($rowGED['Fecha_Inicio']) . '</b> hasta: <b>' . htmlspecialchars($rowGED['Fecha_Final']) . '</b></small>
+                                    </div>
+                                    </div>
+                                ';
+                            }
+                        }
+                    } else {
                         echo '
+                                        <div class="empleado-ausente">
+                    <div class="icon">
+                        <span class="material-icons-sharp">person</span>
+                    </div>
                         <div class="right">
-                        <div class="info">
-                            <h3>No hay empleados ausentes</h3>
-                            <small class="text-muted">Por ahora...</small>
+                            <div class="info">
+                                <h3>No hay empleados ausentes</h3>
+                                <small class="text-muted">Por ahora...</small>
+                            </div>
                         </div>
-                    </div>';
+                        </div>';
                     }
-                 
 
                     ?>
 
