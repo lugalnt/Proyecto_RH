@@ -1,3 +1,17 @@
+<!-- 
+COMENTARIOS PARA EL FOLO.
+
+-Qesesto? Prueba de como funciona el mostrarPDF
+
+-Que se ocupa para que esto funcione? Llamar la libreria del jquery y la del lightbox de la misma
+ademas que la misma funcion que hace que se muestre el pdf, todo esta comentado en el codigo
+
+-Y namas se muestran pdf? No al chile puedes mostrar otras paginas, esto esta util para cuando son varios pdf
+de un tipo donde puedes con la funcion mostrar una pagina con una lista de botones que muestren otros pdf
+y asi no tener que hacer una pagina por cada pdf
+
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleado</title>
     <!-- ASIGNACION DE CSS -->
-    <link href="lightbox.min.css" rel="stylesheet">
+    <link href="lightbox.min.css" rel="stylesheet"> <!-- ESTILO NECESARIO PARA LA FUNCION, ASEGURARSE QUE ESTE ANTES DE EL OG  -->
     <link rel="stylesheet" href="./styleEmpleado.css">
 
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
@@ -67,7 +81,7 @@
     <div class="contenido">
 
         
-        <a class="btn btn-sm btn-secondary m-1" onclick="mostrarPDF('PermisoSindical.pdf')">Permiso Sindical</a>
+        <a class="btn btn-sm btn-secondary m-1" onclick="mostrarPDF('PermisoSindical.pdf')">Permiso Sindical</a> <!--Ejemplo de como se usa, va en un OnClick en cualquier elemento  -->
 
 
 
@@ -81,7 +95,7 @@
 
 
 
-
+<!-- AQUI EMPIEZA TODO EL SCRIPT QUE SE OCUPA PARA LA FUNCION SIEMPRE VA AL FINAL DEL BODY -->
 
     <div id="pdfLightbox" class="lightbox" style="display: none;">
         <div class="lb-outerContainer">
@@ -115,7 +129,7 @@ document.getElementById('pdfViewer').src = '';
 
 </script>
 
-
+<!-- AQUI FINALIZA TODO EL SCRIPT QUE SE OCUPA PARA LA FUNCION SIEMPRE VA AL FINAL DEL BODY -->
 
 
 
