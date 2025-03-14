@@ -110,7 +110,10 @@ if($_SESSION['Area'] != "RH")
       <div class="datos">
         <input type="hidden" name="Costos" value="1">
         <div class="button-container">
+          <form action="" method="POST">
+          <input type="hidden" name="ReiniciarCostos" value="1"> 
           <button type="submit">Reiniciar</button>
+          </form>
           <button onclick="window.location.href='costosDetallado.php'">Reporte Más Detallado</button>
         </div>
       </div>
@@ -464,6 +467,48 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
   //AQUI SE OBTIENEN LOS COSTOS DE LAS PRESTACIONES
   //CON LOS DATOS ESTO SON LOS QUE SE VAN A ACTUALIZAR LAS GRAFICAS
+
+    if(isset($_POST["ReiniciarCostos"]))
+    {
+        $CostosA = 0;
+        $CostosF = 0;
+        $costoTotal = 0;
+        $porcentajeF = 100;
+        $porcentajeA = 100;
+    
+        echo'
+        <script>
+    
+        const circuloTotal = document.querySelector("#circuloTotal");
+        const circuloFinancieras = document.querySelector("#circuloFinancieras"); 
+        const circuloAcademicas = document.querySelector("#circuloAcademicas");
+        
+        function setCircleProgress(circle, percentage) {
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+        const offset = circumference - (percentage / 100) * circumference;
+      
+        circle.style.strokeDasharray = `${circumference}`;
+        circle.style.strokeDashoffset = `${offset}`;
+        }
+    
+        setCircleProgress(circuloTotal, 100); // Ajusta el círculo al 100%
+        setCircleProgress(circuloFinancieras, '.$porcentajeF.'); // Ajusta el círculo al porcentaje de financieras
+        setCircleProgress(circuloAcademicas, '.$porcentajeA.'); // Ajusta el círculo al porcentaje de académicas
+    
+        document.querySelector(".prestaciones .number p").textContent = "";
+        document.querySelector(".gastos .number p").textContent = "";
+        document.querySelector(".ingresos .number p").textContent = "";
+    
+        document.querySelector(".prestaciones h1").textContent = "";
+        document.querySelector(".gastos h1").textContent = "";
+        document.querySelector(".ingresos h1").textContent = "";
+    
+        </script>
+        ';
+    }
+
+
 
     if(isset($_POST["Costos"]))
     {
