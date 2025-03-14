@@ -110,7 +110,10 @@ if($_SESSION['Area'] != "RH")
       <div class="datos">
         <input type="hidden" name="Costos" value="1">
         <div class="button-container">
+          <form action="" method="POST">
+          <input type="hidden" name="ReiniciarCostos" value="1"> 
           <button type="submit">Reiniciar</button>
+          </form>
           <button onclick="window.location.href='costosDetallado.php'">Reporte Más Detallado</button>
         </div>
       </div>
@@ -356,62 +359,69 @@ if($_SESSION['Area'] != "RH")
                     </div>
                 </div>
                 -->
-                <div class="empleado-ausente">
-                    <div class="icon">
-                        <span class="material-icons-sharp">person</span>
-                    </div>
+
 
                     <?php
                     
-                    $queryGED = $conn->prepare("SELECT * FROM empleado WHERE Estado = 'En Descanso'"); 
+                    $queryGED = $conn->prepare("
+                        SELECT e.Nombre_Empleado, ep.Tipo, pd.Fecha_Solicitada, pp.Fecha_Inicio, pp.Fecha_Final, pp.Tipo AS Motivo
+                        FROM empleado e
+                        LEFT JOIN empleado_prestacion ep ON e.Numero_Empleado = ep.Numero_Empleado
+                        LEFT JOIN prestacion_dias pd ON ep.Id_Prestacion = pd.Id_Prestacion AND ep.Tipo = 'Día'
+                        LEFT JOIN prestacion_plazos pp ON ep.Id_Prestacion = pp.Id_Prestacion AND ep.Tipo = 'Plazo'
+                        WHERE e.Estado = 'En descanso'
+                    ");
                     $queryGED->execute();
                     $resultGED = $queryGED->get_result();
-                    
-                    while ($rowGED = $resultGED->fetch_assoc())
-                    {
-                     
-                       $queryGEP = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Fecha_Otorgada IS NOT NULL AND Tipo = 'Día'");
-                       $queryGEP->bind_param("i", $rowGED['Numero_Empleado']);
-                       $queryGEP->execute();
-                       $resultGEP = $queryGEP->get_result();
-                       $rowGEP = $resultGEP->fetch_assoc();
-                       
-                       $queryGPD = $conn->prepare("SELECT * FROM prestacion_dias WHERE Id_Prestacion = ?");
-                       $queryGPD->bind_param("i", $rowGEP['Id_Prestacion']);
-                       $queryGPD->execute();
-                       $resultGPD = $queryGPD->get_result();
-                       $rowGPD = $resultGPD->fetch_assoc();
 
-                       echo'
-
-                          <div class="right">
-                        <div class="info">
-                            <h3>'.htmlspecialchars($rowGED['Nombre_Empleado']).'</h3>
-                            <small class="text-muted">Motivo: '.htmlspecialchars($rowGPD['Motivo']).'</small>
-                        </div>
-                        <small class="danger"> Valido el: '.htmlspecialchars($rowGPD['Fecha_Solicitada']).'</small>
+                    if ($resultGED->num_rows > 0) {
+                        while ($rowGED = $resultGED->fetch_assoc()) {
+                            if ($rowGED['Tipo'] === 'Día' && strtotime($rowGED['Fecha_Solicitada']) >= strtotime(date('Y-m-d'))) {
+                                echo '
+                                                 <div class="empleado-ausente">
+                    <div class="icon">
+                        <span class="material-icons-sharp">person</span>
                     </div>
-                       
-                       
-                       
-                       ';
-
-
-
-                    }
-
-
-                    if ($resultGED->num_rows == 0)
-                    {
+                                    <div class="right">
+                                        <div class="info">
+                                            <h3>' . htmlspecialchars($rowGED['Nombre_Empleado']) . '</h3>
+                                            <small class="text-muted">Motivo: <b>' . htmlspecialchars($rowGED['Motivo']) . '</b></small>
+                                        </div>
+                                        <small class="danger">Válido el: <b>' . htmlspecialchars($rowGED['Fecha_Solicitada']) . '</b></small>
+                                    </div>
+                                    </div>
+                                ';
+                            } elseif ($rowGED['Tipo'] === 'Plazo' && strtotime($rowGED['Fecha_Final']) >= strtotime(date('Y-m-d'))) {
+                                echo '
+                                                <div class="empleado-ausente">
+                    <div class="icon">
+                        <span class="material-icons-sharp">person</span>
+                    </div>
+                                    <div class="right">
+                                        <div class="info">
+                                            <h3>' . htmlspecialchars($rowGED['Nombre_Empleado']) . '</h3>
+                                            <small class="text-muted">Motivo: <b>' . htmlspecialchars($rowGED['Motivo']) . '</b></small>
+                                        </div>
+                                        <small class="danger">Válido desde: <b>' . htmlspecialchars($rowGED['Fecha_Inicio']) . '</b> hasta: <b>' . htmlspecialchars($rowGED['Fecha_Final']) . '</b></small>
+                                    </div>
+                                    </div>
+                                ';
+                            }
+                        }
+                    } else {
                         echo '
+                                        <div class="empleado-ausente">
+                    <div class="icon">
+                        <span class="material-icons-sharp">person</span>
+                    </div>
                         <div class="right">
-                        <div class="info">
-                            <h3>No hay empleados ausentes</h3>
-                            <small class="text-muted">Por ahora...</small>
+                            <div class="info">
+                                <h3>No hay empleados ausentes</h3>
+                                <small class="text-muted">Por ahora...</small>
+                            </div>
                         </div>
-                    </div>';
+                        </div>';
                     }
-                 
 
                     ?>
 
@@ -464,6 +474,48 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
   //AQUI SE OBTIENEN LOS COSTOS DE LAS PRESTACIONES
   //CON LOS DATOS ESTO SON LOS QUE SE VAN A ACTUALIZAR LAS GRAFICAS
+
+    if(isset($_POST["ReiniciarCostos"]))
+    {
+        $CostosA = 0;
+        $CostosF = 0;
+        $costoTotal = 0;
+        $porcentajeF = 100;
+        $porcentajeA = 100;
+    
+        echo'
+        <script>
+    
+        const circuloTotal = document.querySelector("#circuloTotal");
+        const circuloFinancieras = document.querySelector("#circuloFinancieras"); 
+        const circuloAcademicas = document.querySelector("#circuloAcademicas");
+        
+        function setCircleProgress(circle, percentage) {
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+        const offset = circumference - (percentage / 100) * circumference;
+      
+        circle.style.strokeDasharray = `${circumference}`;
+        circle.style.strokeDashoffset = `${offset}`;
+        }
+    
+        setCircleProgress(circuloTotal, 100); // Ajusta el círculo al 100%
+        setCircleProgress(circuloFinancieras, '.$porcentajeF.'); // Ajusta el círculo al porcentaje de financieras
+        setCircleProgress(circuloAcademicas, '.$porcentajeA.'); // Ajusta el círculo al porcentaje de académicas
+    
+        document.querySelector(".prestaciones .number p").textContent = "";
+        document.querySelector(".gastos .number p").textContent = "";
+        document.querySelector(".ingresos .number p").textContent = "";
+    
+        document.querySelector(".prestaciones h1").textContent = "";
+        document.querySelector(".gastos h1").textContent = "";
+        document.querySelector(".ingresos h1").textContent = "";
+    
+        </script>
+        ';
+    }
+
+
 
     if(isset($_POST["Costos"]))
     {

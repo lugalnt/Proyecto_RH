@@ -1,0 +1,141 @@
+<!-- 
+COMENTARIOS PARA EL FOLO.
+
+-Qesesto? Prueba de como funciona el mostrarPDF
+
+-Que se ocupa para que esto funcione? Llamar la libreria del jquery y la del lightbox de la misma
+ademas que la misma funcion que hace que se muestre el pdf, todo esta comentado en el codigo
+
+-Y namas se muestran pdf? No al chile puedes mostrar otras paginas, esto esta util para cuando son varios pdf
+de un tipo donde puedes con la funcion mostrar una pagina con una lista de botones que muestren otros pdf
+y asi no tener que hacer una pagina por cada pdf
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleado</title>
+    <!-- ASIGNACION DE CSS -->
+    <link href="lightbox.min.css" rel="stylesheet"> <!-- ESTILO NECESARIO PARA LA FUNCION, ASEGURARSE QUE ESTE ANTES DE EL OG  -->
+    <link rel="stylesheet" href="./styleEmpleado.css">
+
+    <!-- SIMBOLOS QUE SE UTILIZARAN -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+    rel="stylesheet">
+</head>
+<body>
+    <!-- BARRA LATERAL -->
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                        <img src="./images/logo.png.png">
+                        <h2>Empleado<span class="danger">
+                            UTN</span> </h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="index.php" class="active">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Menú</h3>
+                </a>
+                <a href="registrarfamiliares.php">
+                    <span class="material-icons-sharp">people</span>
+                    <h3>Registrar familiar para prestamo</h3>
+                </a>
+                <a href="SOLICITUDprestacionesfinancieras.php">
+                    <span class="material-icons-sharp">payments</span>
+                    <h3>Solicitud de prestacion: Apoyo financiero</h3>
+                </a>
+                <a href="SOLICITUDprestacionapoyoacademico.php">
+                    <span class="material-icons-sharp">school</span>
+                    <h3>Solicitud de prestacion: Apoyo academico</h3>
+                </a>
+                <a href="SOLICITUDprestaciondia.php">
+                    <span class="material-icons-sharp">today</span>
+                    <h3>Solicitar un dia</h3>
+                </a>
+                <a href="SOLICITUDprestacionplazo.php">
+                    <span class="material-icons-sharp">date_range</span>
+                    <h3>Solicitar un plazo</h3>
+                </a>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Cerrar Sesión</h3>
+                </a>
+                <form id="logout-form" action="" method="POST" style="display: none;">
+                    <input type="hidden" name="logout" value="1">
+                </form>
+            </div>
+        </aside>
+    <!-- FIN DE BARRA LATERAL -->
+
+    <!-- CONTENIDO DE LA PAGINA -->
+    <div class="contenido">
+
+        
+        <a class="btn btn-sm btn-secondary m-1" onclick="mostrarPDF('PermisoSindical.pdf')">Permiso Sindical</a> <!--Ejemplo de como se usa, va en un OnClick en cualquier elemento  -->
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+<!-- AQUI EMPIEZA TODO EL SCRIPT QUE SE OCUPA PARA LA FUNCION SIEMPRE VA AL FINAL DEL BODY -->
+
+    <div id="pdfLightbox" class="lightbox" style="display: none;">
+        <div class="lb-outerContainer">
+          
+            <embed id="pdfViewer" src="" type="application/pdf" width="100%" height="100%">
+    
+            
+            <a href="pruebaMPDF.html" class="lb-close" onclick="cerrarPDF()">x</a>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="lib/lightbox/js/lightbox.min.js"></script>
+
+<script>
+    function mostrarPDF(rutaPDF) {
+
+document.getElementById('pdfViewer').src = rutaPDF;
+
+
+document.getElementById('pdfLightbox').style.display = 'flex';
+}
+
+function cerrarPDF() {
+
+document.getElementById('pdfLightbox').style.display = 'none';
+
+
+document.getElementById('pdfViewer').src = '';
+}
+
+</script>
+
+<!-- AQUI FINALIZA TODO EL SCRIPT QUE SE OCUPA PARA LA FUNCION SIEMPRE VA AL FINAL DEL BODY -->
+
+
+
+
+
+
+
+</body>
+</html>

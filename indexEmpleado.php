@@ -9,6 +9,33 @@ if(!isset($_SESSION['Numero_Empleado']))
   header('Location: login.html');
 }
 
+//This shit so dumb bro
+if(isset($_SESSION['Numero_Empleado'])){
+$numeroEmpleado = $_SESSION['Numero_Empleado'];
+
+// Check if the employee is already related to the familiar with Id_Familiar 0
+$queryCheckRelation = $conn->prepare("SELECT * FROM empleado_familiar WHERE Numero_Empleado = ? AND Id_Familiar = 0");
+$queryCheckRelation->bind_param("i", $numeroEmpleado);
+$queryCheckRelation->execute();
+$resultCheckRelation = $queryCheckRelation->get_result();
+
+if ($resultCheckRelation->num_rows == 0) {
+    // If not related, create the relation
+    $queryInsertRelation = $conn->prepare("INSERT INTO empleado_familiar (Numero_Empleado, Id_Familiar, Relacion) VALUES (?, 0, 'Esposa')");
+    $queryInsertRelation->bind_param("i", $numeroEmpleado);
+    $queryInsertRelation->execute();
+}
+}
+//
+
+
+
+
+
+
+
+
+
 ?>
 
 
