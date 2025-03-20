@@ -27,7 +27,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleado</title>
     <!-- ASIGNACION DE CSS -->
-    <link href="lightbox.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./styleRegistrarFamiliares.css">
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
@@ -129,38 +128,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         </div>
     </form>
 
-    <div id="pdfLightbox" class="lightbox" style="display: none;">
-        <div class="lb-outerContainer">
-          
-            <embed id="pdfViewer" src="" type="application/pdf" width="100%" height="100%">
-    
-            
-            <a href="SOLICITUDprestacionapoyoacademico.php" class="lb-close" onclick="cerrarPDF()">x</a>
-        </div>
-    </div>
-
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="lib/lightbox/js/lightbox.min.js"></script>
-
-<script>
-    function mostrarPDF(rutaPDF) {
-
-document.getElementById('pdfViewer').src = rutaPDF;
-
-
-document.getElementById('pdfLightbox').style.display = 'flex';
-}
-
-function cerrarPDF() {
-
-document.getElementById('pdfLightbox').style.display = 'none';
-
-
-document.getElementById('pdfViewer').src = '';
-}
-
-</script>
-
 <?php
 
 require_once("conn.php");
@@ -203,7 +170,8 @@ while($rowCheckToday = $resultCheckToday->fetch_assoc()) {
                 exit;
         }
 }
-
+$queryCheckToday->close();
+$queryCheckTodayPlus->close();
 ////////////////////
 
 
@@ -248,18 +216,6 @@ if ($row)
     $queryInsertPA->bind_param("iiisss", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $nivel_academico, $nombre_institucion, $tipoApoyo);
     $queryInsertPA->execute();
     $queryInsertPA->close();
-
-    switch ($tipoApoyo)
-    {
-        case "Utiles":
-            echo '<script>mostrarPDF("PDF Prestaciones/Utiles Escolares/Prestacion Utiles Escolares (Solicitud).pdf")</script>';
-            break;
-        
-        default:
-            echo '<script>mostrarPDF("")</script>';
-            break;
-
-    }
     
     echo "Solicitud enviada correctamente";
     }
@@ -296,9 +252,6 @@ else
             });
         });
     </script>
-
-
-
 
 
 </body>

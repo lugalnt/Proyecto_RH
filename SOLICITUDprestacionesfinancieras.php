@@ -119,7 +119,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         <option value="Gastos funerarios">Gastos funerarios</option>
                         <option value="Lentes">Lentes</option>
                         <option value="Titulacion">Titulación</option>
-                        <option value="Aparato Ortopedico">Aparato Ortopedico</option>
                 </select><br><br>
 
                 <label for="tipo_pago"><h5>Tipo de Pago:</h5></label>
@@ -309,8 +308,6 @@ if ($tipoPF == 'Guarderia') {
         echo '<script>mostrarPDF("PDF Prestaciones/Lentes/Prestacion Lentes(Solicitud[Reembolso]).pdf")</script>';
 } elseif ($tipoPF == 'Titulacion') {
         echo '<script>mostrarPDF("PDF Prestaciones/Titulacion/Prestacion titulacion (Solicitud).pdf")</script>';
-} elseif ($tipoPF == 'Aparato Ortopedico') {
-        echo '<script>mostrarPDF("PDF Prestaciones/Aparatos Ortopedicos/Prestacion Aparatos Ortopedicos (Solicitud).pdf")</script>';
 }
 
 

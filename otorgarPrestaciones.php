@@ -1,14 +1,92 @@
 <?php
+
 require_once("conn.php");
 require_once("ESTADOsepuedeprestacion.php");
 require_once("documentosPrestaciones.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Si se confirma la prestación
-    if (isset($_POST['confirm']) && $_POST['confirm'] === 'true') {
-        $idPrestacion = $_POST['idPrestacion'];
 
-        // Actualizar la prestación como otorgada
+    $idPrestacion = $_POST['idPrestacion'];
+    $tipoPrestacion = $_POST['tipoPrestacion'];
+
+    if (strpos($tipoPrestacion, 'Plazo') === 0) {
+        
+
+        if (strpos($tipoPrestacion, 'Embarazo') !== false || strpos($tipoPrestacion, 'Incapacidad') !== false || strpos($tipoPrestacion, 'Permiso por duelo') !== false) {
+
+            $queryFechas = $conn->prepare("SELECT Fecha_Inicio, Fecha_Final FROM prestacion_plazos WHERE Id_Prestacion = ?");
+            $queryFechas->bind_param("i", $idPrestacion);
+            $queryFechas->execute();
+            $resultFechas = $queryFechas->get_result();
+            $rowFechas = $resultFechas->fetch_assoc();
+            $queryFechas->close();
+
+            $fechaInicial = $rowFechas['Fecha_Inicio'];
+            $fechaFinal = $rowFechas['Fecha_Final'];
+
+            // Calcular los días hábiles entre las fechas
+            $startDate = new DateTime($fechaInicial);
+            $endDate = new DateTime($fechaFinal);
+            $interval = new DateInterval('P1D');
+            $period = new DatePeriod($startDate, $interval, $endDate->modify('+1 day'));
+
+            $dias = 0;
+            foreach ($period as $date) {
+                if ($date->format('N') < 6) { 
+                    $dias++;
+                }
+            }
+
+            $queryCD = $conn->prepare("SELECT Dias FROM empleado WHERE Numero_Empleado = ?");
+            $queryCD->bind_param("i", $_SESSION['Numero_Empleado']);
+            $queryCD->execute();
+            $resultCD = $queryCD->get_result();
+            $rowCD = $resultCD->fetch_assoc();
+            $queryCD->close();
+        
+            if ($rowCD['Dias'] >= $dias) {
+                // Actualizar los días disponibles del empleado
+                $queryUD = $conn->prepare("UPDATE empleado SET Dias = Dias - ? WHERE Numero_Empleado = ?");
+                $queryUD->bind_param("ii", $dias, $_SESSION['Numero_Empleado']);
+                $queryUD->execute();
+                $queryUD->close();
+            } else {
+                // Alertar al usuario si no tiene suficientes días disponibles
+                echo "<script>alert('No tiene suficientes días disponibles para esa solicitud. Debio haber pedido un dia entre que se otrogaba la prestacion'); window.location.href='SOLICITUDprestacionplazo.php';</script>";
+                exit();
+            }
+        }
+    } //Aqui termina el quitar dias de plazo
+
+
+    if (strpos($tipoPrestacion, 'Plazo:') === 0) {
+        $tipoPrestacionBuscar = 'Otro';
+    } elseif (strpos($tipoPrestacion, 'Dia:') === 0) {
+        $tipoPrestacionBuscar = 'Otro';
+    } else {
+        $tipoPrestacionBuscar = explode(': ', $tipoPrestacion)[1];
+    }
+
+    echo '<script>
+    if (!confirm("Alto!, para esta prestacion se requiere de los siguientes documentos: ' . queDocumentos($tipoPrestacionBuscar) . ' asegurarse de que esten presentes")) {
+        window.location.href = "solicitudesprestaciones.php";
+    } else {
+        ' . 
+        'var xhr = new XMLHttpRequest();
+        xhr.open("POST", window.location.href, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send("confirm=true&idPrestacion=' . $idPrestacion . '&tipoPrestacion=' . $tipoPrestacion . '");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                alert("Prestación otorgada");
+                window.location.href = "solicitudesprestaciones.php";
+            }
+        };
+        ' . 
+    '}
+    </script>';
+
+    if (isset($_POST['confirm']) && $_POST['confirm'] === 'true') {
         $queryOP = $conn->prepare("UPDATE prestacion SET Fecha_Otorgada = CURRENT_DATE WHERE Id_Prestacion = ?");
         $queryOP->bind_param("i", $idPrestacion);
         $queryOP->execute();
@@ -18,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $queryOPE->bind_param("i", $idPrestacion);
         $queryOPE->execute();
         $queryOPE->close();
-
+        
         $queryCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
         $queryCFP->bind_param("i", $idPrestacion);
         $queryCFP->execute();
@@ -30,84 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $queryOPF->execute();
             $queryOPF->close();
         }
-
-        // Redirigir de vuelta a la página de solicitudes
-        echo '<script>
-            alert("Prestación otorgada correctamente.");
-            window.location.href = "solicitudesprestaciones.php";
-        </script>';
-        exit();
-    }
-
-    // Mostrar el PDF correspondiente
-    $idPrestacion = $_POST['idPrestacion'];
-    $tipoPrestacion = $_POST['tipoPrestacion'];
-
-    if (strpos($tipoPrestacion, 'Plazo:') === 0 || strpos($tipoPrestacion, 'Dia:') === 0) {
-        $tipoPrestacionBuscar = 'Otro';
-    } else {
-        $tipoPrestacionBuscar = explode(': ', $tipoPrestacion)[1];
-    }
-
-    $pdfPath = '';
-    switch ($tipoPrestacionBuscar) {
-        case 'Utiles':
-            $pdfPath = "PDF Prestaciones/Utiles Escolares/Prestacion Utiles Escolares (Respuesta).pdf";
-            break;
-        case 'Exencion de inscripc':
-            $pdfPath = "PDF Prestaciones/Utiles Escolares/Prestacion Utiles Escolares (Respuesta).pdf";
-            break;
-        case 'Lentes':
-            $pdfPath = "PDF Prestaciones/Lentes/Prestacion Lentes(Respuesta[Deposito]).pdf";
-            break;
-        case 'Guarderia':
-            $pdfPath = "PDF Prestaciones/Guarderia y Canastilla/Prestacion guarderia y canastilla (Respuesta).pdf";
-            break;
-        case 'Aparato Ortopedico':
-            $pdfPath = "PDF Prestaciones/Aparatos Ortopedicos/Prestacion Aparatos Ortopedicos (Respuesta).pdf";
-            break;
-        case 'Titulación':
-            $pdfPath = "PDF Prestaciones/Titulacion/Prestacion Titulacion (Respuesta).pdf";
-            break;
-        default:
-            $pdfPath = ""; // Ruta por defecto si no se encuentra el tipo
-            break;
-    }
-
-    if (!empty($pdfPath)) {
-        // Obtener los documentos requeridos
-        $documentosRequeridos = queDocumentos($tipoPrestacionBuscar);
-
-        // Mostrar el PDF y un formulario para confirmar
-        echo '
-        <!DOCTYPE html>
-        <html lang="es">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Confirmar Prestación</title>
-            <script>
-                function confirmarDocumentos() {
-                    return confirm("Alto!, para esta prestación se requiere de los siguientes documentos: ' . $documentosRequeridos . '. ¿Está seguro de que están presentes?");
-                }
-            </script>
-        </head>
-        <body>
-            <div style="text-align: center;">
-                <embed src="' . htmlspecialchars($pdfPath) . '" type="application/pdf" width="80%" height="600px">
-                <form method="POST" action="" onsubmit="return confirmarDocumentos();">
-                    <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">
-                    <input type="hidden" name="confirm" value="true">
-                    <button type="submit" style="margin-top: 20px; padding: 10px 20px; font-size: 16px;">Confirmar Prestación</button>
-                </form>
-                <a href="solicitudesprestaciones.php" style="display: block; margin-top: 10px; color: red; text-decoration: none;">Cancelar</a>
-            </div>
-        </body>
-        </html>';
-        exit();
-    } else {
-        echo '<script>alert("No se encontró un PDF para este tipo de prestación."); window.location.href = "solicitudesprestaciones.php";</script>';
-        exit();
     }
 }
 ?>
