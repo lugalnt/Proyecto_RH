@@ -214,25 +214,6 @@ if ($quitarDias) {
     }
 }
 
-    //////////////////////////SI YA ESTA DESCANSANDO///////////////////////////
-    $queryCheckEstado = $conn->prepare("SELECT Estado FROM empleado WHERE Numero_Empleado = ?");
-    $queryCheckEstado->bind_param("i", $_SESSION['Numero_Empleado']);
-    $queryCheckEstado->execute();
-    $queryCheckEstado->bind_result($estado);
-    $queryCheckEstado->fetch();
-
-    if($estado == "En descanso")
-    {
-        echo '<script type="text/javascript">
-        alert("No puedes solicitar prestaciones mientras estás descansando.");
-        </script>';
-        echo("<meta http-equiv='refresh' content='1'>");
-        exit;
-    }
-    ////////////////////////////////////////////////////////////////////////////////
-
-
-
 //ARRIBA GUARDADO PARA QUE SE HAGA DE UNA FORMA U OTRA DESPUES DE QUE SE OTORGE LOL
 
 $queryInsertarP = $conn->prepare("INSERT INTO prestacion (Tipo, Fecha_Solicitada) VALUES ('Plazo', CURRENT_DATE)");

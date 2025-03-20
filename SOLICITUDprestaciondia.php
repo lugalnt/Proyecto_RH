@@ -178,24 +178,6 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $queryCheckDias->fetch();
     $queryCheckDias->close();
 
-    //////////////////////////SI YA ESTA DESCANSANDO///////////////////////////
-    $queryCheckEstado = $conn->prepare("SELECT Estado FROM empleado WHERE Numero_Empleado = ?");
-    $queryCheckEstado->bind_param("i", $_SESSION['Numero_Empleado']);
-    $queryCheckEstado->execute();
-    $queryCheckEstado->bind_result($estado);
-    $queryCheckEstado->fetch();
-
-    if($estado == "En descanso")
-    {
-        echo '<script type="text/javascript">
-        alert("No puedes solicitar prestaciones mientras estás descansando.");
-        </script>';
-        echo("<meta http-equiv='refresh' content='1'>");
-        exit;
-    }
-    ////////////////////////////////////////////////////////////////////////////////
-    
-
     if ($diaExtra) {
         if ($diasExtras <= 0) {
             echo '<script type="text/javascript">
