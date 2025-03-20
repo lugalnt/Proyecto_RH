@@ -20,8 +20,7 @@ function verificarPrestaciones($numeroEmpleado) {
             'Gasto funerario' => true,
             'Guarderia' => true,
             'Aparato Ortopedico' => true,
-            'Canastilla mama' => true,
-            'Titulacion' => true
+            'Canastilla mama' => true
         ],
         'Dias' => [
             'Permiso Sindical' => true,
@@ -90,9 +89,6 @@ function verificarPrestaciones($numeroEmpleado) {
 
                 if ($rowGAPAF['Tipo'] == "Canastilla mama") {
                     $prestacionesPermitidas['Apoyo Financiero']['Canastilla mama'] = false;
-                }
-                if ($rowGAPAF['Tipo'] == "Titulacion") {
-                    $prestacionesPermitidas['Apoyo Financiero']['Titulacion'] = false;
                 }
             }
         }
