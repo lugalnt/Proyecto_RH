@@ -105,21 +105,21 @@ if($_SESSION['Area'] != "RH")
   </div>
 
   <div class="date2">
-    <form method="POST" action="">
-      <h2>Información Extra</h2>
-      <div class="datos">
-        <input type="hidden" name="Costos" value="1">
-        <div class="button-container">
-          <form action="" method="POST">
-          <input type="hidden" name="ReiniciarCostos" value="1"> 
-          <button type="submit">Reiniciar</button>
-          </form>
-          <button onclick="window.location.href='costosDetallado.php'">Reporte Más Detallado</button>
-        </div>
+  <form method="POST" action="">
+    <h2>Información Extra</h2>
+    <div class="datos">
+      <input type="hidden" name="Costos" value="1">
+      <div class="button-container">
+        <input type="hidden" name="ReiniciarCostos" value="1"> 
+        <button type="submit">Reiniciar</button>
+        <button type="button" onclick="window.location.href='costosDetallado.php'">Reporte Más Detallado</button>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
+</div>
+
+
 <!-- FIN DE Preview de costos -->
 
             <!-- INICIO DE CIRCULOS -->
@@ -428,8 +428,10 @@ if($_SESSION['Area'] != "RH")
                 </div>
                 <div class="añadir-empleado">
                     <div onclick="window.location.href='adminPage.php';" style="cursor: pointer;">
+                        <center>
                         <span class="material-icons-sharp">add</span>
                         <h3>Añadir Empleado</h3>
+                        </center>
                      </div>   
                 </div>    
             </div>
