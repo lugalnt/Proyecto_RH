@@ -214,6 +214,10 @@ if ($quitarDias) {
     }
 }
 
+
+
+
+
 //ARRIBA GUARDADO PARA QUE SE HAGA DE UNA FORMA U OTRA DESPUES DE QUE SE OTORGE LOL
 
 $queryInsertarP = $conn->prepare("INSERT INTO prestacion (Tipo, Fecha_Solicitada) VALUES ('Plazo', CURRENT_DATE)");

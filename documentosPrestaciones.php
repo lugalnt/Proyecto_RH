@@ -16,7 +16,8 @@ $documentosPrestaciones = array(
     "Otro" => "Carta de solicitud FIRMADA",
     "Embarazo" => "Carta de solicitud FIRMADA",
     "Permiso por Duelo" => "Carta de solicitud FIRMADA",
-    "Incapacidad" => "Carta de solicitud FIRMADA"
+    "Incapacidad" => "Carta de solicitud FIRMADA",
+    "Titulación" => "Carta de solicitud FIRMADA"
 );
 
 function queDocumentos($prestacion) {

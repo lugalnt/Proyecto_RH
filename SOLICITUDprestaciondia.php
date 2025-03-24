@@ -178,6 +178,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $queryCheckDias->fetch();
     $queryCheckDias->close();
 
+
+
     if ($diaExtra) {
         if ($diasExtras <= 0) {
             echo '<script type="text/javascript">
