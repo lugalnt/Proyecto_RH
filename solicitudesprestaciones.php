@@ -103,6 +103,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 <button type="button" class="button" onclick="window.location.href='buscarEmpleadoYPrestaciones.php'">Buscar Empleado y Prestaciones</button>
             </div>
 
+            <table>
+            <form>
+
+            <select>
+                <option value="0"></option>
+                <option value="1">Prestaciones Otorgadas</option>
+                <option value="2">Prestaciones No Otorgadas</option>
+                <option value="3">Prestaciones Pendientes</option>
+            </select>
+
+
+            </form>
+            <table>
+
             <?php
             $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");  
             $querySP->execute();
