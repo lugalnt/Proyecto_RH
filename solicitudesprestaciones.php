@@ -115,7 +115,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
 
             </form>
-            <table>
+            </table>
 
             <?php
             $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");  
