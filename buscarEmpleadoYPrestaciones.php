@@ -139,6 +139,93 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="button-container">
             <button type="submit">Buscar</button>
             </div>
+
+            <label>Filtros<label>
+            <input type="checkbox" id="filtro1" name="filtro1" value="1" onchange="toggleSelect('listAcademico', this.checked)">Academico<br>
+            <div id="listAcademico" style="display: none;">
+            
+            <?php
+            require_once("conn.php");
+
+            $queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Academico'");
+            $queryCon->execute();
+            $result = $queryCon->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo '<input type="checkbox" name="academico[' . htmlspecialchars($row['nombre']) . ']">' . htmlspecialchars($row['nombre']) . '</input>';
+            }
+            $queryCon->close();
+
+
+            ?>
+            </div>
+            <br>
+
+            <input type="checkbox" id="filtro2" name="filtro2" value="1" onchange="toggleSelect('listFinanciero', this.checked)">Financiero<br>
+            <div id="listFinanciero" style="display: none;">
+            <?php
+            require_once("conn.php");
+
+            $queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Financiera'");
+            $queryCon->execute();
+            $result = $queryCon->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo '<input type="checkbox" name="financiera[' . htmlspecialchars($row['nombre']) . ']">' . htmlspecialchars($row['nombre']) . '</input>';
+            }
+            $queryCon->close();
+
+
+            ?>
+            </div>
+            <br>
+
+            <input type="checkbox" id="filtro3" name="filtro3" value="1" onchange="toggleSelect('listDia', this.checked)">Dia<br>
+            <div id="listDia" style="display: none;">
+            <?php
+            require_once("conn.php");
+
+            $queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Dia'");
+            $queryCon->execute();
+            $result = $queryCon->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo '<input type="checkbox" name="dia[' . htmlspecialchars($row['nombre']) . ']">' . htmlspecialchars($row['nombre']) . '</input>';
+            }
+            $queryCon->close();
+
+
+            ?>
+            </div>
+            <br>
+
+            <input type="checkbox" id="filtro4" name="filtro4" value="1" onchange="toggleSelect('listPlazo', this.checked)">Plazo<br>
+            <div id="listPlazo" style="display: none;">
+            <?php
+            require_once("conn.php");
+
+            $queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Plazo'");
+            $queryCon->execute();
+            $result = $queryCon->get_result();
+            while ($row = $result->fetch_assoc()) {
+                echo '<input type="checkbox" name="plazo[' . htmlspecialchars($row['nombre']) . ']">' . htmlspecialchars($row['nombre']) . '</input>';
+            }
+            $queryCon->close();
+
+
+            ?>
+            </div>
+            <br>
+
+            <script>
+                function toggleSelect(selectId, isChecked) {
+                    const selectElement = document.getElementById(selectId);
+                    selectElement.style.display = isChecked ? 'block' : 'none';
+                }
+            </script>
+
+
+
+
+
+
         </form>
         </div>
 
@@ -174,7 +261,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //Tambien debe estar entre bloques de comentario.
 
 
+    //FILTROS//
 
+    if (isset($_POST['filtro1'])) //academica
+    {
+        $academico = $_POST['academico'];
+    }
+    if 
+    (isset($_POST['filtro2'])) //financiera
+    {
+        $financiera = $_POST['financiera'];
+    }
+    if (isset($_POST['filtro3'])) //dia
+    {
+        $dia = $_POST['dia'];
+    }
+    if (isset($_POST['filtro4'])) //plazo
+    {
+        $plazo = $_POST['plazo'];
+    }
+
+
+    ///////////
 
 
 
