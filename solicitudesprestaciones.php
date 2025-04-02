@@ -104,24 +104,42 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             </div>
 
             <table>
-            <form>
-
-            <select>
-                <option value="0"></option>
-                <option value="1">Prestaciones Otorgadas</option>
-                <option value="2">Prestaciones No Otorgadas</option>
-                <option value="3">Prestaciones Pendientes</option>
+            <form action="" method="post">
+            <input type="hidden" name="aplicarFiltros" value="1">
+            <label> Filtros</label>
+            <select name="prestacionFiltro">
+                <option value="todos">Todos</option>
+                <option value="Academicas">Académicas</option>
+                <option value="Financieras">Financieras</option>
+                <option value="Dias">Días</option>
+                <option value="Plazos">Plazos</option>
             </select>
 
+            <button> Aplicar filtros </button>
 
             </form>
             </table>
-
             <?php
-            $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");  
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aplicarFiltros'])) {
+                $flitroPrestacion = $_POST['prestacionFiltro'];
+                if ($flitroPrestacion == "Academicas") {
+                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Academico' AND Fecha_Otorgada IS NULL");
+                } elseif ($flitroPrestacion == "Financieras") {
+                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Financiera' AND Fecha_Otorgada IS NULL");
+                } elseif ($flitroPrestacion == "Dias") {
+                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Día' AND Fecha_Otorgada IS NULL");
+                } elseif ($flitroPrestacion == "Plazos") {
+                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Plazo' AND Fecha_Otorgada IS NULL");
+                } else {
+                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");
+                }
+            } else {
+                $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");
+            }
             $querySP->execute();
             $resultadoSP = $querySP->get_result();
-            while($rowSP = $resultadoSP->fetch_assoc()) {
+            while ($rowSP = $resultadoSP->fetch_assoc()) {
                 $fechaSolicitud = $rowSP['Fecha_Solicitada'];
                 $idPrestacion = $rowSP['Id_Prestacion'];
 

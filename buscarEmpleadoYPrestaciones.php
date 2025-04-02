@@ -139,94 +139,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="button-container">
             <button type="submit">Buscar</button>
             </div>
-
-            <label>Filtros<label>
-            <input type="checkbox" id="filtro1" name="filtro1" value="1" onchange="toggleSelect('listAcademico', this.checked)">Academico<br>
-            <div id="listAcademico" style="display: none;">
-            
-            <?php
-            require_once("conn.php");
-
-            $queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Academico'");
-            $queryCon->execute();
-            $result = $queryCon->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo '<input type="checkbox" name="academico[' . htmlspecialchars($row['nombre']) . ']">' . htmlspecialchars($row['nombre']) . '</input>';
-            }
-            $queryCon->close();
-
-
-            ?>
-            </div>
+            <input type="checkbox" id="check" name="check" value="on"> Quiero filtrar </input> 
             <br>
-
-            <input type="checkbox" id="filtro2" name="filtro2" value="1" onchange="toggleSelect('listFinanciero', this.checked)">Financiero<br>
-            <div id="listFinanciero" style="display: none;">
-            <?php
-            require_once("conn.php");
-
-            $queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Financiera'");
-            $queryCon->execute();
-            $result = $queryCon->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo '<input type="checkbox" name="financiera[' . htmlspecialchars($row['nombre']) . ']">' . htmlspecialchars($row['nombre']) . '</input>';
-            }
-            $queryCon->close();
-
-
-            ?>
-            </div>
-            <br>
-
-            <input type="checkbox" id="filtro3" name="filtro3" value="1" onchange="toggleSelect('listDia', this.checked)">Dia<br>
-            <div id="listDia" style="display: none;">
-            <?php
-            require_once("conn.php");
-
-            $queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Dia'");
-            $queryCon->execute();
-            $result = $queryCon->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo '<input type="checkbox" name="dia[' . htmlspecialchars($row['nombre']) . ']">' . htmlspecialchars($row['nombre']) . '</input>';
-            }
-            $queryCon->close();
-
-
-            ?>
-            </div>
-            <br>
-
-            <input type="checkbox" id="filtro4" name="filtro4" value="1" onchange="toggleSelect('listPlazo', this.checked)">Plazo<br>
-            <div id="listPlazo" style="display: none;">
-            <?php
-            require_once("conn.php");
-
-            $queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Plazo'");
-            $queryCon->execute();
-            $result = $queryCon->get_result();
-            while ($row = $result->fetch_assoc()) {
-                echo '<input type="checkbox" name="plazo[' . htmlspecialchars($row['nombre']) . ']">' . htmlspecialchars($row['nombre']) . '</input>';
-            }
-            $queryCon->close();
-
-
-            ?>
-            </div>
-            <br>
-
-            <script>
-                function toggleSelect(selectId, isChecked) {
-                    const selectElement = document.getElementById(selectId);
-                    selectElement.style.display = isChecked ? 'block' : 'none';
-                }
-            </script>
-
-
-
-
-
-
-        </form>
+            <label> Filtros</label>
+            <select name="prestacionFiltro">
+                <option value="todos">Todos</option>
+                <option value="Academicas">Académicas</option>
+                <option value="Financieras">Financieras</option>
+                <option value="Dias">Días</option>
+                <option value="Plazos">Plazos</option>
+            </select>
+            </form>
         </div>
 
         
@@ -263,29 +186,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //FILTROS//
 
-    if (isset($_POST['filtro1'])) //academica
-    {
-        $academico = $_POST['academico'];
-    }
-    if 
-    (isset($_POST['filtro2'])) //financiera
-    {
-        $financiera = $_POST['financiera'];
-    }
-    if (isset($_POST['filtro3'])) //dia
-    {
-        $dia = $_POST['dia'];
-    }
-    if (isset($_POST['filtro4'])) //plazo
-    {
-        $plazo = $_POST['plazo'];
-    }
-
-
     ///////////
 
 
-
+    $flitroPrestacion = $_POST['prestacionFiltro'];
     $nombre = $_POST["nombre"];
     $numero = $_POST["numero"];
 
@@ -349,7 +253,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $resultCIE = $queryCIE->get_result();
 
             while ($rowCIE = $resultCIE->fetch_assoc()) {
-                $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");
+
+
+                if ($_POST['check'] == "on") {
+                    $flitroPrestacion = $_POST['prestacionFiltro'];
+                    if ($flitroPrestacion == "Academicas") {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Academico' AND Fecha_Otorgada IS NULL");
+                    } elseif ($flitroPrestacion == "Financieras") {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Financiera' AND Fecha_Otorgada IS NULL");
+                    } elseif ($flitroPrestacion == "Dias") {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Día' AND Fecha_Otorgada IS NULL");
+                    } elseif ($flitroPrestacion == "Plazos") {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Plazo' AND Fecha_Otorgada IS NULL");
+                    } else {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Fecha_Otorgada IS NULL");
+                    }
+                }
+                else{
+                    $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");
+                }
                 $queryGPE->bind_param("i", $numeroEmpleado);
                 $queryGPE->execute();
                 $resultGPE = $queryGPE->get_result();
@@ -357,7 +279,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 while ($rowGPE = $resultGPE->fetch_assoc()) {
                     $idPrestacion = $rowGPE['Id_Prestacion'];
 
+
+                if ($_POST['check'] == "on") {
+                    $flitroPrestacion = $_POST['prestacionFiltro'];
+                    if ($flitroPrestacion == "Academicas") {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion WHERE Id_Prestacion = ? AND Tipo = 'Academico' AND Fecha_Otorgada IS NULL");
+                    } elseif ($flitroPrestacion == "Financieras") {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion WHERE Id_Prestacion = ? AND Tipo = 'Financiera' AND Fecha_Otorgada IS NULL");
+                    } elseif ($flitroPrestacion == "Dias") {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion WHERE Id_Prestacion = ? AND Tipo = 'Día' AND Fecha_Otorgada IS NULL");
+                    } elseif ($flitroPrestacion == "Plazos") {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion WHERE Id_Prestacion = ? AND Tipo = 'Plazo' AND Fecha_Otorgada IS NULL");
+                    } else {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion WHERE Id_Prestacion = ? AND Fecha_Otorgada IS NULL");
+                    }
+                }
+                else{
                     $queryCE = $conn->prepare("SELECT * from prestacion WHERE Id_Prestacion = ?");
+                }
+                
+
                     $queryCE->bind_param("i", $idPrestacion);
                     $queryCE->execute();
                     $resultCE = $queryCE->get_result();
