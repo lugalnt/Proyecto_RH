@@ -111,8 +111,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 <option value="todos">Todos</option>
                 <option value="Academicas">Académicas</option>
                 <option value="Financieras">Financieras</option>
-                <option value="Dias">Días</option>
-                <option value="Plazos">Plazos</option>
+                <option value="Dias">Día</option>
+                <option value="Plazos">Plazo</option>
             </select>
 
             <button> Aplicar filtros </button>
