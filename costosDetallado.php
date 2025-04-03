@@ -1,18 +1,82 @@
+<?php
+include_once("error_handler.php");
+require_once("conn.php");
+require_once("ESTADOempleados.php");
+
+session_start();
+
+if(!isset($_SESSION['Numero_Empleado']))
+{
+  header('Location: login.html');
+}
+
+if($_SESSION['Area'] != "RH")
+{
+  header('Location: indexEmpleado.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reporte de Prestaciones Otorgadas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos Humanos</title>  
+    <!-- ASIGNACION DE CSS -->
+    <link rel="stylesheet" href="./prestacionesdetalladas.css">
+    <!-- SIMBOLOS QUE SE UTILIZARAN -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+    rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { margin-bottom: 20px; }
-        label { margin-right: 10px; }
-        table { border-collapse: collapse; width: 60%; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-        th { background-color: #f0f0f0; }
+    body.dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+    }
     </style>
 </head>
 <body>
+     <!-- BARRA LATERAL -->
+     <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                        <img src="./images/logo.png.png">
+                        <h2>Recursos<span class="danger">
+                            Humanos</span> </h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="index.php" class="active">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Menú</h3>
+                </a>
+                <a href="empleados.php">
+                    <span class="material-icons-sharp">groups</span>
+                    <h3>Empleados</h3>
+                </a>
+                <a href="solicitudesprestaciones.php">
+                    <span class="material-icons-sharp">payments</span>
+                    <h3>Prestaciones</h3>
+                </a>
+                <a href="empleadosDescansos.php">
+                    <span class="material-icons-sharp">date_range</span>
+                    <h3>Descansos</h3>
+                </a>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Cerrar Sesión</h3>
+                </a>
+                <form id="logout-form" action="" method="POST" style="display: none;">
+                    <input type="hidden" name="logout" value="1">
+                </form>
+            </div>
+        </aside>
+    <!-- FIN DE BARRA LATERAL -->
+    <main>
+    <!-- CONTENIDO PRINCIPAL -->   
     <h1>Reporte de Prestaciones Otorgadas</h1>
     <form method="post" action="">
         <label for="fecha_inicio">Fecha Inicio:</label>
@@ -21,7 +85,7 @@
         <input type="date" name="fecha_fin" id="fecha_fin" value="<?php echo htmlspecialchars($fecha_fin); ?>" required>
         <button type="submit">Consultar</button>
     </form>
-
+ 
 <?php
 
 require_once("conn.php"); 
@@ -144,5 +208,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fecha_inicio']) && is
 // Cerrar la conexión a la base de datos
 $conn->close();
 ?>
+</main>
+<!-- PARTE DERECHA DE LA PANTALLA -->
+<div class="right">
+            <!-- INICIO DEL TOP-->
+           <div class="top">
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">menu</span>
+                </button>
+                <div class="theme-toggler">
+                    <span class="material-icons-sharp active">light_mode</span>
+                    <span class="material-icons-sharp">dark_mode</span>
+                </div>
+                <div class="profile">
+                    <div class="info">
+                    <?php
+                    echo '<p>Hey, <b>'.htmlspecialchars($_SESSION['Nombre_Empleado']).'</b></p>
+                        <small class="text-muted">'.htmlspecialchars($_SESSION['Area']).'</small>';
+                    ?>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="./images/profile-1.jpg.jpeg">
+                    </div>
+                </div>
+            </div>
+            <!-- FIN DEL TOP-->
 </body>
+<script src="./index.js"></script>
 </html>
