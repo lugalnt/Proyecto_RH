@@ -115,11 +115,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
                 <label for="tipo"><h5>Tipo de Prestación:</h5></label>
                 <select id="tipo" name="tipo">
-                        <option value="Guarderia">Guardería</option>
-                        <option value="Gastos funerarios">Gastos funerarios</option>
-                        <option value="Lentes">Lentes</option>
-                        <option value="Titulacion">Titulación</option>
-                        <option value="Aparato Ortopedico">Aparato Ortopedico</option>
+                <?php
+require_once("conn.php");
+
+$queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Financiera'");
+$queryCon->execute();
+$result = $queryCon->get_result();
+while ($row = $result->fetch_assoc()) {
+    echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+}
+$queryCon->close();
+
+
+?>
                 </select><br><br>
 
                 <label for="tipo_pago"><h5>Tipo de Pago:</h5></label>

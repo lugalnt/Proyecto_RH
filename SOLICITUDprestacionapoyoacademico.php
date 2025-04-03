@@ -120,8 +120,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         <label for="tipo"><h5>Tipo de Apoyo:</h5></label>
         <select id="tipo" name="tipo">
-            <option value="Utiles">Útiles</option>
-            <option value="Exencion de inscripcion">Exención de inscripción</option>
+<?php
+require_once("conn.php");
+
+$queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Academico'");
+$queryCon->execute();
+$result = $queryCon->get_result();
+while ($row = $result->fetch_assoc()) {
+    echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+}
+$queryCon->close();
+
+
+?>
+
         </select><br><br>
 
         <div class="button-container">
