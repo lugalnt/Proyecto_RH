@@ -102,30 +102,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="button-container">
                 <button type="button" class="button" onclick="window.location.href='buscarEmpleadoYPrestaciones.php'">Buscar Empleado y Prestaciones</button>
             </div>
-
-            <table>
-            <td>
-            <form action="" method="post">
-            <input type="hidden" name="aplicarFiltros" value="1">
-            <label> Filtros</label>
-            <select name="prestacionFiltro" required>
+            <br>
+            <div class="filtros-container">
+    <form action="" method="post">
+        <input type="hidden" name="aplicarFiltros" value="1">
+        <div class="filtro-item">
+            <label for="prestacionFiltro"><h3>Filtros</h3></label>
+            <select name="prestacionFiltro" id="prestacionFiltro" required>
                 <option value="todos">Todos</option>
                 <option value="Academico">Académicas</option>
                 <option value="Financiera">Financieras</option>
                 <option value="Día">Día</option>
                 <option value="Plazo">Plazo</option>
             </select>
-            </td>
-            <td>
-            <label>"Especifica el tipo de prestacion despues de elegir de arriba, deja vacio si quieres ver todos de ese tipo"</label>
-            </td>
-            <td>
-            <input type="text" name="especifico">
-
-            <button> Aplicar filtros </button>
-            </td>
-            </form>
-            </table>
+        </div>
+        <div class="filtro-item">
+            <label for="especifico">Especifica el tipo de prestación (opcional):</label>
+            <input type="text" name="especifico" id="especifico" placeholder="Ejemplo: Beca">
+        </div>
+        <div class="filtro-item">
+            <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+        </div>
+    </form>
+</div>
             <?php
 
             if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aplicarFiltros'])) {

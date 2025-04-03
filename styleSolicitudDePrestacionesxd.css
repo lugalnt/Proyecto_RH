@@ -419,6 +419,46 @@ main .insights small {
     display: block;
 }
 
+.filtros-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten si no hay suficiente espacio */
+    gap: 20px; /* Espacio entre los elementos */
+    align-items: center; /* Alinea verticalmente los elementos */
+    margin-bottom: 20px; /* Espacio inferior */
+}
+
+.filtro-item {
+    display: flex;
+    flex-direction: column; /* Coloca el label encima del input/select */
+    gap: 5px; /* Espacio entre el label y el input/select */
+}
+
+.filtro-item select,
+.filtro-item input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid var(--color-light);
+    border-radius: 5px;
+    width: 100%; /* Asegura que los elementos ocupen todo el ancho disponible */
+    max-width: 300px; /* Establece un ancho máximo */
+    box-sizing: border-box;
+}
+
+.filtro-item button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filtro-item button:hover {
+    background-color: var(--color-primary-variant);
+}
+
 /* ========================== PRESTAMOS RECIENTES ===========================*/
 main .prestamos-recientes {
     margin-top: 2rem;
@@ -459,6 +499,33 @@ main table tbody td {
 
 main table tbody tr:last-child td {
     border: none;
+}
+.acciones-container {
+    display: flex;
+    justify-content: center; /* Centra los botones horizontalmente */
+    gap: 20px; /* Espacio entre los botones */
+    margin-top: 20px; /* Espacio superior */
+}
+
+.accion-item {
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos dentro del formulario estén alineados */
+    align-items: center; /* Centra el contenido dentro del formulario */
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: var(--color-white);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: var(--color-primary-variant);
 }
 
 /* ========================== PARTE DERECHA (TOP) ===========================*/
@@ -923,3 +990,5 @@ button.act:disabled {
     font-size: 0.8rem;
     width: 2em;
 }
+
+

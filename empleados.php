@@ -58,13 +58,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     <span class="material-icons-sharp">groups</span>
                     <h3>Empleados</h3>
                 </a>
+                <a href="solicitudesprestaciones.php">
+                    <span class="material-icons-sharp">payments</span>
+                    <h3>Prestaciones</h3>
+                </a>
                 <a href="convenioNuevo.php">
                     <span class="material-icons-sharp">article</span>
                     <h3>Convenios</h3>
-                </a>
-                <a href="#">
-                    <span class="material-icons-sharp">date_range</span>
-                    <h3>Descansos</h3>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span class="material-icons-sharp">logout</span>

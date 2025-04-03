@@ -139,19 +139,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="button-container">
             <button type="submit">Buscar</button>
             </div>
-            <input type="checkbox" id="check" name="check" value="on"> Quiero filtrar </input> 
-            <br>
-            <label> Filtros</label>
-            <select name="prestacionFiltro">
+            <div class="filtros-container">
+    <form action="" method="post">
+        <div class="filtro-item">
+            <input type="checkbox" id="check" name="check" value="on">
+            <label for="check">Quiero filtrar</label>
+        </div>
+        <div class="filtro-item">
+            <label for="prestacionFiltro"><h3>Filtros</h3></label>
+            <select name="prestacionFiltro" id="prestacionFiltro">
                 <option value="todos">Todos</option>
                 <option value="Academicas">Académicas</option>
                 <option value="Financieras">Financieras</option>
                 <option value="Dia">Días</option>
                 <option value="Plazo">Plazos</option>
             </select>
-            <label>"Especifica el tipo de prestacion despues de elegir de arriba, deja vacio si quieres ver todos de ese tipo"</label>
-                        <input type="text" name="especifico">
-            </form>
+        </div>
+        <div class="filtro-item">
+            <label for="especifico">Especifica el tipo de prestación (opcional):</label>
+            <input type="text" name="especifico" id="especifico" placeholder="Ejemplo: Beca">
+        </div>
+        <div class="filtro-item">
+            <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+        </div>
+    </form>
+</div>
         </div>
 
         

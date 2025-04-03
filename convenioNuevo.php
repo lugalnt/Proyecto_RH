@@ -99,28 +99,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             </div> 
             <!-- FIN DE APARTADO DE CUENTA Y CAMBIO DE MODO CLARO/OSCURO -->
 
-        <table>
-            
-                <td>
-                <form action="" method="post">
-                <button value="Registrar" type="submit" class="btn btn-primary">Registrar nuevo convenio</button>
-                <input type="hidden" name="Registrar" value="Registrar">
-                </form>
-                </td>
-                <td>
-                <form action="" method="post">
-                <button value="Modificar" type="submit" class="btn btn-primary">Modificar convenio</button>   
-                <input type="hidden" name="Modificar" value="Modificar"> 
-                </form>
-                </td>
-                <td>
-                <form action="" method="post">
-                <button value="Eliminar" type="submit" class="btn btn-primary">Eliminar convenio</button>
-                <input type="hidden" name="Eliminar" value="Eliminar">
-                </form>
-                </td>
-            
-        </table>
+  
+            <main>
+            <div class="acciones-container">
+    <form action="" method="post" class="accion-item">
+        <input type="hidden" name="Registrar" value="Registrar">
+        <button value="Registrar" type="submit" class="btn btn-primary">Registrar nuevo convenio</button>
+    </form>
+    <form action="" method="post" class="accion-item">
+        <input type="hidden" name="Modificar" value="Modificar">
+        <button value="Modificar" type="submit" class="btn btn-primary">Modificar convenio</button>
+    </form>
+    <form action="" method="post" class="accion-item">
+        <input type="hidden" name="Eliminar" value="Eliminar">
+        <button value="Eliminar" type="submit" class="btn btn-primary">Eliminar convenio</button>
+    </form>
+</div>
+    
 
 
         <?php
