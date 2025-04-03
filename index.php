@@ -158,33 +158,35 @@ if($_SESSION['Area'] != "RH")
             </div>
                 <!-- FIN DE INGRESOS -->
             </div>
-
-            <table>
-                <td>
+            <br>
+            <br>
+    <div style="text-align: center;">
+    <table style="margin: 0 auto;">
+        <tr>
+            <td>
                 <form method="POST" action="">
-                <button>2 semanas</button>
-                <input type="hidden" name="2semanas" value="1">
+                    <button>2 semanas</button>
+                    <input type="hidden" name="2semanas" value="1">
                 </form>
-                </td>
-                <td>
+            </td>
+            <td>
                 <form method="POST" action="">
-                <button>4 meses</button>
-                <input type="hidden" name="4meses" value="1">
+                    <button>4 meses</button>
+                    <input type="hidden" name="4meses" value="1">
                 </form>
-                </td>
-                <td>
+            </td>
+            <td>
                 <form method="POST" action="">
-                <button>1 año</button>
-                <input type="hidden" name="1año" value="1">
+                    <button>1 año</button>
+                    <input type="hidden" name="1año" value="1">
                 </form>
-                </td>
-                <td>
-                <button onclick="window.location.href='costosDetallado.php'">Reporte mas detallado</button>
-                </td>
-            </table>
-
-
-
+            </td>
+            <td>
+                <button onclick="window.location.href='costosDetallado.php'">Reporte más detallado</button>
+            </td>
+        </tr>
+    </table>
+</div>
         </main>
         <!-- FIN DE PRESTAMOS RECIENTES TABLA -->
 
