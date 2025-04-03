@@ -55,11 +55,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     <span class="material-icons-sharp">groups</span>
                     <h3>Empleados</h3>
                 </a>
-                <a href="solicitudesprestaciones.php" class="active">
+                <a href="solicitudesprestaciones.php">
                 <span class="material-icons-sharp">payments</span>
                     <h3>Prestaciones</h3>
                 </a>
-                <a href="convenioNuevo.php">
+                <a href="convenioNuevo.php"  class="active">
                     <span class="material-icons-sharp">article</span>
                     <h3>Convenios</h3>
                 </a>
