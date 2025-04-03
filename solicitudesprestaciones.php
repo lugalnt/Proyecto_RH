@@ -104,33 +104,79 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             </div>
 
             <table>
+            <td>
             <form action="" method="post">
             <input type="hidden" name="aplicarFiltros" value="1">
             <label> Filtros</label>
-            <select name="prestacionFiltro">
+            <select name="prestacionFiltro" required>
                 <option value="todos">Todos</option>
-                <option value="Academicas">Académicas</option>
-                <option value="Financieras">Financieras</option>
-                <option value="Dias">Día</option>
-                <option value="Plazos">Plazo</option>
+                <option value="Academico">Académicas</option>
+                <option value="Financiera">Financieras</option>
+                <option value="Día">Día</option>
+                <option value="Plazo">Plazo</option>
             </select>
+            </td>
+            <td>
+            <label>"Especifica el tipo de prestacion despues de elegir de arriba, deja vacio si quieres ver todos de ese tipo"</label>
+            </td>
+            <td>
+            <input type="text" name="especifico">
 
             <button> Aplicar filtros </button>
-
+            </td>
             </form>
             </table>
             <?php
 
             if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aplicarFiltros'])) {
-                $flitroPrestacion = $_POST['prestacionFiltro'];
-                if ($flitroPrestacion == "Academicas") {
-                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Academico' AND Fecha_Otorgada IS NULL");
-                } elseif ($flitroPrestacion == "Financieras") {
-                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Financiera' AND Fecha_Otorgada IS NULL");
-                } elseif ($flitroPrestacion == "Dias") {
-                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Día' AND Fecha_Otorgada IS NULL");
-                } elseif ($flitroPrestacion == "Plazos") {
-                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Plazo' AND Fecha_Otorgada IS NULL");
+                $filtroPrestacion = $_POST['prestacionFiltro'];
+                if ($filtroPrestacion == "Academico") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Academico' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                        $querySP->bind_param("s", $especifico);
+                    }
+                    else {
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Academico' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                    }
+
+                } elseif ($filtroPrestacion == "Financiera") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Financiera' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                        $querySP->bind_param("s", $especifico);
+                    }
+                    else {
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Financiera' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                    }
+
+                } elseif ($filtroPrestacion == "Día") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Día' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Motivo LIKE ?)");
+                        $querySP->bind_param("s", $especifico);
+                    }
+                    else {
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Día' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                    }
+
+
+
+                } elseif ($filtroPrestacion == "Plazo") {
+
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p INNER JOIN prestacion_plazos pa ON p.Id_Prestacion = pa.Id_Prestacion WHERE p.Tipo = 'Plazo' AND p.Fecha_Otorgada IS NULL AND pa.Tipo LIKE ?");
+                        $querySP->bind_param("s", $especifico);
+                    }
+                    else {
+                        $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Plazo' AND Fecha_Otorgada IS NULL");
+                    }
+                    
                 } else {
                     $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");
                 }
