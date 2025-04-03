@@ -61,9 +61,9 @@ if($_SESSION['Area'] != "RH")
                     <span class="material-icons-sharp">payments</span>
                     <h3>Prestaciones</h3>
                 </a>
-                <a href="empleadosDescansos.php">
-                    <span class="material-icons-sharp">date_range</span>
-                    <h3>Descansos</h3>
+                <a href="convenioNuevo.php">
+                    <span class="material-icons-sharp">article</span>
+                    <h3>Convenios</h3>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span class="material-icons-sharp">logout</span>
@@ -79,12 +79,17 @@ if($_SESSION['Area'] != "RH")
     <!-- CONTENIDO PRINCIPAL -->   
     <h1>Reporte de Prestaciones Otorgadas</h1>
     <form method="post" action="">
-        <label for="fecha_inicio">Fecha Inicio:</label>
+    <br>
+    <div class="fecha-group">
+        <label for="fecha_inicio"><h2>Fecha Inicio:</h2></label>
         <input type="date" name="fecha_inicio" id="fecha_inicio" value="<?php echo htmlspecialchars($fecha_inicio); ?>" required>
-        <label for="fecha_fin">Fecha Fin:</label>
+    </div>
+    <div class="fecha-group">
+        <label for="fecha_fin"><h2>Fecha Fin:</h2></label>
         <input type="date" name="fecha_fin" id="fecha_fin" value="<?php echo htmlspecialchars($fecha_fin); ?>" required>
-        <button type="submit">Consultar</button>
-    </form>
+    </div>
+    <button type="submit">Consultar</button>
+</form>
  
 <?php
 
@@ -122,38 +127,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fecha_inicio']) && is
 ?>   
 
 <?php if (isset($resultados) || isset($resultados_academico) || isset($resultados_financiero)): ?>
+    <div class="table-container">
+    <br>
+    <br>
     <table>
-        <thead>
-            <tr>
-                <th>Tipo de Prestación</th>
-                <th>Cantidad</th>
-                <th>Costo Unitario</th>
-                <th>Costo Total</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            <?php if ($resultados_academico->num_rows > 0): ?>
-                <tr>
-                    <th colspan="4">Académicas</th>
-                </tr>
-                <?php while ($fila = $resultados_academico->fetch_assoc()): ?>
-                    <?php
-                    $contA = $contA + $fila['cantidad'];
-                    $tipo = $fila['Tipo'];
-                    $cantidad = $fila['cantidad'];
-                    $costo_unitario = obtenerPrecioPrestacion($tipo);
-                    $costo_total = is_numeric($costo_unitario) ? $costo_unitario * $cantidad : $costo_unitario;
-                    $costo_totalA = $costo_totalA + $costo_total;
-                    ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($tipo); ?></td>
-                        <td><?php echo htmlspecialchars($cantidad); ?></td>
-                        <td><?php echo htmlspecialchars($costo_unitario); ?></td>
-                        <td><?php echo htmlspecialchars($costo_total); ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php endif; ?>
+    <thead>
+        <tr>
+            <th>Tipo de Prestación</th>
+            <th>Cantidad</th>
+            <th>Costo Unitario</th>
+            <th>Costo Total</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php if ($resultados_academico->num_rows > 0): ?>
+    <tr>
+        <th colspan="4">Académicas</th>
+    </tr>
+    <?php while ($fila = $resultados_academico->fetch_assoc()): ?>
+        <?php
+        $contA += $fila['cantidad']; // Suma la cantidad al contador
+        $tipo = $fila['Tipo'];
+        $cantidad = $fila['cantidad'];
+        $costo_unitario = obtenerPrecioPrestacion($tipo);
+        $costo_total = is_numeric($costo_unitario) ? $costo_unitario * $cantidad : $costo_unitario;
+        $costo_totalA += $costo_total; // Suma el costo total al acumulador
+        ?>
+        <tr>
+            <td><?php echo htmlspecialchars($tipo); ?></td>
+            <td><?php echo htmlspecialchars($cantidad); ?></td>
+            <td><?php echo htmlspecialchars($costo_unitario); ?></td>
+            <td><?php echo htmlspecialchars($costo_total); ?></td>
+        </tr>
+    <?php endwhile; ?>
+<?php endif; ?>
 
             <?php if ($resultados_financiero->num_rows > 0): ?>
                 <tr>

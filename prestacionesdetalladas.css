@@ -258,6 +258,70 @@ main {
     margin-top: 1.4rem;
 }
 
+input[type="date"] {
+    width: 100%; /* Ajusta el ancho al 100% del contenedor */
+    max-width: 300px; /* Establece un ancho máximo */
+    padding: 10px; /* Aumenta el espacio interno */
+    font-size: 1.2rem; /* Aumenta el tamaño del texto */
+    border: 1px solid #ccc; /* Define un borde */
+    border-radius: 5px; /* Bordes redondeados */
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+}
+
+table {
+    background-color: var(--color-white); /* Fondo blanco para la tabla */
+    color: var(--color-dark); /* Color del texto */
+    border-collapse: collapse; /* Elimina los espacios entre las celdas */
+    width: 80%; /* Ajusta el ancho de la tabla */
+    max-width: 1200px; /* Establece un ancho máximo */
+    font-size: 1.2rem; /* Ajusta el tamaño del texto */
+    text-align: center; /* Centra el texto dentro de las celdas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Agrega una sombra para destacar la tabla */
+}
+
+table th, table td {
+    padding: 15px; /* Espaciado interno de las celdas */
+    border: 1px solid var(--color-light); /* Bordes de las celdas */
+}
+
+table th {
+    background-color: var(--color-primary); /* Fondo de los encabezados */
+    color: var(--color-dark); /* Color del texto de los encabezados */
+    font-size: 1.3rem; /* Aumenta el tamaño del texto de los encabezados */
+}
+
+table tr:nth-child(even) {
+    background-color: var(--color-background); /* Fondo alternado para las filas */
+}
+
+table tr:hover {
+    background-color: var(--color-info-light); /* Fondo al pasar el mouse */
+    color: var(--color-white); /* Cambia el color del texto al pasar el mouse */
+}
+
+
+body.dark-mode table {
+    background-color: var(--color-background2); /* Fondo de la tabla en modo oscuro */
+    color: var(--color-white); /* Color del texto en modo oscuro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Ajusta la sombra para el modo oscuro */
+}
+
+body.dark-mode table th {
+    background-color: var(--color-dark-variant); /* Fondo de los encabezados en modo oscuro */
+    color: var(--color-white); /* Color del texto de los encabezados en modo oscuro */
+}
+
+body.dark-mode table td {
+    border: 1px solid var(--color-light); /* Bordes de las celdas en modo oscuro */
+}
+
+body.dark-mode table tr:nth-child(even) {
+    background-color: var(--color-background); /* Fondo alternado de las filas en modo oscuro */
+}
+
+body.dark-mode table tr:hover {
+    background-color: var(--color-dark-variant); /* Fondo al pasar el mouse en modo oscuro */
+}
 /* ========================== PARTE IZQUIERDA (MAIN) ===========================*/
 main .date {
     display: inline-block;
