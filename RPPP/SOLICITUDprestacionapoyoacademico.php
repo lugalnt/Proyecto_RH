@@ -11,12 +11,9 @@ if(!isset($_SESSION['Numero_Empleado']))
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    if(isset($_POST["logout"]))
-    {
-    session_destroy();
-    header('Location: login.html');
-    exit();
-    }
+
+$numeroEmpleado = $_POST['numeroEmpleado2'];
+echo "<script>console.log('Numero de empleado: $numeroEmpleado');</script>";
 }
 ?>
 
@@ -28,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     <title>Empleado</title>
     <!-- ASIGNACION DE CSS -->
     <link href="lightbox.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./styleRegistrarFamiliares.css">
+    <link rel="stylesheet" href="/Proyecto_RH/styleRegistrarFamiliares.css">
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
     rel="stylesheet">
@@ -39,7 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         <aside>
             <div class="top">
                 <div class="logo">
-                        <img src="./images/logo.png.png">
+                        <img src="/Proyecto_RH/images/logo.png.png">
                         <h2>Empleado<span class="danger">
                             UTN</span> </h2>
                 </div>
@@ -57,29 +54,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     <span class="material-icons-sharp">people</span>
                     <h3>Registrar familiar para prestamo</h3>
                 </a>
-                <a href="SOLICITUDprestacionesfinancieras.php">
-                    <span class="material-icons-sharp">payments</span>
-                    <h3>Solicitud de prestacion: Apoyo financiero</h3>
-                </a>
-                <a href="SOLICITUDprestacionapoyoacademico.php" class="active">
-                    <span class="material-icons-sharp">school</span>
-                    <h3>Solicitud de prestacion: Apoyo academico</h3>
-                </a>
-                <a href="SOLICITUDprestaciondia.php">
-                    <span class="material-icons-sharp">today</span>
-                    <h3>Solicitar un dia</h3>
-                </a>
-                <a href="SOLICITUDprestacionplazo.php">
-                    <span class="material-icons-sharp">date_range</span>
-                    <h3>Solicitar un plazo</h3>
-                </a>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <span class="material-icons-sharp">logout</span>
-                    <h3>Cerrar Sesión</h3>
-                </a>
-                <form id="logout-form" action="" method="POST" style="display: none;">
-                    <input type="hidden" name="logout" value="1">
-                </form>
+
             </div>
         </aside>
     <!-- FIN DE BARRA LATERAL -->
@@ -102,7 +77,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     ?>
                     </div>
                     <div class="profile-photo">
-                        <img src="./images/profile-1.jpg.jpeg">
+                        <img src="/Proyecto_RH/images/profile-1.jpg.jpeg">
                     </div>
                 </div>
         </div> 
@@ -180,7 +155,7 @@ include_once("error_handler.php");
 
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"]=="POST")
+if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST['tipo']))
 {
 
 $nombre_familiar = $_POST['nombre_familiar'];
@@ -188,7 +163,7 @@ $nombre_institucion = $_POST['nombre_institucion'];
 $tipoApoyo = $_POST['tipo'];
 
 require_once("ESTADOsepuedeprestacion.php");
-$prestacionesPermitidas = verificarPrestaciones($_SESSION['Numero_Empleado']);
+$prestacionesPermitidas = verificarPrestaciones($numeroEmpleado);
 
 if (!$prestacionesPermitidas['Academico'][$tipoApoyo]) {
 echo "<script>alert('No se puede solicitar este tipo de apoyo académico debido a que ya te lo otorgaron este cuatrimestre');</script>";
@@ -199,7 +174,7 @@ echo "<script>location.reload();</script>";
 
 ////////////////////
 $queryCheckToday = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Academico' AND DATE(Fecha_Solicitada) = CURDATE()");
-$queryCheckToday->bind_param("i", $_SESSION['Numero_Empleado']);
+$queryCheckToday->bind_param("i", $numeroEmpleado);
 $queryCheckToday->execute();
 $resultCheckToday = $queryCheckToday->get_result();
 
@@ -220,7 +195,7 @@ while($rowCheckToday = $resultCheckToday->fetch_assoc()) {
 
 
 $queryChecarPF = $conn->prepare("SELECT * FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE f.Nombre_Familiar like ? AND e.Numero_Empleado = ?");
-$queryChecarPF->bind_param("si", $nombre_familiar, $_SESSION['Numero_Empleado']);
+$queryChecarPF->bind_param("si", $nombre_familiar, $numeroEmpleado);
 $queryChecarPF->execute();
 $result = $queryChecarPF->get_result();
 $row = $result->fetch_assoc();
@@ -247,7 +222,7 @@ if ($row)
     $queryInsertP->close();
     
     $queryInsertPE = $conn->prepare("INSERT INTO empleado_prestacion (Numero_Empleado, Id_Prestacion, Tipo) VALUES (?, ?, ?)");
-    $queryInsertPE->bind_param("iis", $_SESSION['Numero_Empleado'], $id_prestacion, $tipo);
+    $queryInsertPE->bind_param("iis", $numeroEmpleado, $id_prestacion, $tipo);
     $queryInsertPE->execute();
     $queryInsertPE->close();
 
@@ -257,14 +232,14 @@ if ($row)
     $queryInsertPF->close();
     
     $queryInsertPA = $conn->prepare("INSERT INTO prestacion_apoyoacademico (Id_Prestacion, Numero_Empleado, Id_Familiar, Nivel_Academico, Nombre_Institucion, Tipo) VALUES (?, ?, ?, ?, ?, ?)");
-    $queryInsertPA->bind_param("iiisss", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $nivel_academico, $nombre_institucion, $tipoApoyo);
+    $queryInsertPA->bind_param("iiisss", $id_prestacion, $numeroEmpleado, $row['Id_Familiar'], $nivel_academico, $nombre_institucion, $tipoApoyo);
     $queryInsertPA->execute();
     $queryInsertPA->close();
 
     switch ($tipoApoyo)
     {
         case "Utiles":
-            echo '<script>mostrarPDF("PDF Prestaciones/Utiles Escolares/Prestacion Utiles Escolares (Solicitud).pdf")</script>';
+            echo '<script>mostrarPDF("/Proyecto_RH/PDF Prestaciones/Utiles Escolares/Prestacion Utiles Escolares (Solicitud).pdf")</script>';
             break;
         
         default:
@@ -289,7 +264,7 @@ else
 
 ?>
 
-<script src="./index.js"></script>
+<script src="/Proyecto_RH/index.js"></script>
 
 <script>
         document.addEventListener("DOMContentLoaded", function() {
