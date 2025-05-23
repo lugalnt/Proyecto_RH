@@ -10,10 +10,57 @@ if(!isset($_SESSION['Numero_Empleado']))
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
+if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 
 $numeroEmpleado = $_POST['numeroEmpleado2'];
 echo "<script>console.log('Numero de empleado: $numeroEmpleado');</script>";
+
+
+    // Mostrar familiares registrados del empleado
+    $queryFamiliares = $conn->prepare("SELECT f.Nombre_Familiar, f.Nivel_academico FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE e.Numero_Empleado = ?");
+    $queryFamiliares->bind_param("i", $numeroEmpleado);
+    $queryFamiliares->execute();
+    $resultFamiliares = $queryFamiliares->get_result();
+
+    // Recoger los familiares en un array para pasarlos a JS
+    $familiares = [];
+    while ($rowF = $resultFamiliares->fetch_assoc()) {
+        $familiares[] = [
+            'Nombre_Familiar' => $rowF['Nombre_Familiar'],
+            'Nivel_academico' => $rowF['Nivel_academico']
+        ];
+    }
+    // Pasar el array a JS usando json_encode
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var familiares = " . json_encode($familiares) . ";
+            if (familiares.length > 0) {
+                var div = document.createElement('div');
+                div.style.background = '#fff';
+                div.style.padding = '15px';
+                div.style.margin = '10px 0';
+                div.style.borderRadius = '8px';
+                var html = '<h4>Familiares registrados:</h4><ul>';
+                familiares.forEach(function(f) {
+                    html += '<li>' + 
+                        (f.Nombre_Familiar ? f.Nombre_Familiar.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '') + 
+                        ' (' + 
+                        (f.Nivel_academico ? f.Nivel_academico.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '') + 
+                        ')</li>';
+                });
+                html += '</ul>';
+                div.innerHTML = html;
+                var contenido = document.querySelector('.sidebar');
+                if (contenido) contenido.appendChild(div);
+            }
+        });
+    </script>";
+
+    $queryFamiliares->close();
+
+
+
 }
 ?>
 
@@ -45,15 +92,11 @@ echo "<script>console.log('Numero de empleado: $numeroEmpleado');</script>";
                                 </div>
                         </div>
 
-                        <div class="sidebar">
-                                <a href="index.php">
-                                        <span class="material-icons-sharp">grid_view</span>
-                                        <h3>Menú</h3>
-                                </a>
-                                <a href="registrarfamiliares.php">
-                                        <span class="material-icons-sharp">people</span>
-                                        <h3>Registrar familiar para prestamo</h3>
-                                </a>
+            <div class="sidebar">
+                <a href="/Proyecto_RH/RPPP.php">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Regresar</h3>
+                </a>
 
                         </div>
                 </aside>
