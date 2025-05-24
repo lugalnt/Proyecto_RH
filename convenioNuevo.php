@@ -260,7 +260,7 @@ echo<<<HTML
                 <h1>Eliminar convenio</h1>
                         <h2>Por favor, llena los siguientes campos:</h2>
                         <form action="" method="post">
-                           <select>
+                           <select name="convenioAborrar" id="convenio" required>
 HTML;
                         require_once("conn.php");
                         include_once("error_handler.php");
@@ -402,7 +402,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["Modificar"]) && !isset
         require_once("conn.php");
         include_once("error_handler.php");
 
-        $convenioAact = $_POST['convenioAactualizar'];
+        $convenioAact = $_POST['convenioAborrar'];
 
 
         $queryUC = $conn->prepare("DELETE FROM tiposprestacion WHERE id = ?");

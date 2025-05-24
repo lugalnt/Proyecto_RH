@@ -1,20 +1,15 @@
-To do:
+-> IMPORTANTE RECORDAR: AJUSTAR TODO LO DE LOS CONVENIOS YA QUE TIENEN SU PROPIA TABLA DINAMICA YA
 
-- Hacer lista completa de las especificaciones y detalles (Listo por ahora) ✓
-    -Que (Mas que la disponibilidad) impide a un empleado ser otorgado un dia y un plazo?
+SEGUN YA HICE PERO REVISAR:
+-Que se vean en las solicitudes
+-Que se vean en los filtros
+-Que tengan en los precios
 
--Implementar lista a filtro ✓
-    -Para hacer esto se necesitan anadir mas tipos de empleado (Leer hoja), Usar el campo de titulo para diferenciar?
+HACER:
+-Que el archivo que revisa si estan disponible para usuario la use en vez del array mapeo 
+insano god programming que habia hecho
+-Que los costos vengan de la tabla en vez del otro archivo
 
--Tweaks
-
--Get those pdf done, polo on it.
-
--Si se puede hacer la chingadera esa de dar un corte, Ya hay plan depende de:
-    -Para erick: Hacer que los circulos sean el numero de prestamos del mes y asi lol
-    -Forma basica de mostrarlos hecha ✓
-
--Get started on those web views
 
 ⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⢰⡿⠋⠁⠀⠀⠈⠉⠙⠻⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
