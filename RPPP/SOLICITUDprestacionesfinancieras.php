@@ -192,7 +192,7 @@ $queryCon->close();
     </div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="lib/lightbox/js/lightbox.min.js"></script>
+<script src="/Proyecto_RH/lightbox.min.js"></script>
 
 <script>
     function mostrarPDF(rutaPDF) {

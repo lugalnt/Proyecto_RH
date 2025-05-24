@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 01, 2025 at 03:06 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 24-05-2025 a las 02:08:32
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `proyectorh`
+-- Base de datos: `proyectorh`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `empleado`
+-- Estructura de tabla para la tabla `empleado`
 --
 
 CREATE TABLE `empleado` (
@@ -45,7 +45,7 @@ CREATE TABLE `empleado` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `empleado`
+-- Volcado de datos para la tabla `empleado`
 --
 
 INSERT INTO `empleado` (`Numero_Empleado`, `Nombre_Empleado`, `Contraseña_Empleado`, `Area`, `Edad`, `Genero`, `Titulo`, `Fecha_Ingreso`, `Direccion`, `Telefono`, `Discapacidad`, `Estado`, `Dias_Extras`, `Dias`) VALUES
@@ -64,7 +64,7 @@ INSERT INTO `empleado` (`Numero_Empleado`, `Nombre_Empleado`, `Contraseña_Emple
 (2147483647, '321312312', '', 'Profesor', 1, 'masc', '2222', '2025-03-05', '321321', '123123', 'N/A', 'Activo', 0, 24);
 
 --
--- Triggers `empleado`
+-- Disparadores `empleado`
 --
 DELIMITER $$
 CREATE TRIGGER `trg_AjustarDiasExtras` BEFORE INSERT ON `empleado` FOR EACH ROW BEGIN
@@ -84,7 +84,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `empleado_familiar`
+-- Estructura de tabla para la tabla `empleado_familiar`
 --
 
 CREATE TABLE `empleado_familiar` (
@@ -94,7 +94,7 @@ CREATE TABLE `empleado_familiar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `empleado_familiar`
+-- Volcado de datos para la tabla `empleado_familiar`
 --
 
 INSERT INTO `empleado_familiar` (`Numero_Empleado`, `Id_Familiar`, `Relacion`) VALUES
@@ -115,7 +115,7 @@ INSERT INTO `empleado_familiar` (`Numero_Empleado`, `Id_Familiar`, `Relacion`) V
 -- --------------------------------------------------------
 
 --
--- Table structure for table `empleado_prestacion`
+-- Estructura de tabla para la tabla `empleado_prestacion`
 --
 
 CREATE TABLE `empleado_prestacion` (
@@ -127,7 +127,7 @@ CREATE TABLE `empleado_prestacion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `empleado_prestacion`
+-- Volcado de datos para la tabla `empleado_prestacion`
 --
 
 INSERT INTO `empleado_prestacion` (`Numero_Empleado`, `Id_Prestacion`, `Tipo`, `Fecha_Solicitada`, `Fecha_Otorgada`) VALUES
@@ -165,12 +165,16 @@ INSERT INTO `empleado_prestacion` (`Numero_Empleado`, `Id_Prestacion`, `Tipo`, `
 (8236, 53, 'Financiera', '2025-03-20', '2025-03-20'),
 (8236, 54, 'Día', '2025-03-20', NULL),
 (8236, 55, 'Financiera', '2025-03-20', '2025-03-20'),
-(8236, 56, 'Academico', '2025-03-20', NULL);
+(8236, 56, 'Academico', '2025-03-20', NULL),
+(445, 57, 'Financiera', '2025-04-02', NULL),
+(223, 58, 'Día', '2025-05-22', NULL),
+(223, 59, 'Día', '2025-05-22', NULL),
+(2147483647, 61, 'Financiera', '2025-05-22', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `familiar_empleado`
+-- Estructura de tabla para la tabla `familiar_empleado`
 --
 
 CREATE TABLE `familiar_empleado` (
@@ -181,7 +185,7 @@ CREATE TABLE `familiar_empleado` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `familiar_empleado`
+-- Volcado de datos para la tabla `familiar_empleado`
 --
 
 INSERT INTO `familiar_empleado` (`Id_Familiar`, `Nombre_Familiar`, `Nivel_academico`, `Edad`) VALUES
@@ -198,7 +202,7 @@ INSERT INTO `familiar_empleado` (`Id_Familiar`, `Nombre_Familiar`, `Nivel_academ
 -- --------------------------------------------------------
 
 --
--- Table structure for table `familiar_prestacion`
+-- Estructura de tabla para la tabla `familiar_prestacion`
 --
 
 CREATE TABLE `familiar_prestacion` (
@@ -209,7 +213,7 @@ CREATE TABLE `familiar_prestacion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `familiar_prestacion`
+-- Volcado de datos para la tabla `familiar_prestacion`
 --
 
 INSERT INTO `familiar_prestacion` (`Id_Familiar`, `Id_Prestacion`, `Tipo`, `Fecha_Otorgada`) VALUES
@@ -231,12 +235,14 @@ INSERT INTO `familiar_prestacion` (`Id_Familiar`, `Id_Prestacion`, `Tipo`, `Fech
 (7, 52, 'Academico', '2025-03-19'),
 (0, 53, 'Financiera', '2025-03-20'),
 (0, 55, 'Financiera', '2025-03-20'),
-(9, 56, 'Academico', NULL);
+(9, 56, 'Academico', NULL),
+(0, 57, 'Financiera', NULL),
+(0, 61, 'Financiera', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prestacion`
+-- Estructura de tabla para la tabla `prestacion`
 --
 
 CREATE TABLE `prestacion` (
@@ -248,7 +254,7 @@ CREATE TABLE `prestacion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `prestacion`
+-- Volcado de datos para la tabla `prestacion`
 --
 
 INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`, `Tipo`, `Estado`) VALUES
@@ -286,10 +292,15 @@ INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`,
 (53, '2025-03-20', '2025-03-20', 'Financiera', 'Otorgada'),
 (54, '2025-03-20', NULL, 'Día', 'Pendiente'),
 (55, '2025-03-20', '2025-03-20', 'Financiera', 'Otorgada'),
-(56, '2025-03-20', NULL, 'Academico', 'Pendiente');
+(56, '2025-03-20', NULL, 'Academico', 'Pendiente'),
+(57, '2025-04-02', NULL, 'Financiera', 'Pendiente'),
+(58, '2025-05-22', NULL, 'Día', 'Pendiente'),
+(59, '2025-05-22', NULL, 'Día', 'Pendiente'),
+(60, '2025-05-22', NULL, 'Financiera', 'Pendiente'),
+(61, '2025-05-22', NULL, 'Financiera', 'Pendiente');
 
 --
--- Triggers `prestacion`
+-- Disparadores `prestacion`
 --
 DELIMITER $$
 CREATE TRIGGER `before_prestaciones_insert` BEFORE INSERT ON `prestacion` FOR EACH ROW BEGIN
@@ -319,7 +330,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prestacion_apoyoacademico`
+-- Estructura de tabla para la tabla `prestacion_apoyoacademico`
 --
 
 CREATE TABLE `prestacion_apoyoacademico` (
@@ -332,7 +343,7 @@ CREATE TABLE `prestacion_apoyoacademico` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `prestacion_apoyoacademico`
+-- Volcado de datos para la tabla `prestacion_apoyoacademico`
 --
 
 INSERT INTO `prestacion_apoyoacademico` (`Id_Prestacion`, `Numero_Empleado`, `Id_Familiar`, `Nivel_Academico`, `Nombre_Institucion`, `Tipo`) VALUES
@@ -350,7 +361,7 @@ INSERT INTO `prestacion_apoyoacademico` (`Id_Prestacion`, `Numero_Empleado`, `Id
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prestacion_apoyofinanciero`
+-- Estructura de tabla para la tabla `prestacion_apoyofinanciero`
 --
 
 CREATE TABLE `prestacion_apoyofinanciero` (
@@ -363,7 +374,7 @@ CREATE TABLE `prestacion_apoyofinanciero` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `prestacion_apoyofinanciero`
+-- Volcado de datos para la tabla `prestacion_apoyofinanciero`
 --
 
 INSERT INTO `prestacion_apoyofinanciero` (`Id_Prestacion`, `Numero_Empleado`, `Id_Familiar`, `Deposito`, `Reembolso`, `Tipo`) VALUES
@@ -375,12 +386,14 @@ INSERT INTO `prestacion_apoyofinanciero` (`Id_Prestacion`, `Numero_Empleado`, `I
 (50, 888, 0, 1, 0, 'Guarderia'),
 (51, 888, 0, 1, 0, 'Lentes'),
 (53, 8236, 0, 1, 0, 'Lentes'),
-(55, 8236, 0, 1, 0, 'Guarderia');
+(55, 8236, 0, 1, 0, 'Guarderia'),
+(57, 445, 0, 1, 0, 'Lentes'),
+(61, 2147483647, 0, 1, 0, 'Lentes');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prestacion_dias`
+-- Estructura de tabla para la tabla `prestacion_dias`
 --
 
 CREATE TABLE `prestacion_dias` (
@@ -392,7 +405,7 @@ CREATE TABLE `prestacion_dias` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `prestacion_dias`
+-- Volcado de datos para la tabla `prestacion_dias`
 --
 
 INSERT INTO `prestacion_dias` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Solicitada`, `Dia_extra`, `Motivo`) VALUES
@@ -409,7 +422,7 @@ INSERT INTO `prestacion_dias` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Solici
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prestacion_plazos`
+-- Estructura de tabla para la tabla `prestacion_plazos`
 --
 
 CREATE TABLE `prestacion_plazos` (
@@ -421,7 +434,7 @@ CREATE TABLE `prestacion_plazos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `prestacion_plazos`
+-- Volcado de datos para la tabla `prestacion_plazos`
 --
 
 INSERT INTO `prestacion_plazos` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Inicio`, `Fecha_Final`, `Tipo`) VALUES
@@ -437,7 +450,7 @@ INSERT INTO `prestacion_plazos` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Inic
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tiposprestacion`
+-- Estructura de tabla para la tabla `tiposprestacion`
 --
 
 CREATE TABLE `tiposprestacion` (
@@ -448,59 +461,71 @@ CREATE TABLE `tiposprestacion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `tiposprestacion`
+-- Volcado de datos para la tabla `tiposprestacion`
 --
 
 INSERT INTO `tiposprestacion` (`id`, `tipoMayor`, `nombre`, `precio`) VALUES
 (1, 'Financiera', 'Guarderia', 1600),
 (2, 'Financiera', 'Lentes', 2000),
-(3, 'Financiera', 'Popo', 2);
+(7, 'Academica', 'Exencion de Inscripcion', 2000),
+(8, 'Academica', 'Utiles', 1200),
+(9, 'Academica', 'Tesis', 2000),
+(10, 'Financiera', 'Gasto Funerario', 5000),
+(11, 'Financiera', 'Aparato Ortopedico', 3000),
+(12, 'Financiera', 'Canastilla mama', 1000),
+(13, 'Financiera', 'Titulacion', 2000),
+(14, 'Dia', 'Permiso sindical', 0),
+(15, 'Dia', 'Nacimiento hijo', 0),
+(16, 'Dia', 'Otro', 0),
+(17, 'Plazo', 'Incapacidad', 0),
+(18, 'Plazo', 'Embarazo', 0),
+(19, 'Plazo', 'Permiso por duelo', 0);
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `empleado`
+-- Indices de la tabla `empleado`
 --
 ALTER TABLE `empleado`
   ADD PRIMARY KEY (`Numero_Empleado`);
 
 --
--- Indexes for table `empleado_familiar`
+-- Indices de la tabla `empleado_familiar`
 --
 ALTER TABLE `empleado_familiar`
   ADD KEY `Numero_Empleado` (`Numero_Empleado`),
   ADD KEY `Id_Familiar` (`Id_Familiar`);
 
 --
--- Indexes for table `empleado_prestacion`
+-- Indices de la tabla `empleado_prestacion`
 --
 ALTER TABLE `empleado_prestacion`
   ADD KEY `Numero_Empleado` (`Numero_Empleado`),
   ADD KEY `Id_Prestacion` (`Id_Prestacion`);
 
 --
--- Indexes for table `familiar_empleado`
+-- Indices de la tabla `familiar_empleado`
 --
 ALTER TABLE `familiar_empleado`
   ADD PRIMARY KEY (`Id_Familiar`) USING BTREE;
 
 --
--- Indexes for table `familiar_prestacion`
+-- Indices de la tabla `familiar_prestacion`
 --
 ALTER TABLE `familiar_prestacion`
   ADD KEY `Id_Familiar` (`Id_Familiar`),
   ADD KEY `Id_Prestacion` (`Id_Prestacion`);
 
 --
--- Indexes for table `prestacion`
+-- Indices de la tabla `prestacion`
 --
 ALTER TABLE `prestacion`
   ADD PRIMARY KEY (`Id_Prestacion`);
 
 --
--- Indexes for table `prestacion_apoyoacademico`
+-- Indices de la tabla `prestacion_apoyoacademico`
 --
 ALTER TABLE `prestacion_apoyoacademico`
   ADD KEY `Id_Prestacion` (`Id_Prestacion`),
@@ -508,7 +533,7 @@ ALTER TABLE `prestacion_apoyoacademico`
   ADD KEY `Id_Familiar` (`Id_Familiar`);
 
 --
--- Indexes for table `prestacion_apoyofinanciero`
+-- Indices de la tabla `prestacion_apoyofinanciero`
 --
 ALTER TABLE `prestacion_apoyofinanciero`
   ADD KEY `Id_Prestacion` (`Id_Prestacion`),
@@ -516,80 +541,80 @@ ALTER TABLE `prestacion_apoyofinanciero`
   ADD KEY `Id_Familiar` (`Id_Familiar`);
 
 --
--- Indexes for table `prestacion_dias`
+-- Indices de la tabla `prestacion_dias`
 --
 ALTER TABLE `prestacion_dias`
   ADD KEY `Id_Prestacion` (`Id_Prestacion`),
   ADD KEY `Numero_Empleado` (`Numero_Empleado`);
 
 --
--- Indexes for table `prestacion_plazos`
+-- Indices de la tabla `prestacion_plazos`
 --
 ALTER TABLE `prestacion_plazos`
   ADD KEY `Id_Prestacion` (`Id_Prestacion`),
   ADD KEY `Numero_Empleado` (`Numero_Empleado`);
 
 --
--- Indexes for table `tiposprestacion`
+-- Indices de la tabla `tiposprestacion`
 --
 ALTER TABLE `tiposprestacion`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `empleado`
+-- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
   MODIFY `Numero_Empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
 --
--- AUTO_INCREMENT for table `familiar_empleado`
+-- AUTO_INCREMENT de la tabla `familiar_empleado`
 --
 ALTER TABLE `familiar_empleado`
   MODIFY `Id_Familiar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `prestacion`
+-- AUTO_INCREMENT de la tabla `prestacion`
 --
 ALTER TABLE `prestacion`
-  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
--- AUTO_INCREMENT for table `tiposprestacion`
+-- AUTO_INCREMENT de la tabla `tiposprestacion`
 --
 ALTER TABLE `tiposprestacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `empleado_familiar`
+-- Filtros para la tabla `empleado_familiar`
 --
 ALTER TABLE `empleado_familiar`
   ADD CONSTRAINT `empleado_familiar_ibfk_1` FOREIGN KEY (`Id_Familiar`) REFERENCES `familiar_empleado` (`Id_Familiar`),
   ADD CONSTRAINT `empleado_familiar_ibfk_2` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado` (`Numero_Empleado`);
 
 --
--- Constraints for table `empleado_prestacion`
+-- Filtros para la tabla `empleado_prestacion`
 --
 ALTER TABLE `empleado_prestacion`
   ADD CONSTRAINT `empleado_prestacion_ibfk_1` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado` (`Numero_Empleado`),
   ADD CONSTRAINT `empleado_prestacion_ibfk_2` FOREIGN KEY (`Id_Prestacion`) REFERENCES `prestacion` (`Id_Prestacion`);
 
 --
--- Constraints for table `familiar_prestacion`
+-- Filtros para la tabla `familiar_prestacion`
 --
 ALTER TABLE `familiar_prestacion`
   ADD CONSTRAINT `familiar_prestacion_ibfk_1` FOREIGN KEY (`Id_Familiar`) REFERENCES `empleado_familiar` (`Id_Familiar`),
   ADD CONSTRAINT `familiar_prestacion_ibfk_2` FOREIGN KEY (`Id_Prestacion`) REFERENCES `prestacion` (`Id_Prestacion`);
 
 --
--- Constraints for table `prestacion_apoyoacademico`
+-- Filtros para la tabla `prestacion_apoyoacademico`
 --
 ALTER TABLE `prestacion_apoyoacademico`
   ADD CONSTRAINT `prestacion_apoyoacademico_ibfk_1` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado_prestacion` (`Numero_Empleado`),
@@ -597,7 +622,7 @@ ALTER TABLE `prestacion_apoyoacademico`
   ADD CONSTRAINT `prestacion_apoyoacademico_ibfk_3` FOREIGN KEY (`Id_Familiar`) REFERENCES `familiar_prestacion` (`Id_Familiar`);
 
 --
--- Constraints for table `prestacion_apoyofinanciero`
+-- Filtros para la tabla `prestacion_apoyofinanciero`
 --
 ALTER TABLE `prestacion_apoyofinanciero`
   ADD CONSTRAINT `prestacion_apoyofinanciero_ibfk_1` FOREIGN KEY (`Id_Prestacion`) REFERENCES `prestacion` (`Id_Prestacion`),
@@ -605,14 +630,14 @@ ALTER TABLE `prestacion_apoyofinanciero`
   ADD CONSTRAINT `prestacion_apoyofinanciero_ibfk_3` FOREIGN KEY (`Id_Familiar`) REFERENCES `familiar_prestacion` (`Id_Familiar`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `prestacion_dias`
+-- Filtros para la tabla `prestacion_dias`
 --
 ALTER TABLE `prestacion_dias`
   ADD CONSTRAINT `prestacion_dias_ibfk_1` FOREIGN KEY (`Id_Prestacion`) REFERENCES `empleado_prestacion` (`Id_Prestacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `prestacion_dias_ibfk_2` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado_prestacion` (`Numero_Empleado`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `prestacion_plazos`
+-- Filtros para la tabla `prestacion_plazos`
 --
 ALTER TABLE `prestacion_plazos`
   ADD CONSTRAINT `prestacion_plazos_ibfk_1` FOREIGN KEY (`Numero_Empleado`) REFERENCES `empleado_prestacion` (`Numero_Empleado`),
