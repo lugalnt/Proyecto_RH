@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-03-2025 a las 01:37:51
+-- Tiempo de generación: 24-05-2025 a las 02:08:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -55,9 +55,12 @@ INSERT INTO `empleado` (`Numero_Empleado`, `Nombre_Empleado`, `Contraseña_Emple
 (223, 'Vaqui', 'vaqui', 'RH', 4, 'fem', 'Todologa', '2025-01-29', 'Romanza', '233444222', 'N/A', 'Activo', 0, 20),
 (334, 'Prueba2', 'vaqui', 'Profesor', 21, 'masc', 'a', '2006-02-21', 'a', '1231312131', 'N/A', 'Activo', 26, 23),
 (444, 'Curli', '', 'Profesor', 3, 'masc', 'Todologo', '2015-01-01', 'Romanza', '333333333', 'N/A', 'Activo', 8, 24),
-(445, 'Cubry', 'vaqui', 'Area de administracion', 7, 'masc', 'Pendejo', '2015-02-18', 'Aqui', '222333222', 'N/A', 'Activo', 5, 14),
+(445, 'Cubry', 'vaqui', 'Area de administracion', 7, 'masc', 'Inteligente', '2015-02-18', 'Aqui', '222333222', 'N/A', 'Activo', 5, 14),
 (566, 'Prueba1', 'vaqui', 'Profesor', 20, 'masc', 'Si', '2014-11-20', 'Aqui', '123123123', 'N/A', 'Activo', 8, 21),
 (777, 'Prueba3', 'vaqui', 'Profesor', 21, 'masc', 'a', '2010-03-17', 'a', '12313131', 'N/A', 'Activo', 16, 23),
+(888, 'si', 'vaqui', 'Profesor', 2, 'masc', 'si', '2015-02-04', 'si', '1', 'N/A', 'Activo', 8, 24),
+(6384, 'Maria Antonieta', '', 'Area de administracion', 28, 'fem', 'Licenciada', '2020-02-11', 'Heroes, 81021', '6313571318', 'N/A', 'Activo', 0, 24),
+(8236, 'Jose Quiroz', 'vaqui', 'Profesor', 32, 'masc', 'Fisico Matematico', '2010-05-20', 'Rosaritos, 8406', '6311206338', 'N/A', 'Activo', 15, 24),
 (2147483647, '321312312', '', 'Profesor', 1, 'masc', '2222', '2025-03-05', '321321', '123123', 'N/A', 'Activo', 0, 24);
 
 --
@@ -102,7 +105,12 @@ INSERT INTO `empleado_familiar` (`Numero_Empleado`, `Id_Familiar`, `Relacion`) V
 (566, 0, 'Esposa'),
 (445, 0, 'Esposa'),
 (777, 0, 'Esposa'),
-(777, 6, 'Hijo');
+(777, 6, 'Hijo'),
+(888, 0, 'Esposa'),
+(888, 7, 'Hijo'),
+(8236, 0, 'Esposa'),
+(8236, 8, 'Hijo'),
+(8236, 9, 'Hijo');
 
 -- --------------------------------------------------------
 
@@ -149,7 +157,19 @@ INSERT INTO `empleado_prestacion` (`Numero_Empleado`, `Id_Prestacion`, `Tipo`, `
 (21, 40, 'Academico', '2025-03-07', '2025-03-07'),
 (445, 46, 'Financiera', '2025-03-12', '2025-03-12'),
 (445, 47, 'Financiera', '2025-03-12', '2025-03-12'),
-(777, 48, 'Financiera', '2025-03-12', '2025-03-12');
+(777, 48, 'Financiera', '2025-03-12', '2025-03-12'),
+(777, 49, 'Plazo', '2025-03-14', '2025-03-14'),
+(888, 50, 'Financiera', '2025-03-19', '2025-03-19'),
+(888, 51, 'Financiera', '2025-03-19', '2025-03-19'),
+(888, 52, 'Academico', '2025-03-19', '2025-03-19'),
+(8236, 53, 'Financiera', '2025-03-20', '2025-03-20'),
+(8236, 54, 'Día', '2025-03-20', NULL),
+(8236, 55, 'Financiera', '2025-03-20', '2025-03-20'),
+(8236, 56, 'Academico', '2025-03-20', NULL),
+(445, 57, 'Financiera', '2025-04-02', NULL),
+(223, 58, 'Día', '2025-05-22', NULL),
+(223, 59, 'Día', '2025-05-22', NULL),
+(2147483647, 61, 'Financiera', '2025-05-22', NULL);
 
 -- --------------------------------------------------------
 
@@ -174,7 +194,10 @@ INSERT INTO `familiar_empleado` (`Id_Familiar`, `Nombre_Familiar`, `Nivel_academ
 (2, 'Angel Gutierrez', 'Universidad', 19),
 (3, 'MiHijo', 'Primaria', 8),
 (4, 'Adriana', 'Secundaria', 13),
-(6, 'Popo', 'Preparatoria', 16);
+(6, 'Popo', 'Preparatoria', 16),
+(7, 'siHijo', 'Universidad', 9),
+(8, 'Mi Hijo', 'Preparatoria', 19),
+(9, 'Hijo2', 'Universidad', 19);
 
 -- --------------------------------------------------------
 
@@ -206,7 +229,15 @@ INSERT INTO `familiar_prestacion` (`Id_Familiar`, `Id_Prestacion`, `Tipo`, `Fech
 (4, 40, 'Academico', '2025-03-07'),
 (0, 46, 'Financiera', '2025-03-12'),
 (0, 47, 'Financiera', '2025-03-12'),
-(6, 48, 'Financiera', '2025-03-12');
+(6, 48, 'Financiera', '2025-03-12'),
+(0, 50, 'Financiera', '2025-03-19'),
+(0, 51, 'Financiera', '2025-03-19'),
+(7, 52, 'Academico', '2025-03-19'),
+(0, 53, 'Financiera', '2025-03-20'),
+(0, 55, 'Financiera', '2025-03-20'),
+(9, 56, 'Academico', NULL),
+(0, 57, 'Financiera', NULL),
+(0, 61, 'Financiera', NULL);
 
 -- --------------------------------------------------------
 
@@ -253,7 +284,20 @@ INSERT INTO `prestacion` (`Id_Prestacion`, `Fecha_Solicitada`, `Fecha_Otorgada`,
 (40, '2025-03-07', '2025-03-07', 'Academico', 'Otorgada'),
 (46, '2025-03-12', '2025-03-12', 'Financiera', 'Otorgada'),
 (47, '2025-03-12', '2025-03-12', 'Financiera', 'Otorgada'),
-(48, '2025-03-12', '2025-03-12', 'Financiera', 'Otorgada');
+(48, '2025-03-12', '2025-03-12', 'Financiera', 'Otorgada'),
+(49, '2025-03-14', '2025-03-14', 'Plazo', 'Otorgada'),
+(50, '2025-03-19', '2025-03-19', 'Financiera', 'Otorgada'),
+(51, '2025-03-19', '2025-03-19', 'Financiera', 'Otorgada'),
+(52, '2025-03-19', '2025-03-19', 'Academico', 'Otorgada'),
+(53, '2025-03-20', '2025-03-20', 'Financiera', 'Otorgada'),
+(54, '2025-03-20', NULL, 'Día', 'Pendiente'),
+(55, '2025-03-20', '2025-03-20', 'Financiera', 'Otorgada'),
+(56, '2025-03-20', NULL, 'Academico', 'Pendiente'),
+(57, '2025-04-02', NULL, 'Financiera', 'Pendiente'),
+(58, '2025-05-22', NULL, 'Día', 'Pendiente'),
+(59, '2025-05-22', NULL, 'Día', 'Pendiente'),
+(60, '2025-05-22', NULL, 'Financiera', 'Pendiente'),
+(61, '2025-05-22', NULL, 'Financiera', 'Pendiente');
 
 --
 -- Disparadores `prestacion`
@@ -310,7 +354,9 @@ INSERT INTO `prestacion_apoyoacademico` (`Id_Prestacion`, `Numero_Empleado`, `Id
 (17, 445, 1, 'Secundaria', 'Secundaria uno', 'Utiles'),
 (29, 566, 2, 'Universidad', 'UTN', 'Exencion de inscripc'),
 (33, 566, 3, 'Primaria', 'Diego Rivera', 'Utiles'),
-(40, 21, 4, 'Secundaria', 'Dos', 'Utiles');
+(40, 21, 4, 'Secundaria', 'Dos', 'Utiles'),
+(52, 888, 7, 'Universidad', 'utn', 'Utiles'),
+(56, 8236, 9, 'Universidad', 'UTN', 'Utiles');
 
 -- --------------------------------------------------------
 
@@ -336,7 +382,13 @@ INSERT INTO `prestacion_apoyofinanciero` (`Id_Prestacion`, `Numero_Empleado`, `I
 (28, 566, 2, 1, 0, 'Lentes'),
 (46, 445, 0, 1, 0, 'Guarderia'),
 (47, 445, 0, 1, 0, 'Lentes'),
-(48, 777, 6, 1, 0, 'Lentes');
+(48, 777, 6, 1, 0, 'Lentes'),
+(50, 888, 0, 1, 0, 'Guarderia'),
+(51, 888, 0, 1, 0, 'Lentes'),
+(53, 8236, 0, 1, 0, 'Lentes'),
+(55, 8236, 0, 1, 0, 'Guarderia'),
+(57, 445, 0, 1, 0, 'Lentes'),
+(61, 2147483647, 0, 1, 0, 'Lentes');
 
 -- --------------------------------------------------------
 
@@ -365,7 +417,7 @@ INSERT INTO `prestacion_dias` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Solici
 (31, 566, '2025-02-24', 0, 'Permiso sindical'),
 (32, 334, '2025-02-24', 0, 'Permiso sindical'),
 (34, 566, '2026-03-02', 0, 'Permiso sindical'),
-(35, 777, '2025-04-03', 0, 'Permiso sindical');
+(54, 8236, '2025-03-21', 1, 'Permiso sindical');
 
 -- --------------------------------------------------------
 
@@ -390,9 +442,44 @@ INSERT INTO `prestacion_plazos` (`Id_Prestacion`, `Numero_Empleado`, `Fecha_Inic
 (25, 445, '2025-02-24', '2025-03-04', 'Boda de una hermana'),
 (27, 566, '2025-02-24', '2025-02-28', ''),
 (36, 777, '2025-03-03', '2025-03-06', 'Incapacidad'),
-(37, 334, '2025-03-10', '2025-03-21', 'Pene'),
-(38, 777, '2025-03-17', '2025-03-28', 'Rqape'),
-(39, 445, '2025-03-25', '2025-03-27', 'Rape');
+(37, 334, '2025-03-10', '2025-03-21', 'Boda hermana'),
+(38, 777, '2025-03-17', '2025-03-28', 'Boda hermana'),
+(39, 445, '2025-03-25', '2025-03-27', 'Rape'),
+(49, 777, '2025-03-13', '2025-03-17', 'Me comi una salchipapa');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tiposprestacion`
+--
+
+CREATE TABLE `tiposprestacion` (
+  `id` int(11) NOT NULL,
+  `tipoMayor` varchar(50) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `precio` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tiposprestacion`
+--
+
+INSERT INTO `tiposprestacion` (`id`, `tipoMayor`, `nombre`, `precio`) VALUES
+(1, 'Financiera', 'Guarderia', 1600),
+(2, 'Financiera', 'Lentes', 2000),
+(7, 'Academica', 'Exencion de Inscripcion', 2000),
+(8, 'Academica', 'Utiles', 1200),
+(9, 'Academica', 'Tesis', 2000),
+(10, 'Financiera', 'Gasto Funerario', 5000),
+(11, 'Financiera', 'Aparato Ortopedico', 3000),
+(12, 'Financiera', 'Canastilla mama', 1000),
+(13, 'Financiera', 'Titulacion', 2000),
+(14, 'Dia', 'Permiso sindical', 0),
+(15, 'Dia', 'Nacimiento hijo', 0),
+(16, 'Dia', 'Otro', 0),
+(17, 'Plazo', 'Incapacidad', 0),
+(18, 'Plazo', 'Embarazo', 0),
+(19, 'Plazo', 'Permiso por duelo', 0);
 
 --
 -- Índices para tablas volcadas
@@ -468,6 +555,12 @@ ALTER TABLE `prestacion_plazos`
   ADD KEY `Numero_Empleado` (`Numero_Empleado`);
 
 --
+-- Indices de la tabla `tiposprestacion`
+--
+ALTER TABLE `tiposprestacion`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -481,13 +574,19 @@ ALTER TABLE `empleado`
 -- AUTO_INCREMENT de la tabla `familiar_empleado`
 --
 ALTER TABLE `familiar_empleado`
-  MODIFY `Id_Familiar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Id_Familiar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `prestacion`
 --
 ALTER TABLE `prestacion`
-  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `Id_Prestacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+
+--
+-- AUTO_INCREMENT de la tabla `tiposprestacion`
+--
+ALTER TABLE `tiposprestacion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas

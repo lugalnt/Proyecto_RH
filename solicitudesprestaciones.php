@@ -58,9 +58,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 <span class="material-icons-sharp">payments</span>
                     <h3>Prestaciones</h3>
                 </a>
-                <a href="#">
-                    <span class="material-icons-sharp">date_range</span>
-                    <h3>Descansos</h3>
+                <a href="convenioNuevo.php">
+                    <span class="material-icons-sharp">article</span>
+                    <h3>Convenios</h3>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span class="material-icons-sharp">logout</span>
@@ -102,12 +102,179 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="button-container">
                 <button type="button" class="button" onclick="window.location.href='buscarEmpleadoYPrestaciones.php'">Buscar Empleado y Prestaciones</button>
             </div>
+            <br>
+            <div class="filtros-container">
+    <form action="" method="post">
+        <input type="hidden" name="aplicarFiltros" value="1">
+        <div class="filtro-item">
+            <label for="prestacionFiltro"><h3>Filtros</h3></label>
+            <select name="prestacionFiltro" id="prestacionFiltro" required onchange="mostrarSelectEspecifico()">
+                <option value="todos">Todos</option>
+                <option value="Academico">Académicas</option>
+                <option value="Financiera">Financieras</option>
+                <option value="Día">Día</option>
+                <option value="Plazo">Plazo</option>
+            </select>
+        </div>
+        <div class="filtro-item" id="filtro-academico" style="display:none;">
+            <label for="especificoAcademico">Tipo de apoyo académico:</label>
+            <select name="especifico" id="especificoAcademico">
+                <?php
+                $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Academica'");
+                $queryTiposAcademicos->execute();
+                $resultTiposAcademicos = $queryTiposAcademicos->get_result();
+                if ($resultTiposAcademicos->num_rows > 0) {
+                    while ($row = $resultTiposAcademicos->fetch_assoc()) {
+                        echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay tipos académicos disponibles</option>';
+                }
+                $queryTiposAcademicos->close();
+                ?>
+                <!-- Agrega más opciones si es necesario -->
+            </select>
+        </div>
+        <div class="filtro-item" id="filtro-financiera" style="display:none;">
+            <label for="especificoFinanciera">Tipo de apoyo financiero:</label>
+            <select name="especifico" id="especificoFinanciera">
+                <?php
+                $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Financiera'");
+                $queryTiposAcademicos->execute();
+                $resultTiposAcademicos = $queryTiposAcademicos->get_result();
+                if ($resultTiposAcademicos->num_rows > 0) {
+                    while ($row = $resultTiposAcademicos->fetch_assoc()) {
+                        echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay tipos financieros disponibles</option>';
+                }
+                $queryTiposAcademicos->close();
+                ?>
+                <!-- Agrega más opciones si es necesario -->
+            </select>
+        </div>
+        <div class="filtro-item" id="filtro-dia" style="display:none;">
+            <label for="especificoDia">Motivo del día:</label>
+            <select name="especifico" id="especificoDia">
+                <?php
+                $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Dia'");
+                $queryTiposAcademicos->execute();
+                $resultTiposAcademicos = $queryTiposAcademicos->get_result();
+                if ($resultTiposAcademicos->num_rows > 0) {
+                    while ($row = $resultTiposAcademicos->fetch_assoc()) {
+                        echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay tipos de dia</option>';
+                }
+                $queryTiposAcademicos->close();
+                ?>
+            </select>
+        </div>
+        <div class="filtro-item" id="filtro-plazo" style="display:none;">
+            <label for="especificoPlazo">Tipo de plazo:</label>
+            <select name="especifico" id="especificoPlazo">
+                <?php
+                $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Plazo'");
+                $queryTiposAcademicos->execute();
+                $resultTiposAcademicos = $queryTiposAcademicos->get_result();
+                if ($resultTiposAcademicos->num_rows > 0) {
+                    while ($row = $resultTiposAcademicos->fetch_assoc()) {
+                        echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay tipos de plazo disponibles</option>';
+                }
+                $queryTiposAcademicos->close();
+                ?>
+            </select>
+        </div>
+        <div class="filtro-item">
+            <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+        </div>
+    </form>
 
+    <script>
+    function mostrarSelectEspecifico() {
+        document.getElementById('filtro-academico').style.display = 'none';
+        document.getElementById('filtro-financiera').style.display = 'none';
+        document.getElementById('filtro-dia').style.display = 'none';
+        document.getElementById('filtro-plazo').style.display = 'none';
+
+        var filtro = document.getElementById('prestacionFiltro').value;
+        if (filtro === 'Academico') {
+            document.getElementById('filtro-academico').style.display = 'block';
+        } else if (filtro === 'Financiera') {
+            document.getElementById('filtro-financiera').style.display = 'block';
+        } else if (filtro === 'Día') {
+            document.getElementById('filtro-dia').style.display = 'block';
+        } else if (filtro === 'Plazo') {
+            document.getElementById('filtro-plazo').style.display = 'block';
+        }
+    }
+    </script>
+</div>
             <?php
-            $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");  
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aplicarFiltros'])) {
+                $filtroPrestacion = $_POST['prestacionFiltro'];
+                if ($filtroPrestacion == "Academico") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Academico' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                        $querySP->bind_param("s", $especifico);
+                    }
+                    else {
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Academico' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                    }
+
+                } elseif ($filtroPrestacion == "Financiera") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Financiera' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                        $querySP->bind_param("s", $especifico);
+                    }
+                    else {
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Financiera' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                    }
+
+                } elseif ($filtroPrestacion == "Día") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Día' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Motivo LIKE ?)");
+                        $querySP->bind_param("s", $especifico);
+                    }
+                    else {
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Día' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                    }
+
+
+
+                } elseif ($filtroPrestacion == "Plazo") {
+
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $querySP = $conn->prepare("SELECT * FROM prestacion p INNER JOIN prestacion_plazos pa ON p.Id_Prestacion = pa.Id_Prestacion WHERE p.Tipo = 'Plazo' AND p.Fecha_Otorgada IS NULL AND pa.Tipo LIKE ?");
+                        $querySP->bind_param("s", $especifico);
+                    }
+                    else {
+                        $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Plazo' AND Fecha_Otorgada IS NULL");
+                    }
+                    
+                } else {
+                    $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");
+                }
+            } else {
+                $querySP = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");
+            }
             $querySP->execute();
             $resultadoSP = $querySP->get_result();
-            while($rowSP = $resultadoSP->fetch_assoc()) {
+            while ($rowSP = $resultadoSP->fetch_assoc()) {
                 $fechaSolicitud = $rowSP['Fecha_Solicitada'];
                 $idPrestacion = $rowSP['Id_Prestacion'];
 

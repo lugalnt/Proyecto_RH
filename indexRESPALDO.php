@@ -64,9 +64,9 @@ if($_SESSION['Area'] != "RH")
                     <span class="material-icons-sharp">payments</span>
                     <h3>Prestaciones</h3>
                 </a>
-                <a href="convenioNuevo.php">
-                    <span class="material-icons-sharp">article</span>
-                    <h3>Convenios</h3>
+                <a href="empleadosDescansos.php">
+                    <span class="material-icons-sharp">date_range</span>
+                    <h3>Descansos</h3>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span class="material-icons-sharp">logout</span>
@@ -85,18 +85,45 @@ if($_SESSION['Area'] != "RH")
 
                 
 <!-- INICIO DE Preview de Costos -->
+<div class="date-container">
+  <div class="date">
+    <form method="POST" action="">
+      <h2>Costos</h2>
+      <div class="datos">
+        <div class="fecha-group">
+          <label for="FechaInicio"><h3>Fecha de Inicio:</h3></label>
+          <input type="date" id="FechaInicio" name="FechaInicio">
+        </div>
+        <div class="fecha-group">
+          <label for="FechaFin"><h3>Fecha de Fin:</h3></label>
+          <input type="date" id="FechaFin" name="FechaFin">
+        </div>
+        <input type="hidden" name="Costos" value="1">
+        <button type="submit">Revisar</button>
+      </div>
+    </form>
+  </div>
 
+  <div class="date2">
+  <form method="POST" action="">
+    <h2>Información Extra</h2>
+    <div class="datos">
+      <input type="hidden" name="Costos" value="1">
+      <div class="button-container">
+        <input type="hidden" name="ReiniciarCostos" value="1"> 
+        <button type="submit">Reiniciar</button>
+        <button type="button" onclick="window.location.href='costosDetallado.php'">Reporte Más Detallado</button>
+      </div>
+    </div>
+  </form>
+</div>
+</div>
 
 
 <!-- FIN DE Preview de costos -->
 
-
-
-            <!-- INICIO DE PRESTAMOS RECIENTES TABLA -->
-            <div class="prestamos-recientes">
-
-                        <!-- INICIO DE CIRCULOS -->
-                        <div class="insights">
+            <!-- INICIO DE CIRCULOS -->
+            <div class="insights">
                 <!-- INICIO DE PRESTACIONES -->
                 <div class="prestaciones">
                     <span class="material-icons-sharp">analytics</span>
@@ -157,36 +184,75 @@ if($_SESSION['Area'] != "RH")
                 </div>
             </div>
                 <!-- FIN DE INGRESOS -->
+
+            <!-- INICIO DE PRESTAMOS RECIENTES TABLA -->
+            <div class="prestamos-recientes">
+                <h2>Prestamos Recientes</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                    <th>Tipo</th>
+                    <th>Empleado</th>
+                    <th>Fecha Solicitada</th>
+                    <th>Estado</th>        
+                    </thead>
+                    <tbody>
+            <?php
+
+                    $querySPR = $conn->prepare("SELECT * FROM prestacion ORDER BY Fecha_Solicitada DESC LIMIT 6");
+                    $querySPR->execute();
+                    $resultSPR = $querySPR->get_result();
+
+                    while($rowSPR = $resultSPR->fetch_assoc())
+                    {
+                    
+                      $queryCNE = $conn->prepare("SELECT Numero_Empleado FROM empleado_prestacion WHERE Id_Prestacion = ?");
+                      $queryCNE->bind_param("i", $rowSPR['Id_Prestacion']);
+                      $queryCNE->execute();
+                      $resultCNE = $queryCNE->get_result();
+                      $rowCNE = $resultCNE->fetch_assoc();
+                    
+                      $queryCNME = $conn->prepare("SELECT Nombre_Empleado FROM empleado WHERE Numero_Empleado = ?");
+                      $queryCNME->bind_param("i", $rowCNE['Numero_Empleado']);
+                      $queryCNME->execute();
+                      $resultCNME = $queryCNME->get_result();
+                      $rowCNME = $resultCNME->fetch_assoc();
+                      $NombreEmpleado = $rowCNME['Nombre_Empleado'];
+                    
+                    
+                    
+                      echo "<div class='benefits-container'>";
+                      echo "<td>".$rowSPR['Tipo']."</td>";
+                      echo "<td>".$rowCNE['Numero_Empleado'].", ".htmlspecialchars($NombreEmpleado)."</td>";
+                      echo "<td>FECHA: ".$rowSPR['Fecha_Solicitada']."</td>";
+
+                        if (is_null($rowSPR['Fecha_Otorgada']))
+                        {
+                            echo "<td class=".'warning'.">En espera</td>";
+                        }
+                        else
+                        {
+                            echo "<td class=".'success'.">Concedido</td>";
+                        }
+
+
+
+
+                      echo "</tr>";
+                    }
+
+            ?>
+                        
+                    </tbody>
+                    
+                </table>
+
+            
+
+
+                <a href="solicitudesprestaciones.php">Mostrar Todos</a>
             </div>
-            <br>
-            <br>
-    <div style="text-align: center;">
-    <table style="margin: 0 auto;">
-        <tr>
-            <td>
-                <form method="POST" action="">
-                    <button>2 semanas</button>
-                    <input type="hidden" name="2semanas" value="1">
-                </form>
-            </td>
-            <td>
-                <form method="POST" action="">
-                    <button>4 meses</button>
-                    <input type="hidden" name="4meses" value="1">
-                </form>
-            </td>
-            <td>
-                <form method="POST" action="">
-                    <button>1 año</button>
-                    <input type="hidden" name="1año" value="1">
-                </form>
-            </td>
-            <td>
-                <button onclick="window.location.href='costosDetallado.php'">Reporte más detallado</button>
-            </td>
-        </tr>
-    </table>
-</div>
         </main>
         <!-- FIN DE PRESTAMOS RECIENTES TABLA -->
 
@@ -402,10 +468,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-
-  require_once("conn.php");
-  require_once("preciosPrestaciones.php");  
-
   if(isset($_POST["logout"]))
   {
   session_destroy();
@@ -415,102 +477,118 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   //AQUI SE OBTIENEN LOS COSTOS DE LAS PRESTACIONES
   //CON LOS DATOS ESTO SON LOS QUE SE VAN A ACTUALIZAR LAS GRAFICAS
 
-  function actualizarCostos($FechaInicio, $FechaFin)
-  {
-    require_once("conn.php");
-    require_once("preciosPrestaciones.php");  
-
-    global $conn; // Ensure $conn is accessible within the function
-
-      $CostosF = 0;
-      $CostosA = 0;
-  
-      // Consulta para obtener las prestaciones de apoyo académico
-      $stmt_academico = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyoacademico WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo = 'Academico') GROUP BY Tipo");
-      $stmt_academico->bind_param('ss', $FechaInicio, $FechaFin);
-      $stmt_academico->execute();
-      $resultados_academico = $stmt_academico->get_result();
-  
-      while ($fila = $resultados_academico->fetch_assoc()) {
-          $cantidad = $fila['cantidad'];
-          $costo_unitario = obtenerPrecioPrestacion($fila['Tipo']);
-          $CostosA += is_numeric($costo_unitario) ? $costo_unitario * $cantidad : 0;
-      }
-  
-      // Consulta para obtener las prestaciones de apoyo financiero
-      $stmt_financiero = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyofinanciero WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo = 'Financiera') GROUP BY Tipo");
-      $stmt_financiero->bind_param('ss', $FechaInicio, $FechaFin);
-      $stmt_financiero->execute();
-      $resultados_financiero = $stmt_financiero->get_result();
-  
-      while ($fila = $resultados_financiero->fetch_assoc()) {
-          $cantidad = $fila['cantidad'];
-          $costo_unitario = obtenerPrecioPrestacion($fila['Tipo']);
-          $CostosF += is_numeric($costo_unitario) ? $costo_unitario * $cantidad : 0;
-      }
-  
-      $costoTotal = $CostosF + $CostosA;
-      $porcentajeF = round(($CostosF / $costoTotal) * 100);
-      $porcentajeA = round(($CostosA / $costoTotal) * 100);
-  
-      echo'
-      <script>
-  
-      const circuloTotal = document.querySelector("#circuloTotal");
-      const circuloFinancieras = document.querySelector("#circuloFinancieras"); 
-      const circuloAcademicas = document.querySelector("#circuloAcademicas");
-      
-      function setCircleProgress(circle, percentage) {
-      const radius = circle.r.baseVal.value;
-      const circumference = 2 * Math.PI * radius;
-      const offset = circumference - (percentage / 100) * circumference;
+    if(isset($_POST["ReiniciarCostos"]))
+    {
+        $CostosA = 0;
+        $CostosF = 0;
+        $costoTotal = 0;
+        $porcentajeF = 100;
+        $porcentajeA = 100;
     
-      circle.style.strokeDasharray = `${circumference}`;
-      circle.style.strokeDashoffset = `${offset}`;
-      }
+        echo'
+        <script>
+    
+        const circuloTotal = document.querySelector("#circuloTotal");
+        const circuloFinancieras = document.querySelector("#circuloFinancieras"); 
+        const circuloAcademicas = document.querySelector("#circuloAcademicas");
+        
+        function setCircleProgress(circle, percentage) {
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+        const offset = circumference - (percentage / 100) * circumference;
+      
+        circle.style.strokeDasharray = `${circumference}`;
+        circle.style.strokeDashoffset = `${offset}`;
+        }
+    
+        setCircleProgress(circuloTotal, 100); // Ajusta el círculo al 100%
+        setCircleProgress(circuloFinancieras, '.$porcentajeF.'); // Ajusta el círculo al porcentaje de financieras
+        setCircleProgress(circuloAcademicas, '.$porcentajeA.'); // Ajusta el círculo al porcentaje de académicas
+    
+        document.querySelector(".prestaciones .number p").textContent = "";
+        document.querySelector(".gastos .number p").textContent = "";
+        document.querySelector(".ingresos .number p").textContent = "";
+    
+        document.querySelector(".prestaciones h1").textContent = "";
+        document.querySelector(".gastos h1").textContent = "";
+        document.querySelector(".ingresos h1").textContent = "";
+    
+        </script>
+        ';
+    }
+
+
+
+    if(isset($_POST["Costos"]))
+    {
+    require_once("conn.php");
+    require_once("preciosPrestaciones.php");
+    $FechaInicio = $_POST['FechaInicio'];
+    $FechaFin = $_POST['FechaFin'];
+
+    $CostosF = 0;
+    $CostosA = 0;
+
+    // Consulta para obtener las prestaciones de apoyo académico
+    $stmt_academico = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyoacademico WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo = 'Academico') GROUP BY Tipo");
+    $stmt_academico->bind_param('ss', $FechaInicio, $FechaFin);
+    $stmt_academico->execute();
+    $resultados_academico = $stmt_academico->get_result();
+
+    while ($fila = $resultados_academico->fetch_assoc()) {
+        $cantidad = $fila['cantidad'];
+        $costo_unitario = obtenerPrecioPrestacion($fila['Tipo']);
+        $CostosA += is_numeric($costo_unitario) ? $costo_unitario * $cantidad : 0;
+    }
+
+    // Consulta para obtener las prestaciones de apoyo financiero
+    $stmt_financiero = $conn->prepare("SELECT Tipo, COUNT(*) AS cantidad FROM prestacion_apoyofinanciero WHERE Id_Prestacion IN (SELECT Id_Prestacion FROM prestacion WHERE Estado = 'Otorgada' AND Fecha_Otorgada BETWEEN ? AND ? AND Tipo = 'Financiera') GROUP BY Tipo");
+    $stmt_financiero->bind_param('ss', $FechaInicio, $FechaFin);
+    $stmt_financiero->execute();
+    $resultados_financiero = $stmt_financiero->get_result();
+
+    while ($fila = $resultados_financiero->fetch_assoc()) {
+        $cantidad = $fila['cantidad'];
+        $costo_unitario = obtenerPrecioPrestacion($fila['Tipo']);
+        $CostosF += is_numeric($costo_unitario) ? $costo_unitario * $cantidad : 0;
+    }
+
+    $costoTotal = $CostosF + $CostosA;
+    $porcentajeF = round(($CostosF / $costoTotal) * 100);
+    $porcentajeA = round(($CostosA / $costoTotal) * 100);
+
+    echo'
+    <script>
+
+    const circuloTotal = document.querySelector("#circuloTotal");
+    const circuloFinancieras = document.querySelector("#circuloFinancieras"); 
+    const circuloAcademicas = document.querySelector("#circuloAcademicas");
+    
+    function setCircleProgress(circle, percentage) {
+    const radius = circle.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (percentage / 100) * circumference;
   
-      setCircleProgress(circuloTotal, 100); // Ajusta el círculo al 100%
-      setCircleProgress(circuloFinancieras, '.$porcentajeF.'); // Ajusta el círculo al porcentaje de financieras
-      setCircleProgress(circuloAcademicas, '.$porcentajeA.'); // Ajusta el círculo al porcentaje de académicas
-  
-      document.querySelector(".prestaciones .number p").textContent = "100%";
-      document.querySelector(".gastos .number p").textContent = "'.$porcentajeF.'%";
-      document.querySelector(".ingresos .number p").textContent = "'.$porcentajeA.'%";
-  
-      document.querySelector(".prestaciones h1").textContent = "$'.$costoTotal.'";
-      document.querySelector(".gastos h1").textContent = "$'.$CostosF.'";
-      document.querySelector(".ingresos h1").textContent = "$'.$CostosA.'";
-  
-      </script>
-      ';
-      return;
-  }
+    circle.style.strokeDasharray = `${circumference}`;
+    circle.style.strokeDashoffset = `${offset}`;
+    }
 
-  if(isset($_POST["2semanas"]))
-  {
-    unset($_POST["4meses"]);
-    unset($_POST["1año"]);
-    actualizarCostos(date('Y-m-d', strtotime('-2 weeks')), date('Y-m-d'));
-  }
+    setCircleProgress(circuloTotal, 100); // Ajusta el círculo al 100%
+    setCircleProgress(circuloFinancieras, '.$porcentajeF.'); // Ajusta el círculo al porcentaje de financieras
+    setCircleProgress(circuloAcademicas, '.$porcentajeA.'); // Ajusta el círculo al porcentaje de académicas
 
-  if(isset($_POST["4meses"]))
-  {
-    unset($_POST["2semanas"]);
-    unset($_POST["1año"]);
-    actualizarCostos(date('Y-m-d', strtotime('-4 months')), date('Y-m-d'));
-  }
+    document.querySelector(".prestaciones .number p").textContent = "100%";
+    document.querySelector(".gastos .number p").textContent = "'.$porcentajeF.'%";
+    document.querySelector(".ingresos .number p").textContent = "'.$porcentajeA.'%";
 
-  if(isset($_POST["1año"]))
-  {
-    unset($_POST["4meses"]);
-    unset($_POST["2semanas"]);
-    actualizarCostos(date('Y-m-d', strtotime('-1 year')), date('Y-m-d'));
-  }
+    document.querySelector(".prestaciones h1").textContent = "$'.$costoTotal.'";
+    document.querySelector(".gastos h1").textContent = "$'.$CostosF.'";
+    document.querySelector(".ingresos h1").textContent = "$'.$CostosA.'";
 
+    </script>
+    ';
 
-
-
-
+    }
 }
 
 

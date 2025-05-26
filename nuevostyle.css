@@ -15,6 +15,7 @@
     --color-primary-variant: #111e88;
     --color-dark-variant: #677483;
     --color-background: #f6f6f9;
+    --color-background2:  rgba(132, 139, 200, 0.18);
 
     --card-border-radius: 2rem;
     --border-radius-1: 0.4rem;
@@ -30,6 +31,7 @@
 /* COLORES PRINCIPALES DEL MODO OSCURO */
 .dark-theme-variables {
     --color-background: #181a1e;
+    --color-background2:  #202528;
     --color-white: #202528;
     --color-dark: #edeffd;
     --color-dark-variant: #a3bdcc;
@@ -259,7 +261,7 @@ main {
 /* ========================== PARTE IZQUIERDA (MAIN) ===========================*/
 main .date {
     display: inline-block;
-    background: var(--color-light);
+    background: var(--color-background2);
     border-radius: var(--border-radius-1);
     margin-top: 1rem;
     padding: 0.5rem 1.6rem;
@@ -268,7 +270,7 @@ main .date {
 
 main .date2 {
     display: inline-block;
-    background: var(--color-light);
+    background: var(--color-background2);
     border-radius: var(--border-radius-1);
     margin-top: 1rem;
     padding: 0.5rem 1.6rem;
@@ -310,13 +312,19 @@ main .date input {
 }
 
 body.dark-mode .date {
-    background-color: #202528; /* Cambia esto al color gris deseado */
+    background-color: var(--color-background2); /* Cambia esto al color gris deseado */
     color: #fff; /* Cambia esto al color de texto deseado */
 }
 
 body.dark-mode .date button {
-    background-color: #202528; /* Cambia esto al color deseado para el botón en modo oscuro */
+    background-color: var(--color-background2); /* Cambia esto al color deseado para el botón en modo oscuro */
     color: var(--color-primary); /* Cambia esto al color de texto deseado para el botón */
+}
+
+body.dark-mode .date button:hover {
+    background-color: var(--color-primary);
+    box-shadow: 0px 0px 20px -18px;
+    color: white;
 }
 
 button {
@@ -344,7 +352,6 @@ button:hover {
   
 button:active {
     transform: scale(0.95);
-  
 }
 
 .button-container {
@@ -355,6 +362,22 @@ button:active {
 .button-container button {
     flex: 1; /* Ajusta el tamaño de los botones según sea necesario */
     min-width: 100px; /* Ancho mínimo de los botones */
+}
+
+body.dark-mode .date2 {
+    background-color: var(--color-background2); /* Cambia esto al color gris deseado */
+    color: #fff; /* Cambia esto al color de texto deseado */
+}
+
+body.dark-mode .date2 button {
+    background-color: var(--color-background2); /* Cambia esto al color deseado para el botón en modo oscuro */
+    color: var(--color-primary); /* Cambia esto al color de texto deseado para el botón */
+}
+
+body.dark-mode .date2 button:hover {
+    background-color: var(--color-primary);
+    box-shadow: 0px 0px 20px -18px;
+    color: white;
 }
 
 

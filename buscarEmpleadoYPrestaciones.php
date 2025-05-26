@@ -61,9 +61,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     <span class="material-icons-sharp">payments</span>
                     <h3>Prestaciones</h3>
                 </a>
-                <a href="#">
-                    <span class="material-icons-sharp">date_range</span>
-                    <h3>Descansos</h3>
+                <a href="convenioNuevo.php">
+                    <span class="material-icons-sharp">article</span>
+                    <h3>Convenios</h3>
                 </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span class="material-icons-sharp">logout</span>
@@ -139,7 +139,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="button-container">
             <button type="submit">Buscar</button>
             </div>
-        </form>
+            <div class="filtros-container">
+    <form action="" method="post">
+        <div class="filtro-item">
+            <input type="checkbox" id="check" name="check" value="on">
+            <label for="check">Quiero filtrar</label>
+        </div>
+        <div class="filtro-item">
+            <label for="prestacionFiltro"><h3>Filtros</h3></label>
+            <select name="prestacionFiltro" id="prestacionFiltro">
+                <option value="todos">Todos</option>
+                <option value="Academicas">Académicas</option>
+                <option value="Financieras">Financieras</option>
+                <option value="Dia">Días</option>
+                <option value="Plazo">Plazos</option>
+            </select>
+        </div>
+        <div class="filtro-item">
+            <label for="especifico">Especifica el tipo de prestación (opcional):</label>
+            <input type="text" name="especifico" id="especifico" placeholder="Ejemplo: Beca">
+        </div>
+        <div class="filtro-item">
+            <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+        </div>
+    </form>
+</div>
         </div>
 
         
@@ -174,10 +198,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //Tambien debe estar entre bloques de comentario.
 
 
+    //FILTROS//
+
+    ///////////
 
 
-
-
+    $flitroPrestacion = $_POST['prestacionFiltro'];
     $nombre = $_POST["nombre"];
     $numero = $_POST["numero"];
 
@@ -241,16 +267,119 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $resultCIE = $queryCIE->get_result();
 
             while ($rowCIE = $resultCIE->fetch_assoc()) {
-                $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");
-                $queryGPE->bind_param("i", $numeroEmpleado);
+
+
+                if ($_POST['check'] == "on") {
+                    $flitroPrestacion = $_POST['prestacionFiltro'];
+                    if ($flitroPrestacion == "Academicas") {
+
+                        if (!empty($_POST['especifico'])) {
+                            $especifico = $_POST['especifico'];
+                            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Academico' AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE ep.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                            $queryGPE->bind_param("is", $numeroEmpleado, $especifico);
+                        } else {
+                            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Academico' AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE ep.Id_Prestacion = pa.Id_Prestacion)");
+                            $queryGPE->bind_param("i", $numeroEmpleado);
+                        }
+
+                    } elseif ($flitroPrestacion == "Financieras") {
+
+                        if (!empty($_POST['especifico'])) {
+                            $especifico = $_POST['especifico'];
+                            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Financiera' AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE ep.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                            $queryGPE->bind_param("is", $numeroEmpleado, $especifico);
+                        } else {
+                            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Financiera' AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE ep.Id_Prestacion = pa.Id_Prestacion)");
+                            $queryGPE->bind_param("i", $numeroEmpleado);
+                        }
+
+                    } elseif ($flitroPrestacion == "Dias") {
+
+                        if (!empty($_POST['especifico'])) {
+                            $especifico = $_POST['especifico'];
+                            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Día' AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE ep.Id_Prestacion = pa.Id_Prestacion AND pa.Motivo LIKE ?)");
+                            $queryGPE->bind_param("is", $numeroEmpleado, $especifico);
+                        } else {
+                            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Día' AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE ep.Id_Prestacion = pa.Id_Prestacion)");
+                            $queryGPE->bind_param("i", $numeroEmpleado);
+                        }
+
+                    } elseif ($flitroPrestacion == "Plazos") {
+
+                        if (!empty($_POST['especifico'])) {
+                            $especifico = $_POST['especifico'];
+                            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep INNER JOIN prestacion_plazos pa ON ep.Id_Prestacion = pa.Id_Prestacion WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Plazo' AND pa.Tipo LIKE ?");
+                            $queryGPE->bind_param("is", $numeroEmpleado, $especifico);
+                        } else {
+                            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Plazo'");
+                            $queryGPE->bind_param("i", $numeroEmpleado);
+                        }
+
+                    } else {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Fecha_Otorgada IS NULL");
+                        $queryGPE->bind_param("i", $numeroEmpleado);
+                    }
+                }
+                else{
+                    $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");
+                    $queryGPE->bind_param("i", $numeroEmpleado);
+                }
                 $queryGPE->execute();
                 $resultGPE = $queryGPE->get_result();
 
                 while ($rowGPE = $resultGPE->fetch_assoc()) {
                     $idPrestacion = $rowGPE['Id_Prestacion'];
 
+
+                if ($_POST['check'] == "on") {
+                    $flitroPrestacion = $_POST['prestacionFiltro'];
+                    if ($flitroPrestacion == "Academicas") {
+
+                        if (!empty($_POST['especifico'])) {
+                            $especifico = $_POST['especifico'];
+                            $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Academico' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                            $queryCE->bind_param("s", $especifico);
+                        } else {
+                            $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Academico' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                        }
+
+                    } elseif ($flitroPrestacion == "Financieras") {
+
+                        if (!empty($_POST['especifico'])) {
+                            $especifico = $_POST['especifico'];
+                            $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Financiera' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                            $queryCE->bind_param("s", $especifico);
+                        } else {
+                            $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Financiera' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                        }
+
+                    } elseif ($flitroPrestacion == "Dias") {
+
+                        if (!empty($_POST['especifico'])) {
+                            $especifico = $_POST['especifico'];
+                            $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Día' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Motivo LIKE ?)");
+                            $queryCE->bind_param("s", $especifico);
+                        } else {
+                            $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Día' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                        }
+
+                    } elseif ($flitroPrestacion == "Plazos") {
+
+                        if (!empty($_POST['especifico'])) {
+                            $especifico = $_POST['especifico'];
+                            $queryCE = $conn->prepare("SELECT * FROM prestacion p INNER JOIN prestacion_plazos pa ON p.Id_Prestacion = pa.Id_Prestacion WHERE p.Tipo = 'Plazo' AND p.Fecha_Otorgada IS NULL AND pa.Tipo LIKE ?");
+                            $queryCE->bind_param("s", $especifico);
+                        } else {
+                            $queryCE = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Plazo' AND Fecha_Otorgada IS NULL");
+                        }
+
+                    } else {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");
+                    }
+                } else {
                     $queryCE = $conn->prepare("SELECT * from prestacion WHERE Id_Prestacion = ?");
                     $queryCE->bind_param("i", $idPrestacion);
+                }
                     $queryCE->execute();
                     $resultCE = $queryCE->get_result();
                     $rowCE = $resultCE->fetch_assoc();
@@ -407,16 +536,117 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         while ($rowCIE = $resultCIE->fetch_assoc()) {
-            $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");
-            $queryGPE->bind_param("i", $numeroEmpleado);
+            if ($_POST['check'] == "on") {
+                $flitroPrestacion = $_POST['prestacionFiltro'];
+                if ($flitroPrestacion == "Academicas") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Academico' AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE ep.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                        $queryGPE->bind_param("is", $numeroEmpleado, $especifico);
+                    } else {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Academico' AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE ep.Id_Prestacion = pa.Id_Prestacion)");
+                        $queryGPE->bind_param("i", $numeroEmpleado);
+                    }
+
+                } elseif ($flitroPrestacion == "Financieras") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Financiera' AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE ep.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                        $queryGPE->bind_param("is", $numeroEmpleado, $especifico);
+                    } else {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Financiera' AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE ep.Id_Prestacion = pa.Id_Prestacion)");
+                        $queryGPE->bind_param("i", $numeroEmpleado);
+                    }
+
+                } elseif ($flitroPrestacion == "Dias") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Día' AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE ep.Id_Prestacion = pa.Id_Prestacion AND pa.Motivo LIKE ?)");
+                        $queryGPE->bind_param("is", $numeroEmpleado, $especifico);
+                    } else {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Día' AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE ep.Id_Prestacion = pa.Id_Prestacion)");
+                        $queryGPE->bind_param("i", $numeroEmpleado);
+                    }
+
+                } elseif ($flitroPrestacion == "Plazos") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep INNER JOIN prestacion_plazos pa ON ep.Id_Prestacion = pa.Id_Prestacion WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Plazo' AND pa.Tipo LIKE ?");
+                        $queryGPE->bind_param("is", $numeroEmpleado, $especifico);
+                    } else {
+                        $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion ep WHERE ep.Numero_Empleado = ? AND ep.Tipo = 'Plazo'");
+                        $queryGPE->bind_param("i", $numeroEmpleado);
+                    }
+
+                } else {
+                    $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Fecha_Otorgada IS NULL");
+                    $queryGPE->bind_param("i", $numeroEmpleado);
+                }
+            }
+            else{
+                $queryGPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ?");
+                $queryGPE->bind_param("i", $numeroEmpleado);
+            }
             $queryGPE->execute();
             $resultGPE = $queryGPE->get_result();
 
             while ($rowGPE = $resultGPE->fetch_assoc()) {
                 $idPrestacion = $rowGPE['Id_Prestacion'];
 
+
+            if ($_POST['check'] == "on") {
+                $flitroPrestacion = $_POST['prestacionFiltro'];
+                if ($flitroPrestacion == "Academicas") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Academico' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                        $queryCE->bind_param("s", $especifico);
+                    } else {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Academico' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                    }
+
+                } elseif ($flitroPrestacion == "Financieras") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Financiera' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
+                        $queryCE->bind_param("s", $especifico);
+                    } else {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Financiera' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyofinanciero pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                    }
+
+                } elseif ($flitroPrestacion == "Dias") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Día' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Motivo LIKE ?)");
+                        $queryCE->bind_param("s", $especifico);
+                    } else {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Día' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_dias pa WHERE p.Id_Prestacion = pa.Id_Prestacion)");
+                    }
+
+                } elseif ($flitroPrestacion == "Plazos") {
+
+                    if (!empty($_POST['especifico'])) {
+                        $especifico = $_POST['especifico'];
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion p INNER JOIN prestacion_plazos pa ON p.Id_Prestacion = pa.Id_Prestacion WHERE p.Tipo = 'Plazo' AND p.Fecha_Otorgada IS NULL AND pa.Tipo LIKE ?");
+                        $queryCE->bind_param("s", $especifico);
+                    } else {
+                        $queryCE = $conn->prepare("SELECT * FROM prestacion WHERE Tipo = 'Plazo' AND Fecha_Otorgada IS NULL");
+                    }
+
+                } else {
+                    $queryCE = $conn->prepare("SELECT * FROM prestacion WHERE Fecha_Otorgada IS NULL");
+                }
+            } else {
                 $queryCE = $conn->prepare("SELECT * from prestacion WHERE Id_Prestacion = ?");
                 $queryCE->bind_param("i", $idPrestacion);
+            }
                 $queryCE->execute();
                 $resultCE = $queryCE->get_result();
                 $rowCE = $resultCE->fetch_assoc();
