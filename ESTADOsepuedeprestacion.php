@@ -1,7 +1,19 @@
 <?php
+function normalizar($texto) {
+    return strtolower(str_replace([' ', '_'], '', $texto));
+}
 
-require_once("conn.php");
-include_once("error_handler.php");
+function buscarNombrePrestacion($tipoMayor, $nombreBuscado, $tiposPrestacion) {
+    foreach ($tiposPrestacion as $row) {
+        if (
+            normalizar($row['tipoMayor']) == normalizar($tipoMayor) &&
+            normalizar($row['nombre']) == normalizar($nombreBuscado)
+        ) {
+            return $row['nombre'];
+        }
+    }
+    return null;
+}
 
 function verificarPrestaciones($numeroEmpleado) {
     global $conn;
@@ -9,145 +21,63 @@ function verificarPrestaciones($numeroEmpleado) {
     $fecha_actual = date('Y-m-d');
     $fecha_limite = date('Y-m-d', strtotime('-12 months', strtotime($fecha_actual)));
 
-    $prestacionesPermitidas = [
-        'Academico' => [
-            'Exencion de inscripcion' => true,
-            'Utiles' => true,
-            'Tesis' => true
-        ],
-        'Financiera' => [
-            'Lentes' => true,
-            'Gasto funerario' => true,
-            'Guarderia' => true,
-            'Aparato Ortopedico' => true,
-            'Canastilla mama' => true
-        ],
-        'Dias' => [
-            'Permiso Sindical' => true,
-            'Nacimiento hijo' => true,
-            'Otro' => true
-        ],
-        'Plazo' => [
-            'Incapacidad' => true,
-            'Embarazo' => true,
-            'Permiso por Duelo' => true,
-            'Otro' => true
-        ]
-    ];
+    // Obtener todos los tipos de prestaciones
+    $tiposPrestacion = [];
+    $queryTipos = $conn->query("SELECT tipoMayor, nombre FROM tiposprestacion");
+    while ($row = $queryTipos->fetch_assoc()) {
+        $tiposPrestacion[] = $row;
+    }
 
+    // Inicializar arreglo dinámico
+    $prestacionesPermitidas = [];
+    foreach ($tiposPrestacion as $row) {
+        $tipoMayor = $row['tipoMayor'];
+        $nombre = $row['nombre'];
+        if (!isset($prestacionesPermitidas[$tipoMayor])) {
+            $prestacionesPermitidas[$tipoMayor] = [];
+        }
+        $prestacionesPermitidas[$tipoMayor][$nombre] = true;
+    }
+
+    // Buscar prestaciones otorgadas y marcarlas como false
     $queryGAPE = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Fecha_Otorgada BETWEEN ? AND ?");
     $queryGAPE->bind_param("iss", $numeroEmpleado, $fecha_limite, $fecha_actual);
     $queryGAPE->execute();
     $resultGAPE = $queryGAPE->get_result();
 
     while ($rowGAPE = $resultGAPE->fetch_assoc()) {
-        if ($rowGAPE['Tipo'] == "Academico") {
-            $queryGAPAA = $conn->prepare("SELECT * FROM prestacion_apoyoacademico WHERE Id_Prestacion = ?");
-            $queryGAPAA->bind_param("i", $rowGAPE['Id_Prestacion']);
-            $queryGAPAA->execute();
-            $resultGAPAA = $queryGAPAA->get_result();
-            $rowGAPAA = $resultGAPAA->fetch_assoc();
+        $tipo = $rowGAPE['Tipo'];
+        $idPrestacion = $rowGAPE['Id_Prestacion'];
 
-            if ($rowGAPAA) {
-                if ($rowGAPAA['Tipo'] == "Exencion de inscripc") { //Esto es asi porque en la base de datos se queda sin espacio para nombre completo lol
-                    $prestacionesPermitidas['Academico']['Exencion de inscripcion'] = false;
-                }
-
-                if ($rowGAPAA['Tipo'] == "Utiles") {
-                    $prestacionesPermitidas['Academico']['Utiles'] = false;
-                }
-
-                if ($rowGAPAA['Tipo'] == "Tesis") {
-                    $prestacionesPermitidas['Academico']['Tesis'] = false;
-                }
-            }
+        // Según el tipo, busca el nombre específico en la tabla correspondiente
+        if ($tipo == "Academico" || $tipo == "Académica") {
+            $query = $conn->prepare("SELECT Tipo FROM prestacion_apoyoacademico WHERE Id_Prestacion = ?");
+            $query->bind_param("i", $idPrestacion);
+        } elseif ($tipo == "Financiera") {
+            $query = $conn->prepare("SELECT Tipo FROM prestacion_apoyofinanciero WHERE Id_Prestacion = ?");
+            $query->bind_param("i", $idPrestacion);
+        } elseif ($tipo == "Día" || $tipo == "Dia") {
+            $query = $conn->prepare("SELECT Motivo as Tipo FROM prestacion_dias WHERE Id_Prestacion = ?");
+            $query->bind_param("i", $idPrestacion);
+        } elseif ($tipo == "Plazo") {
+            $query = $conn->prepare("SELECT Tipo FROM prestacion_plazos WHERE Id_Prestacion = ?");
+            $query->bind_param("i", $idPrestacion);
+        } else {
+            continue;
         }
 
-        if ($rowGAPE['Tipo'] == "Financiera") {
-            $queryGAPAF = $conn->prepare("SELECT * FROM prestacion_apoyofinanciero WHERE Id_Prestacion = ?");
-            $queryGAPAF->bind_param("i", $rowGAPE['Id_Prestacion']);
-            $queryGAPAF->execute();
-            $resultGAPAF = $queryGAPAF->get_result();
-            $rowGAPAF = $resultGAPAF->fetch_assoc();
-
-            if ($rowGAPAF) {
-                if ($rowGAPAF['Tipo'] == "Lentes") {
-                    $prestacionesPermitidas['Apoyo Financiero']['Lentes'] = false;
-                }
-
-                if ($rowGAPAF['Tipo'] == "Gasto funerario") {
-                    $prestacionesPermitidas['Apoyo Financiero']['Gasto funerario'] = false;
-                }
-
-                if ($rowGAPAF['Tipo'] == "Guarderia") {
-                    $prestacionesPermitidas['Apoyo Financiero']['Guarderia'] = false;
-                }
-
-                if ($rowGAPAF['Tipo'] == "Aparato Ortopedico") {
-                    $prestacionesPermitidas['Apoyo Financiero']['Aparato Ortopedico'] = false;
-                }
-
-                if ($rowGAPAF['Tipo'] == "Canastilla mama") {
-                    $prestacionesPermitidas['Apoyo Financiero']['Canastilla mama'] = false;
-                }
+        $query->execute();
+        $result = $query->get_result();
+        $row = $result->fetch_assoc();
+        if ($row && !empty($row['Tipo'])) {
+            // Buscar el nombre real en tiposprestacion
+            $nombreReal = buscarNombrePrestacion($tipo, $row['Tipo'], $tiposPrestacion);
+            if ($nombreReal && isset($prestacionesPermitidas[$tipo][$nombreReal])) {
+                $prestacionesPermitidas[$tipo][$nombreReal] = false;
             }
         }
-
-        if ($rowGAPE['Tipo'] == "Dias") {
-            $queryGAPAD = $conn->prepare("SELECT * FROM prestacion_dias WHERE Id_Prestacion = ?");
-            $queryGAPAD->bind_param("i", $rowGAPE['Id_Prestacion']);
-            $queryGAPAD->execute();
-            $resultGAPAD = $queryGAPAD->get_result();
-            $rowGAPAD = $resultGAPAD->fetch_assoc();
-
-            //Cheqar aca que en los ultimos 4 meses no haya mas de dos pretsacion de dia dadas a empleados del misma
-            //area que el empleado a checar y el mismo dia
-            //esto se hace en el mismo archivo de la solicitud de prestacion
-
-
-            if ($rowGAPAD) {
-                if ($rowGAPAD['Motivo'] == "Permiso Sindical") {
-                    $prestacionesPermitidas['Dias']['Permiso Sindical'] = false;
-                }
-
-                if ($rowGAPAD['Motivo'] == "Nacimiento hijo") {
-                    $prestacionesPermitidas['Dias']['Nacimiento hijo'] = false;
-                }
-
-                if ($rowGAPAD['Motivo'] == "Otro") {
-                    $prestacionesPermitidas['Dias']['Otro'] = false;
-                }
-            }
-        }
-
-        if ($rowGAPE['Tipo'] == "Plazo") {
-            $queryGAPAP = $conn->prepare("SELECT * FROM prestacion_plazos WHERE Id_Prestacion = ?");
-            $queryGAPAP->bind_param("i", $rowGAPE['Id_Prestacion']);
-            $queryGAPAP->execute();
-            $resultGAPAP = $queryGAPAP->get_result();
-            $rowGAPAP = $resultGAPAP->fetch_assoc();
-
-            if ($rowGAPAP) {
-                if ($rowGAPAP['Tipo'] == "Incapacidad") {
-                    $prestacionesPermitidas['Plazo']['Incapacidad'] = false;
-                }
-
-                if ($rowGAPAP['Tipo'] == "Embarazo") {
-                    $prestacionesPermitidas['Plazo']['Embarazo'] = false;
-                }
-
-                if ($rowGAPAP['Tipo'] == "Permiso por Duelo") {
-                    $prestacionesPermitidas['Plazo']['Permiso por Duelo'] = false;
-                }
-
-                if ($rowGAPAP['Tipo'] == "Otro") {
-                    $prestacionesPermitidas['Plazo']['Otro'] = false;
-                }
-            }
-        }
+        $query->close();
     }
 
     return $prestacionesPermitidas;
 }
-
-?>
