@@ -48,6 +48,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             </div>
 
             <div class="sidebar">
+
+                <?php
+    // Mostrar familiares registrados del empleado
+    $numeroEmpleado = $numeroEmpleado;
+    $queryFamiliares = $conn->prepare("SELECT f.Nombre_Familiar, f.Nivel_academico FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE e.Numero_Empleado = ?");
+    $queryFamiliares->bind_param("i", $_SESSION['Numero_Empleado']);
+    $queryFamiliares->execute();
+    $resultFamiliares = $queryFamiliares->get_result();
+
+    echo '<div style="background:#fff; padding:15px; margin:10px 0; border-radius:8px;"><h4>Familiares registrados:</h4><ul>';
+    while ($rowF = $resultFamiliares->fetch_assoc()) {
+        echo '<li>' . htmlspecialchars($rowF['Nombre_Familiar']) . ' (' . htmlspecialchars($rowF['Nivel_academico']) . ')</li>';
+    }
+    echo '</ul></div>';
+
+    $queryFamiliares->close();
+?>
+
                 <a href="index.php">
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Menú</h3>
