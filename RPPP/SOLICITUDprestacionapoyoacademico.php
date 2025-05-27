@@ -70,7 +70,7 @@ echo "<script>console.log('Numero de empleado: $numeroEmpleado');</script>";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleado</title>
     <!-- ASIGNACION DE CSS -->
-    <link href="lightbox.min.css" rel="stylesheet">
+    <link href="/Proyecto_RH/lightbox.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/Proyecto_RH/styleRegistrarFamiliares.css">
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
@@ -227,7 +227,7 @@ $tipoApoyo = $_POST['tipo'];
 require_once("ESTADOsepuedeprestacion.php");
 $prestacionesPermitidas = verificarPrestaciones($numeroEmpleado);
 
-if (!$prestacionesPermitidas['Academico'][$tipoApoyo]) {
+if (!$prestacionesPermitidas['Academica'][$tipoApoyo]) {
 echo "<script>alert('No se puede solicitar este tipo de apoyo académico debido a que ya te lo otorgaron este cuatrimestre');</script>";
 exit;
 echo "<script>location.reload();</script>"; 

@@ -71,7 +71,7 @@ echo "<script>console.log('Numero de empleado: $numeroEmpleado');</script>";
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Empleado</title>
         <!-- ASIGNACION DE CSS -->
-        <link href="lightbox.min.css" rel="stylesheet">
+        <link href="/Proyecto_RH/lightbox.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/Proyecto_RH/styleRegistrarFamiliares.css">
         <!-- SIMBOLOS QUE SE UTILIZARAN -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"

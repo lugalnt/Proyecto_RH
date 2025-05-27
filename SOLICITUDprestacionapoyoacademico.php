@@ -211,7 +211,7 @@ $tipoApoyo = $_POST['tipo'];
 require_once("ESTADOsepuedeprestacion.php");
 $prestacionesPermitidas = verificarPrestaciones($_SESSION['Numero_Empleado']);
 
-if (!$prestacionesPermitidas['Academico'][$tipoApoyo]) {
+if (!$prestacionesPermitidas['Academica'][$tipoApoyo]) {
 echo "<script>alert('No se puede solicitar este tipo de apoyo académico debido a que ya te lo otorgaron este cuatrimestre');</script>";
 exit;
 echo "<script>location.reload();</script>"; 
@@ -252,7 +252,7 @@ $queryChecarPF->close();
 if ($row)
 {
 
-    if ($tipoApoyo == "Exencion de inscripcion" && $nivel_academico != "Universidad" && (strpos($nombre_institucion, "UTN") === false && strpos($nombre_institucion, "Universidad Tecnologica de Nogales") === false))
+    if ($tipoApoyo == "Exencion de inscripc" && $nivel_academico != "Universidad" && (strpos($nombre_institucion, "UTN") === false && strpos($nombre_institucion, "Universidad Tecnologica de Nogales") === false))
     {
         echo "No se puede solicitar exención de inscripción para esta institución y/o nivel académico del familiar no es Universidad"; 
     }
