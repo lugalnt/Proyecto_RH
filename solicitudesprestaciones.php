@@ -201,20 +201,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     <script>
     function mostrarSelectEspecifico() {
+        // Oculta todos los selects
         document.getElementById('filtro-academico').style.display = 'none';
         document.getElementById('filtro-financiera').style.display = 'none';
         document.getElementById('filtro-dia').style.display = 'none';
         document.getElementById('filtro-plazo').style.display = 'none';
 
+        // Deselecciona todos los selects específicos
+        document.getElementById('especificoAcademico').selectedIndex = -1;
+        document.getElementById('especificoFinanciera').selectedIndex = -1;
+        document.getElementById('especificoDia').selectedIndex = -1;
+        document.getElementById('especificoPlazo').selectedIndex = -1;
+
         var filtro = document.getElementById('prestacionFiltro').value;
         if (filtro === 'Academico') {
             document.getElementById('filtro-academico').style.display = 'block';
+            document.getElementById('especificoAcademico').selectedIndex = 0;
         } else if (filtro === 'Financiera') {
             document.getElementById('filtro-financiera').style.display = 'block';
+            document.getElementById('especificoFinanciera').selectedIndex = 0;
         } else if (filtro === 'Día') {
             document.getElementById('filtro-dia').style.display = 'block';
+            document.getElementById('especificoDia').selectedIndex = 0;
         } else if (filtro === 'Plazo') {
             document.getElementById('filtro-plazo').style.display = 'block';
+            document.getElementById('especificoPlazo').selectedIndex = 0;
         }
     }
     </script>
@@ -227,6 +238,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
                     if (!empty($_POST['especifico'])) {
                         $especifico = $_POST['especifico'];
+                        echo "<script>console.log('Especifico: $especifico');</script>";
                         $querySP = $conn->prepare("SELECT * FROM prestacion p WHERE p.Tipo = 'Academico' AND p.Fecha_Otorgada IS NULL AND EXISTS (SELECT 1 FROM prestacion_apoyoacademico pa WHERE p.Id_Prestacion = pa.Id_Prestacion AND pa.Tipo LIKE ?)");
                         $querySP->bind_param("s", $especifico);
                     }

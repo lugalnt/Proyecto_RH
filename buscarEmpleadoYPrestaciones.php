@@ -151,23 +151,123 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         </div>
         <div class="filtro-item">
             <label for="prestacionFiltro"><h3>Filtros</h3></label>
-            <select name="prestacionFiltro" id="prestacionFiltro">
+            <select name="prestacionFiltro" id="prestacionFiltro" required onchange="mostrarSelectEspecifico()">
                 <option value="todos">Todos</option>
-                <option value="Academicas">Académicas</option>
-                <option value="Financieras">Financieras</option>
-                <option value="Dia">Días</option>
-                <option value="Plazo">Plazos</option>
+                <option value="Academico">Académicas</option>
+                <option value="Financiera">Financieras</option>
+                <option value="Día">Día</option>
+                <option value="Plazo">Plazo</option>
             </select>
         </div>
-        <div class="filtro-item">
-            <label for="especifico">Especifica el tipo de prestación (opcional):</label>
-            <input type="text" name="especifico" id="especifico" placeholder="Ejemplo: Beca">
+        <div class="filtro-item" id="filtro-academico" style="display:none;">
+            <label for="especificoAcademico">Tipo de apoyo académico:</label>
+            <select name="especifico" id="especificoAcademico">
+                <?php
+                $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Academica'");
+                $queryTiposAcademicos->execute();
+                $resultTiposAcademicos = $queryTiposAcademicos->get_result();
+                if ($resultTiposAcademicos->num_rows > 0) {
+                    while ($row = $resultTiposAcademicos->fetch_assoc()) {
+                        echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay tipos académicos disponibles</option>';
+                }
+                $queryTiposAcademicos->close();
+                ?>
+                <!-- Agrega más opciones si es necesario -->
+            </select>
+        </div>
+        <div class="filtro-item" id="filtro-financiera" style="display:none;">
+            <label for="especificoFinanciera">Tipo de apoyo financiero:</label>
+            <select name="especifico" id="especificoFinanciera">
+                <?php
+                $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Financiera'");
+                $queryTiposAcademicos->execute();
+                $resultTiposAcademicos = $queryTiposAcademicos->get_result();
+                if ($resultTiposAcademicos->num_rows > 0) {
+                    while ($row = $resultTiposAcademicos->fetch_assoc()) {
+                        echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay tipos financieros disponibles</option>';
+                }
+                $queryTiposAcademicos->close();
+                ?>
+                <!-- Agrega más opciones si es necesario -->
+            </select>
+        </div>
+        <div class="filtro-item" id="filtro-dia" style="display:none;">
+            <label for="especificoDia">Motivo del día:</label>
+            <select name="especifico" id="especificoDia">
+                <?php
+                $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Dia'");
+                $queryTiposAcademicos->execute();
+                $resultTiposAcademicos = $queryTiposAcademicos->get_result();
+                if ($resultTiposAcademicos->num_rows > 0) {
+                    while ($row = $resultTiposAcademicos->fetch_assoc()) {
+                        echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay tipos de dia</option>';
+                }
+                $queryTiposAcademicos->close();
+                ?>
+            </select>
+        </div>
+        <div class="filtro-item" id="filtro-plazo" style="display:none;">
+            <label for="especificoPlazo">Tipo de plazo:</label>
+            <select name="especifico" id="especificoPlazo">
+                <?php
+                $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Plazo'");
+                $queryTiposAcademicos->execute();
+                $resultTiposAcademicos = $queryTiposAcademicos->get_result();
+                if ($resultTiposAcademicos->num_rows > 0) {
+                    while ($row = $resultTiposAcademicos->fetch_assoc()) {
+                        echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay tipos de plazo disponibles</option>';
+                }
+                $queryTiposAcademicos->close();
+                ?>
+            </select>
         </div>
         <div class="filtro-item">
             <button type="submit" class="btn btn-primary">Aplicar filtros</button>
         </div>
     </form>
-</div>
+
+    <script>
+    function mostrarSelectEspecifico() {
+        // Oculta todos los selects
+        document.getElementById('filtro-academico').style.display = 'none';
+        document.getElementById('filtro-financiera').style.display = 'none';
+        document.getElementById('filtro-dia').style.display = 'none';
+        document.getElementById('filtro-plazo').style.display = 'none';
+
+        // Deselecciona todos los selects específicos
+        document.getElementById('especificoAcademico').selectedIndex = -1;
+        document.getElementById('especificoFinanciera').selectedIndex = -1;
+        document.getElementById('especificoDia').selectedIndex = -1;
+        document.getElementById('especificoPlazo').selectedIndex = -1;
+
+        var filtro = document.getElementById('prestacionFiltro').value;
+        if (filtro === 'Academico') {
+            document.getElementById('filtro-academico').style.display = 'block';
+            document.getElementById('especificoAcademico').selectedIndex = 0;
+        } else if (filtro === 'Financiera') {
+            document.getElementById('filtro-financiera').style.display = 'block';
+            document.getElementById('especificoFinanciera').selectedIndex = 0;
+        } else if (filtro === 'Día') {
+            document.getElementById('filtro-dia').style.display = 'block';
+            document.getElementById('especificoDia').selectedIndex = 0;
+        } else if (filtro === 'Plazo') {
+            document.getElementById('filtro-plazo').style.display = 'block';
+            document.getElementById('especificoPlazo').selectedIndex = 0;
+        }
+    }
+    </script>
         </div>
 
         
@@ -275,7 +375,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($_POST['check'] == "on") {
                     $flitroPrestacion = $_POST['prestacionFiltro'];
-                    if ($flitroPrestacion == "Academicas") {
+                    if ($flitroPrestacion == "Academico") {
 
                         if (!empty($_POST['especifico'])) {
                             $especifico = $_POST['especifico'];
@@ -286,7 +386,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $queryGPE->bind_param("i", $numeroEmpleado);
                         }
 
-                    } elseif ($flitroPrestacion == "Financieras") {
+                    } elseif ($flitroPrestacion == "Financiera") {
 
                         if (!empty($_POST['especifico'])) {
                             $especifico = $_POST['especifico'];
@@ -297,7 +397,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $queryGPE->bind_param("i", $numeroEmpleado);
                         }
 
-                    } elseif ($flitroPrestacion == "Dias") {
+                    } elseif ($flitroPrestacion == "Día") {
 
                         if (!empty($_POST['especifico'])) {
                             $especifico = $_POST['especifico'];
@@ -308,7 +408,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $queryGPE->bind_param("i", $numeroEmpleado);
                         }
 
-                    } elseif ($flitroPrestacion == "Plazos") {
+                    } elseif ($flitroPrestacion == "Plazo") {
 
                         if (!empty($_POST['especifico'])) {
                             $especifico = $_POST['especifico'];
