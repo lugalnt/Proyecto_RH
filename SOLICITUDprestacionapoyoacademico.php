@@ -49,7 +49,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
             <div class="sidebar">
 
-                <?php
+<?php
     // Mostrar familiares registrados del empleado
     $numeroEmpleado = $numeroEmpleado;
     $queryFamiliares = $conn->prepare("SELECT f.Nombre_Familiar, f.Nivel_academico FROM familiar_empleado f INNER JOIN empleado_familiar e ON f.Id_Familiar = e.Id_Familiar WHERE e.Numero_Empleado = ?");
@@ -59,8 +59,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     echo '<div style="background:#fff; padding:15px; margin:10px 0; border-radius:8px;"><h4>Familiares registrados:</h4><ul>';
     while ($rowF = $resultFamiliares->fetch_assoc()) {
-        if ($rowF['nombre_Familiar'] == "N/A") {
-            continue; // Si el nombre del familiar es nulo, no lo mostramos
+        if ($rowF['Nombre_Familiar'] == "N/A") {
+            continue; 
         }
         echo '<li>' . htmlspecialchars($rowF['Nombre_Familiar']) . ' (' . htmlspecialchars($rowF['Nivel_academico']) . ')</li>';
     }
@@ -191,8 +191,8 @@ while($rowCheckToday = $resultCheckToday->fetch_assoc()) {
                 exit;
         }
 }
-$queryCheckToday->close();
-$queryCheckTodayPlus->close();
+//$queryCheckToday->close();
+//$queryCheckTodayPlus->close();
 ////////////////////
 
 
