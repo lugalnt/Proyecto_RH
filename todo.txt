@@ -8,7 +8,7 @@ SEGUN YA HICE PERO REVISAR:
 HACER:
 -Que el archivo que revisa si estan disponible para usuario la use en vez del array mapeo 
 insano god programming que habia hecho ✓
--Que los costos vengan de la tabla en vez del otro archivo
+-Que los costos vengan de la tabla en vez del otro archivo ✓
 
 
 

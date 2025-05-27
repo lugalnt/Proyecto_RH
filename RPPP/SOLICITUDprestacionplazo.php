@@ -139,6 +139,7 @@ echo "<script>console.log('Numero de empleado: $numeroEmpleado');</script>";
     <h2>Por favor, complete el siguiente formulario para solicitar un plazo.</h2>
         
     <form action="" method="post">
+        <input type="hidden" name="numeroEmpleado" value ="<?php echo htmlspecialchars($numeroEmpleado); ?>">
         <label for="fecha_inicial"><h5>Fecha Inicial:</h5></label>
         <input type="date" id="fecha_inicial" name="fecha_inicial" required><br><br>
 
@@ -206,7 +207,7 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST['motivo']))
 {
-
+$numeroEmpleado = $_POST['numeroEmpleado'];
 $fechaInicial = $_POST['fecha_inicial'];
 $fechaFinal = $_POST['fecha_final'];
 $motivo = $_POST['motivo'];

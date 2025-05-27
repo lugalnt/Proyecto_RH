@@ -128,6 +128,7 @@ echo "<script>console.log('Numero de empleado: $numeroEmpleado');</script>";
     <h2>Por favor, complete el siguiente formulario para solicitar un día.</h2>
 
     <form action="" method="post">
+        <input type="hidden" name="numeroEmpleado" value ="<?php echo htmlspecialchars($numeroEmpleado); ?>">
         <label for="fecha"><h5>Fecha:</h5></label>
         <input type="date" id="fecha" name="fecha" required><br><br>
 
@@ -194,6 +195,7 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST['motivo']))
 {
+    $numeroEmpleado = $_POST['numeroEmpleado'];
     $fecha = $_POST['fecha'];
     $diaExtra = $_POST['diaExtra'] ?? 0;
     $motivo = $_POST['motivo'];

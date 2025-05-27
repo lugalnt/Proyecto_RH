@@ -68,6 +68,10 @@ if($_SESSION['Area'] != "RH")
                     <span class="material-icons-sharp">article</span>
                     <h3>Convenios</h3>
                 </a>
+                <a href="RPPP.php">
+                    <span class="material-icons-sharp">fact_check</span>
+                    <h3>RPPP</h3>
+                </a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span class="material-icons-sharp">logout</span>
                     <h3>Cerrar Sesión</h3>

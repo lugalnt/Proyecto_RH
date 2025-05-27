@@ -148,6 +148,7 @@ if (isset($_GET['mostrar_familiares'])) {
     <h2>Se recuerda que se necesita presentar el comprobante de inscripcion del beneficiado</h2>
     <br>
     <form action="" method="post">
+        <input type="hidden" name="numeroEmpleado" value ="<?php echo htmlspecialchars($numeroEmpleado); ?>">
         <label for="nombre_familiar"><h5>Nombre del Familiar:</h5></label>
         <input type="text" id="nombre_familiar" name="nombre_familiar" placeholder="Nombre Del Familiar" required><br><br>
 
@@ -218,7 +219,7 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"]=="POST" && !empty($_POST['tipo']))
 {
-
+$numeroEmpleado = $_POST['numeroEmpleado'];
 $nombre_familiar = $_POST['nombre_familiar'];
 $nombre_institucion = $_POST['nombre_institucion'];
 $tipoApoyo = $_POST['tipo'];
