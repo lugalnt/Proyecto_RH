@@ -50,7 +50,7 @@ function verificarPrestaciones($numeroEmpleado) {
         $idPrestacion = $rowGAPE['Id_Prestacion'];
 
         // Según el tipo, busca el nombre específico en la tabla correspondiente
-        if ($tipo == "Academico" || $tipo == "Académica") {
+        if ($tipo == "Academico" || $tipo == "Academica") {
             $query = $conn->prepare("SELECT Tipo FROM prestacion_apoyoacademico WHERE Id_Prestacion = ?");
             $query->bind_param("i", $idPrestacion);
         } elseif ($tipo == "Financiera") {
