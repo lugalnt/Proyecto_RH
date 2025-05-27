@@ -60,6 +60,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     echo '<div style="background:#fff; padding:15px; margin:10px 0; border-radius:8px;"><h4>Familiares registrados:</h4><ul>';
     while ($rowF = $resultFamiliares->fetch_assoc()) {
+        if ($rowF['nombre_Familiar'] == "N/A") {
+            continue; // Si el nombre del familiar es nulo, no lo mostramos
+        }
         echo '<li>' . htmlspecialchars($rowF['Nombre_Familiar']) . ' (' . htmlspecialchars($rowF['Nivel_academico']) . ')</li>';
     }
     echo '</ul></div>';
