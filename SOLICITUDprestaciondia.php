@@ -120,9 +120,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         <label for="motivo"><h5>Motivo:</h5></label>
         <select id="motivo" name="motivo" onchange="toggleOtroField()" required>
-            <option value="Permiso sindical">Permiso sindical</option>
-            <option value="Nacimiento hijo">Nacimiento hijo</option>
-            <option value="Otro">Otro</option>
+        <?php
+require_once("conn.php");
+
+$queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Dia'");
+$queryCon->execute();
+$result = $queryCon->get_result();
+while ($row = $result->fetch_assoc()) {
+    echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+}
+$queryCon->close();
+
+
+?>
         </select><br><br>
 
         <div id="otroMotivo" style="display: none;">
@@ -177,6 +187,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     $queryCheckDias->bind_result($dias, $diasExtras);
     $queryCheckDias->fetch();
     $queryCheckDias->close();
+
+
 
     if ($diaExtra) {
         if ($diasExtras <= 0) {

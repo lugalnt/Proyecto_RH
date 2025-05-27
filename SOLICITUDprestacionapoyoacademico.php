@@ -27,6 +27,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleado</title>
     <!-- ASIGNACION DE CSS -->
+    <link href="lightbox.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./styleRegistrarFamiliares.css">
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
@@ -140,14 +141,58 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         <label for="tipo"><h5>Tipo de Apoyo:</h5></label>
         <select id="tipo" name="tipo">
-            <option value="Utiles">Útiles</option>
-            <option value="Exencion de inscripcion">Exención de inscripción</option>
+<?php
+require_once("conn.php");
+
+$queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Academica'");
+$queryCon->execute();
+$result = $queryCon->get_result();
+while ($row = $result->fetch_assoc()) {
+    echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+}
+$queryCon->close();
+
+
+?>
+
         </select><br><br>
 
         <div class="button-container">
         <button type="submit">Enviar Solicitud</button>
         </div>
     </form>
+
+    <div id="pdfLightbox" class="lightbox" style="display: none;">
+        <div class="lb-outerContainer">
+          
+            <embed id="pdfViewer" src="" type="application/pdf" width="100%" height="100%">
+    
+            
+            <a href="SOLICITUDprestacionapoyoacademico.php" class="lb-close" onclick="cerrarPDF()">x</a>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="/Proyecto_RH/lightbox.min.js"></script>
+
+<script>
+    function mostrarPDF(rutaPDF) {
+
+document.getElementById('pdfViewer').src = rutaPDF;
+
+
+document.getElementById('pdfLightbox').style.display = 'flex';
+}
+
+function cerrarPDF() {
+
+document.getElementById('pdfLightbox').style.display = 'none';
+
+
+document.getElementById('pdfViewer').src = '';
+}
+
+</script>
 
 <?php
 
@@ -191,8 +236,8 @@ while($rowCheckToday = $resultCheckToday->fetch_assoc()) {
                 exit;
         }
 }
-//$queryCheckToday->close();
-//$queryCheckTodayPlus->close();
+
+
 ////////////////////
 
 
@@ -237,6 +282,18 @@ if ($row)
     $queryInsertPA->bind_param("iiisss", $id_prestacion, $_SESSION['Numero_Empleado'], $row['Id_Familiar'], $nivel_academico, $nombre_institucion, $tipoApoyo);
     $queryInsertPA->execute();
     $queryInsertPA->close();
+
+    switch ($tipoApoyo)
+    {
+        case "Utiles":
+            echo '<script>mostrarPDF("PDF Prestaciones/Utiles Escolares/Prestacion Utiles Escolares (Solicitud).pdf")</script>';
+            break;
+        
+        default:
+            echo '<script>mostrarPDF("")</script>';
+            break;
+
+    }
     
     echo "Solicitud enviada correctamente";
     }
@@ -273,6 +330,9 @@ else
             });
         });
     </script>
+
+
+
 
 
 </body>

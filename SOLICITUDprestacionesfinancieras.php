@@ -27,6 +27,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Empleado</title>
         <!-- ASIGNACION DE CSS -->
+        <link href="lightbox.min.css" rel="stylesheet">
         <link rel="stylesheet" href="./styleRegistrarFamiliares.css">
         <!-- SIMBOLOS QUE SE UTILIZARAN -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
@@ -134,9 +135,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
                 <label for="tipo"><h5>Tipo de Prestación:</h5></label>
                 <select id="tipo" name="tipo">
-                        <option value="Guarderia">Guardería</option>
-                        <option value="Gastos funerarios">Gastos funerarios</option>
-                        <option value="Lentes">Lentes</option>
+                <?php
+require_once("conn.php");
+
+$queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Financiera'");
+$queryCon->execute();
+$result = $queryCon->get_result();
+while ($row = $result->fetch_assoc()) {
+    echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+}
+$queryCon->close();
+
+
+?>
                 </select><br><br>
 
                 <label for="tipo_pago"><h5>Tipo de Pago:</h5></label>
@@ -170,6 +181,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                         });
                 });
         </script>
+
+<div id="pdfLightbox" class="lightbox" style="display: none;">
+        <div class="lb-outerContainer">
+          
+            <embed id="pdfViewer" src="" type="application/pdf" width="100%" height="100%">
+    
+            
+            <a href="SOLICITUDprestacionesfinancieras.php" class="lb-close" onclick="cerrarPDF()">x</a>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="/Proyecto_RH/lightbox.min.js"></script>
+
+<script>
+    function mostrarPDF(rutaPDF) {
+
+document.getElementById('pdfViewer').src = rutaPDF;
+
+
+document.getElementById('pdfLightbox').style.display = 'flex';
+}
+
+function cerrarPDF() {
+
+document.getElementById('pdfLightbox').style.display = 'none';
+
+
+document.getElementById('pdfViewer').src = '';
+}
+
+</script>
 
 
 </body>
@@ -283,12 +326,50 @@ $queryInsertPF = $conn->prepare("INSERT INTO prestacion_apoyofinanciero (Id_Pres
 $queryInsertPF->bind_param("iiisii", $id_prestacion, $_SESSION['Numero_Empleado'], $id_familiar, $tipoPF, $deposito, $reembolso);
 $queryInsertPF->execute();
 $queryInsertPF->close();
+
+if ($tipoPF == 'Guarderia') {
+        echo '<script>mostrarPDF("PDF Prestaciones/Guarderia y Canastilla/Prestacion guarderia y canastilla (Solicitud).pdf")</script>';
+} elseif ($tipoPF == 'Gastos funerarios') {
+        echo '<script>mostrarPDF("PDF Prestaciones/Gastos Funerarios/Prestacion gastos funerarios (Solicitud).pdf")</script>';
+} elseif ($tipoPF == 'Lentes' && $tipo_pago == 'Deposito') {
+        echo '<script>mostrarPDF("PDF Prestaciones/Lentes/Prestacion Lentes(Solicitud[Deposito]).pdf")</script>';
+} elseif ($tipoPF == 'Lentes' && $tipo_pago == 'Reembolso') {
+        echo '<script>mostrarPDF("PDF Prestaciones/Lentes/Prestacion Lentes(Solicitud[Reembolso]).pdf")</script>';
+} elseif ($tipoPF == 'Titulacion') {
+        echo '<script>mostrarPDF("PDF Prestaciones/Titulacion/Prestacion titulacion (Solicitud).pdf")</script>';
+} elseif ($tipoPF == 'Aparato Ortopedico') {
+        echo '<script>mostrarPDF("PDF Prestaciones/Aparatos Ortopedicos/Prestacion Aparatos Ortopedicos (Solicitud).pdf")</script>';
+}
+
+
 echo "Solicitud enviada correctamente";
 
      
 
 
+echo <<<HTML
+<div id="pdfLightbox" class="lightbox" style="display: none;">
+        <div class="lb-outerContainer">
+                <embed id="pdfViewer" src="" type="application/pdf" width="100%" height="100%">
+                <a href="pruebaMPDF.html" class="lb-close" onclick="cerrarPDF()">x</a>
+        </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="lib/lightbox/js/lightbox.min.js"></script>
+
+<script>
+        function mostrarPDF(rutaPDF) {
+                document.getElementById('pdfViewer').src = rutaPDF;
+                document.getElementById('pdfLightbox').style.display = 'flex';
+        }
+
+        function cerrarPDF() {
+                document.getElementById('pdfLightbox').style.display = 'none';
+                document.getElementById('pdfViewer').src = '';
+        }
+</script>
+HTML;
 
         
 }
