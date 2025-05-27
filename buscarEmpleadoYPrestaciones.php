@@ -493,6 +493,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 }
             }
+        }
     } else if (!empty($numero) && empty($nombre)) {
         $numeroEmpleado = $numero;
 
@@ -765,7 +766,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </table>
     ';
 
-}
 
 ?>
 <script src="./index.js"></script> 

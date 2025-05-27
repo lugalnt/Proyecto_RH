@@ -129,19 +129,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         <label for="razon"><h5>Razón del Plazo:</h5></label>
         <select id="razon" name="motivo" onchange="toggleMotivoTextbox()" required>
-        <?php
-require_once("conn.php");
-
-$queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Plazo'");
-$queryCon->execute();
-$result = $queryCon->get_result();
-while ($row = $result->fetch_assoc()) {
-    echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
-}
-$queryCon->close();
-
-
-?>
+            <option value="Incapacidad">Incapacidad</option>
+            <option value="Embarazo">Embarazo</option>
+            <option value="Permiso por Duelo">Permiso por duelo</option>
+            <option value="Otro">Otro</option>
         </select><br><br>
 
         <label for="razon_social"><h5>¿Es Por Una Razón Social?</h5></label>
@@ -222,10 +213,6 @@ if ($quitarDias) {
         exit();
     }
 }
-
-
-
-
 
 //ARRIBA GUARDADO PARA QUE SE HAGA DE UNA FORMA U OTRA DESPUES DE QUE SE OTORGE LOL
 

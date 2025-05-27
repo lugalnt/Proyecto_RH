@@ -14,11 +14,9 @@ $documentosPrestaciones = array(
     "Permiso sindical" => "Carta de solicitud FIRMADA",
     "Nacimiento hijo" => "Carta de solicitud FIRMADA",
     "Otro" => "Carta de solicitud FIRMADA",
-    "Otro motivo" => "Carta de solicitud FIRMADA",
     "Embarazo" => "Carta de solicitud FIRMADA",
     "Permiso por Duelo" => "Carta de solicitud FIRMADA",
-    "Incapacidad" => "Carta de solicitud FIRMADA",
-    "Titulacion" => "Carta de solicitud FIRMADA"
+    "Incapacidad" => "Carta de solicitud FIRMADA"
 );
 
 function queDocumentos($prestacion) {
