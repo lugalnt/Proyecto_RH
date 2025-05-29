@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case 'Utiles':
             $pdfPath = "PDF Prestaciones/Utiles Escolares/Prestacion Utiles Escolares (Respuesta).pdf";
             break;
-        case 'Exencion de inscripc':
+        case 'Exencion de inscripcion':
             $pdfPath = "PDF Prestaciones/Utiles Escolares/Prestacion Utiles Escolares (Respuesta).pdf";
             break;
         case 'Lentes':

@@ -328,6 +328,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
             if ($numeroEmpleado) {
                 $prestacionesPermitidas = verificarPrestaciones($numeroEmpleado);
+                echo "<script>console.log('prestacionesPermitidas:', " . json_encode($prestacionesPermitidas) . ");</script>";
     
                 // Contenedor flex para las listas
                 echo '<div class="prestaciones-container">';

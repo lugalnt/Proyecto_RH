@@ -134,45 +134,56 @@ echo<<<HTML
 
                 <h1>Registro de nuevo convenio</h1>
                         <h2>Por favor, llena los siguientes campos:</h2>
-                        <form action="" method="post">
-                                <label for="nombre_familiar"><h5>Nombre del convenio</h5></label>
-                                <input type="text" id="nombre_familiar" name="nombre_convenio" placeholder="Nombre del convenio aqui" required><br><br>
-                
-                                <label for="tipo"><h5>En que categoria cae?</h5></label>
-                                <select id="tipo" name="tipoMayor" required>
-                                        <option value="Financiera">Financiera</option>
-                                        <option value="Academica">Academica</option>
-                                        <option value="Plazo">Plazo</option>
-                                        <option value="Dia">Dia</option>
-                                </select><br><br>
-                
-                                <input type ="number" name="costo" placeholder="Costo del convenio" required><br><br>
-                                <input type ="hidden" name="irRegistrar" value="irRegistrar"><br><br>
-                                <div class="button-container">
-                                <button type="submit">Registrar</button>
-                                </div>
+                        <form action="" method="post" id="registroConvenioForm">
+                            <label for="nombre_familiar"><h5>Nombre del convenio</h5></label>
+                            <input type="text" id="nombre_familiar" name="nombre_convenio" placeholder="Nombre del convenio aqui" required><br><br>
+
+                            <label for="tipo"><h5>En que categoria cae?</h5></label>
+                            <select id="tipo" name="tipoMayor" required>
+                                <option value="Financiera">Financiera</option>
+                                <option value="Academico">Academico</option>
+                                <option value="Plazo">Plazo</option>
+                                <option value="Dia">Dia</option>
+                            </select><br><br>
+
+                            <input type="number" name="costo" placeholder="Costo del convenio" required><br><br>
+                            <label> Tiempo de periodo de carencia del convenio (En meses) </label>
+                            <input type="number" name="tiempoCarencia"><br><br>
+                            <label for="documentos"><h5>Lista de documentos requeridos</h5></label> <br>
+                            <p>Por favor, ingrese los documentos separados por comas. Ejemplo: "Documento1, Documento2"</p>
+                            <input 
+                                type="text" 
+                                id="documentos" 
+                                name="documentos" 
+                                value="Carta de solicitud FIRMADA"
+                                pattern="^([a-zA-ZÁÉÍÓÚáéíóúñÑ0-9\s]+)(,\s*[a-zA-ZÁÉÍÓÚáéíóúñÑ0-9][a-zA-ZÁÉÍÓÚáéíóúñÑ0-9\s]*)*$"
+                                required
+                            ><br><br>
+                            <input type="hidden" name="irRegistrar" value="irRegistrar"><br><br>
+                            <div class="button-container">
+                                <button type="submit" id="btnRegistrar" style="display:none;">Registrar</button>
+                            </div>
                         </form>
+                        <script>
+                        const input = document.getElementById('documentos');
+                        const btn = document.getElementById('btnRegistrar');
+                        const pattern = new RegExp(input.getAttribute('pattern'));
+
+                        function checkPattern() {
+                            if (pattern.test(input.value)) {
+                                btn.style.display = '';
+                            } else {
+                                btn.style.display = 'none';
+                            }
+                        }
+                        input.addEventListener('input', checkPattern);
+                        window.addEventListener('DOMContentLoaded', checkPattern);
+                        </script>
                 
                         <script src="./index.js"></script>
                 
                         
-                        <script>
-                                document.addEventListener("DOMContentLoaded", function() {
-                                        const inputs = document.querySelectorAll("input[type='text']");
-                
-                                        inputs.forEach(input => {
-                                                input.addEventListener("input", function() {
-                                                        // Limitar a 40 caracteres
-                                                        if (this.value.length > 40) {
-                                                                this.value = this.value.slice(0, 40);
-                                                        }
-                
-                                                        // Eliminar números y caracteres especiales
-                                                        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
-                                                });
-                                        });
-                                });
-                        </script>
+
                 
 HTML;
                     
@@ -218,39 +229,50 @@ echo<<<HTML
                                 <label for="tipo"><h5>En que categoria cae?</h5></label>
                                 <select id="tipo" name="tipoMayor" required>
                                         <option value="Financiera">Financiera</option>
-                                        <option value="Academica">Academica</option>
+                                        <option value="Academico">Academico</option>
                                         <option value="Plazo">Plazo</option>
                                         <option value="Dia">Dia</option>
                                 </select><br><br>
-                
                                 <input type ="number" name="costo" placeholder="Costo del convenio" required><br><br>
-                                <input type ="hidden" name="irActualizar" value="irActualizar"><br><br>
-                                <div class="button-container">
-                                <button type="submit">Modificar</button>
-                                </div>
+                                <label> Tiempo de periodo de carencia del convenio (En meses) </label>
+                                <input type="number" name="tiempoCarencia"><br><br>
+                                                            <label for="documentos"><h5>Lista de documentos requeridos</h5></label> <br>
+                            <p>Por favor, ingrese los documentos separados por comas. Ejemplo: "Documento1, Documento2"</p>
+                            <input 
+                                type="text" 
+                                id="documentos" 
+                                name="documentos" 
+                                value="Carta de solicitud FIRMADA"
+                                pattern="^([a-zA-ZÁÉÍÓÚáéíóúñÑ0-9\s]+)(,\s*[a-zA-ZÁÉÍÓÚáéíóúñÑ0-9][a-zA-ZÁÉÍÓÚáéíóúñÑ0-9\s]*)*$"
+                                required
+                            ><br><br>
+                            <input type ="hidden" name="irActualizar" value="irActualizar"><br><br>
+                            <div class="button-container">
+                                <button type="submit" id="btnModificar" style="display:none;">Modificar</button>
+                            </div>
                         
                         </form>
+                        <script>
+                        const input = document.getElementById('documentos');
+                        const btn = document.getElementById('btnModificar');
+                        const pattern = new RegExp(input.getAttribute('pattern'));
+
+                        function checkPattern() {
+                            if (pattern.test(input.value)) {
+                                btn.style.display = '';
+                            } else {
+                                btn.style.display = 'none';
+                            }
+                        }
+                        input.addEventListener('input', checkPattern);
+                        window.addEventListener('DOMContentLoaded', checkPattern);
+                        </script>
+
                 
                         <script src="./index.js"></script>
                 
                         
-                        <script>
-                                document.addEventListener("DOMContentLoaded", function() {
-                                        const inputs = document.querySelectorAll("input[type='text']");
-                
-                                        inputs.forEach(input => {
-                                                input.addEventListener("input", function() {
-                                                        // Limitar a 40 caracteres
-                                                        if (this.value.length > 40) {
-                                                                this.value = this.value.slice(0, 40);
-                                                        }
-                
-                                                        // Eliminar números y caracteres especiales
-                                                        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
-                                                });
-                                        });
-                                });
-                        </script>
+
                 
 HTML;      
                     
@@ -300,23 +322,6 @@ echo<<<HTML
                         <script src="./index.js"></script>
                 
                         
-                        <script>
-                                document.addEventListener("DOMContentLoaded", function() {
-                                        const inputs = document.querySelectorAll("input[type='text']");
-                
-                                        inputs.forEach(input => {
-                                                input.addEventListener("input", function() {
-                                                        // Limitar a 40 caracteres
-                                                        if (this.value.length > 40) {
-                                                                this.value = this.value.slice(0, 40);
-                                                        }
-                
-                                                        // Eliminar números y caracteres especiales
-                                                        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
-                                                });
-                                        });
-                                });
-                        </script>
                 
 HTML;                
 
@@ -349,6 +354,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["Modificar"]) && !isset
         $nombreConvenio = $_POST['nombre_convenio'];
         $tipoConvenio = $_POST['tipoMayor'];
         $costoConvenio = $_POST['costo'];
+        $periodoCarencia = $_POST['tiempoCarencia'];
+        $documentos = $_POST['documentos'];
+        
 
         $queryCIC = "SELECT * FROM tiposprestacion WHERE nombre = '$nombreConvenio'";
         $resultCIC = mysqli_query($conn, $queryCIC);
@@ -360,8 +368,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["Modificar"]) && !isset
         } 
 
 
-        $queryIIC = $conn->prepare("INSERT INTO tiposprestacion (tipoMayor,nombre,precio) VALUES (?, ?, ?)");
-        $queryIIC->bind_param("ssi", $tipoConvenio, $nombreConvenio, $costoConvenio);
+        $queryIIC = $conn->prepare("INSERT INTO tiposprestacion (tipoMayor,nombre,precio,PeriodoMeses,documentos) VALUES (?, ?, ?, ?, ?)");
+        $queryIIC->bind_param("ssiis", $tipoConvenio, $nombreConvenio, $costoConvenio, $periodoCarencia, $documentos);
 
         if($queryIIC->execute()) {
             echo "<script>alert('Convenio registrado exitosamente');</script>";
@@ -384,9 +392,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST["Modificar"]) && !isset
         $nombreConvenio = $_POST['nombre_convenio'];
         $tipoConvenio = $_POST['tipoMayor'];
         $costoConvenio = $_POST['costo'];
+        $periodoCarencia = $_POST['tiempoCarencia'];
+        $documentos = $_POST['documentos'];
 
-        $queryUC = $conn->prepare("UPDATE tiposprestacion SET tipoMayor = ?, nombre = ?, precio = ? WHERE id = ?");
-        $queryUC->bind_param("ssii", $tipoConvenio, $nombreConvenio, $costoConvenio, $convenioAact);
+        $queryUC = $conn->prepare("UPDATE tiposprestacion SET tipoMayor = ?, nombre = ?, precio = ?, PeriodoMeses = ?, documentos = ? WHERE id = ?");
+        $queryUC->bind_param("ssiisi", $tipoConvenio, $nombreConvenio, $costoConvenio, $periodoCarencia, $documentos, $convenioAact);
 
         if($queryUC->execute()) {
             echo "<script>alert('Convenio actualizado exitosamente');</script>";
