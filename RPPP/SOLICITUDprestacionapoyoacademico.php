@@ -160,7 +160,7 @@ if (isset($_GET['mostrar_familiares'])) {
 <?php
 require_once("conn.php");
 
-$queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Academica'");
+$queryCon = $conn->prepare("SELECT nombre FROM tiposprestacion Where tipoMayor = 'Academico'");
 $queryCon->execute();
 $result = $queryCon->get_result();
 while ($row = $result->fetch_assoc()) {
@@ -224,17 +224,11 @@ $nombre_familiar = $_POST['nombre_familiar'];
 $nombre_institucion = $_POST['nombre_institucion'];
 $tipoApoyo = $_POST['tipo'];
 
-require_once("ESTADOsepuedeprestacion.php");
-$prestacionesPermitidas = verificarPrestaciones($numeroEmpleado);
 
-if (!$prestacionesPermitidas['Academica'][$tipoApoyo]) {
-echo "<script>alert('No se puede solicitar este tipo de apoyo académico debido a que ya te lo otorgaron este cuatrimestre');</script>";
-exit;
-echo "<script>location.reload();</script>"; 
-} 
 
 
 ////////////////////
+
 $queryCheckToday = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? AND Tipo = 'Academico' AND DATE(Fecha_Solicitada) = CURDATE()");
 $queryCheckToday->bind_param("i", $numeroEmpleado);
 $queryCheckToday->execute();
@@ -266,6 +260,13 @@ $queryChecarPF->close();
 
 if ($row)
 {
+    require_once("ESTADOsepuedeAcademico.php");
+    $puedeOtorgar = sePuedeOtorgarPrestacionAcademica($numeroEmpleado, $row['Id_Familiar'], $tipoApoyo);
+    echo "<script>console.log('Puede otorgar: " . ($puedeOtorgar ? 'Sí' : 'No') . "');</script>";
+    if (!$puedeOtorgar) {
+    echo "<script>alert('No se puede otorgar esta prestación académica al familiar debido a que ya la recibió en el periodo correspondiente.');</script>";
+    exit;
+    }
 
     if ($tipoApoyo == "Exencion de inscripcion" && $nivel_academico != "Universidad" && (strpos($nombre_institucion, "UTN") === false && strpos($nombre_institucion, "Universidad Tecnologica de Nogales") === false))
     {

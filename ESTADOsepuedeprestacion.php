@@ -76,52 +76,6 @@ function verificarPrestaciones($numeroEmpleado) {
         $idPrestacion = $rowGAPE['Id_Prestacion'];
 
         // Según el tipo, busca el nombre específico en la tabla correspondiente
-    if ($tipo == "Academico" || $tipo == "Academica") {
-        // 1. Obtener el tipo de prestación académica otorgada
-        $query = $conn->prepare(
-            "SELECT PA.Tipo, PA.Id_Familiar, EP.Fecha_Otorgada 
-             FROM prestacion_apoyoacademico AS PA 
-             INNER JOIN empleado_prestacion AS EP 
-             ON PA.Id_Prestacion = EP.Id_Prestacion 
-             WHERE PA.Numero_Empleado = ?"
-        );
-        $query->bind_param("i", $numeroEmpleado);
-        $query->execute();
-        $result = $query->get_result();
-
-        // 2. Obtener familiares que estudian 
-        $familiares = [];
-        $qFam = $conn->prepare(
-            "SELECT EF.Id_Familiar 
-            FROM empleado_familiar EF
-            INNER JOIN familiar_empleado FE ON EF.Id_Familiar = FE.Id_Familiar
-            WHERE EF.Numero_Empleado = ? AND EF.Id_Familiar != 0" // <-- Excluye N/A
-        );
-        $qFam->bind_param("i", $numeroEmpleado);
-        $qFam->execute();
-        $resFam = $qFam->get_result();
-        while ($fam = $resFam->fetch_assoc()) {
-            $familiares[$fam['Id_Familiar']] = false; // Inicialmente ninguno ha recibido la prestación
-        }
-        $qFam->close();
-
-        // 3. Marcar familiares que ya recibieron la prestación académica de este tipo
-        while ($row = $result->fetch_assoc()) {
-            if (normalizar($row['Tipo']) == normalizar($rowGAPE['Tipo'])) {
-                $familiares[$row['Id_Familiar']] = true;
-            }
-        }
-        $query->close();
-
-        // 4. Si todos los familiares tienen true, marcar como false la prestación
-        if (!empty($familiares) && count($familiares) > 0 && count(array_filter($familiares)) == count($familiares)) {
-            $nombreReal = buscarNombrePrestacion($tipo, $rowGAPE['Tipo'], $tiposPrestacion);
-            if ($nombreReal && isset($prestacionesPermitidas[$tipo][$nombreReal])) {
-                $prestacionesPermitidas[$tipo][$nombreReal] = false;
-            }
-        }
-        continue;
-    }
 
         if ($tipo == "Financiera") {
             $query = $conn->prepare(
