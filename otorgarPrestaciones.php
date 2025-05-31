@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $pdfPath = "PDF Prestaciones/Titulacion/Prestacion Titulacion (Respuesta).pdf";
             break;
         default:
-            $pdfPath = ""; // Ruta por defecto si no se encuentra el tipo
+            $pdfPath = "PDF Prestaciones/El hueso.pdf"; // Ruta por defecto si no se encuentra el tipo
             break;
     }
 

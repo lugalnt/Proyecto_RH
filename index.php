@@ -299,69 +299,81 @@ if($_SESSION['Area'] != "RH")
                 -->
 
 
-                    <?php
-                    
-                    $queryGED = $conn->prepare("
-                        SELECT e.Nombre_Empleado, ep.Tipo, pd.Fecha_Solicitada, pp.Fecha_Inicio, pp.Fecha_Final, pp.Tipo AS Motivo
-                        FROM empleado e
-                        LEFT JOIN empleado_prestacion ep ON e.Numero_Empleado = ep.Numero_Empleado
-                        LEFT JOIN prestacion_dias pd ON ep.Id_Prestacion = pd.Id_Prestacion AND ep.Tipo = 'Día'
-                        LEFT JOIN prestacion_plazos pp ON ep.Id_Prestacion = pp.Id_Prestacion AND ep.Tipo = 'Plazo'
-                        WHERE e.Estado = 'En descanso'
-                    ");
-                    $queryGED->execute();
-                    $resultGED = $queryGED->get_result();
+<?php
+// Consulta empleados en descanso con sus ausencias activas (hoy)
+$queryGED = $conn->prepare("
+    SELECT e.Nombre_Empleado, ep.Tipo, 
+        pd.Fecha_Solicitada, pd.Motivo, 
+        pp.Fecha_Inicio, pp.Fecha_Final, pp.Tipo as MotivoPlazo
+    FROM empleado e
+    INNER JOIN empleado_prestacion ep ON e.Numero_Empleado = ep.Numero_Empleado
+    LEFT JOIN prestacion_dias pd ON ep.Id_Prestacion = pd.Id_Prestacion AND ep.Tipo = 'Día'
+    LEFT JOIN prestacion_plazos pp ON ep.Id_Prestacion = pp.Id_Prestacion AND ep.Tipo = 'Plazo'
+    WHERE e.Estado = 'En descanso'
+");
+$queryGED->execute();
+$resultGED = $queryGED->get_result();
 
-                    if ($resultGED->num_rows > 0) {
-                        while ($rowGED = $resultGED->fetch_assoc()) {
-                            if ($rowGED['Tipo'] === 'Día' && strtotime($rowGED['Fecha_Solicitada']) >= strtotime(date('Y-m-d'))) {
-                                echo '
-                                                 <div class="empleado-ausente">
-                    <div class="icon">
-                        <span class="material-icons-sharp">person</span>
+$hayAusentes = false;
+$hoy = date('Y-m-d');
+while ($rowGED = $resultGED->fetch_assoc()) {
+    if (
+        $rowGED['Tipo'] === 'Día' &&
+        !empty($rowGED['Fecha_Solicitada']) &&
+        $rowGED['Fecha_Solicitada'] === $hoy
+    ) {
+        $hayAusentes = true;
+        echo '
+            <div class="empleado-ausente">
+                <div class="icon">
+                    <span class="material-icons-sharp">person</span>
+                </div>
+                <div class="right">
+                    <div class="info">
+                        <h3>' . htmlspecialchars($rowGED['Nombre_Empleado']) . '</h3>
+                        <small class="text-muted">Motivo: <b>' . htmlspecialchars($rowGED['Motivo']) . '</b></small>
                     </div>
-                                    <div class="right">
-                                        <div class="info">
-                                            <h3>' . htmlspecialchars($rowGED['Nombre_Empleado']) . '</h3>
-                                            <small class="text-muted">Motivo: <b>' . htmlspecialchars($rowGED['Motivo']) . '</b></small>
-                                        </div>
-                                        <small class="danger">Válido el: <b>' . htmlspecialchars($rowGED['Fecha_Solicitada']) . '</b></small>
-                                    </div>
-                                    </div>
-                                ';
-                            } elseif ($rowGED['Tipo'] === 'Plazo' && strtotime($rowGED['Fecha_Final']) >= strtotime(date('Y-m-d'))) {
-                                echo '
-                                                <div class="empleado-ausente">
-                    <div class="icon">
-                        <span class="material-icons-sharp">person</span>
+                    <small class="danger">Válido el: <b>' . htmlspecialchars($rowGED['Fecha_Solicitada']) . '</b></small>
+                </div>
+            </div>
+        ';
+    } elseif (
+        $rowGED['Tipo'] === 'Plazo' &&
+        !empty($rowGED['Fecha_Inicio']) && !empty($rowGED['Fecha_Final']) &&
+        $hoy >= $rowGED['Fecha_Inicio'] && $hoy <= $rowGED['Fecha_Final']
+    ) {
+        $hayAusentes = true;
+        echo '
+            <div class="empleado-ausente">
+                <div class="icon">
+                    <span class="material-icons-sharp">person</span>
+                </div>
+                <div class="right">
+                    <div class="info">
+                        <h3>' . htmlspecialchars($rowGED['Nombre_Empleado']) . '</h3>
+                        <small class="text-muted">Motivo: <b>' . htmlspecialchars($rowGED['MotivoPlazo']) . '</b></small>
                     </div>
-                                    <div class="right">
-                                        <div class="info">
-                                            <h3>' . htmlspecialchars($rowGED['Nombre_Empleado']) . '</h3>
-                                            <small class="text-muted">Motivo: <b>' . htmlspecialchars($rowGED['Motivo']) . '</b></small>
-                                        </div>
-                                        <small class="danger">Válido desde: <b>' . htmlspecialchars($rowGED['Fecha_Inicio']) . '</b> hasta: <b>' . htmlspecialchars($rowGED['Fecha_Final']) . '</b></small>
-                                    </div>
-                                    </div>
-                                ';
-                            }
-                        }
-                    } else {
-                        echo '
-                                        <div class="empleado-ausente">
-                    <div class="icon">
-                        <span class="material-icons-sharp">person</span>
-                    </div>
-                        <div class="right">
-                            <div class="info">
-                                <h3>No hay empleados ausentes</h3>
-                                <small class="text-muted">Por ahora...</small>
-                            </div>
-                        </div>
-                        </div>';
-                    }
-
-                    ?>
+                    <small class="danger">Válido desde: <b>' . htmlspecialchars($rowGED['Fecha_Inicio']) . '</b> hasta: <b>' . htmlspecialchars($rowGED['Fecha_Final']) . '</b></small>
+                </div>
+            </div>
+        ';
+    }
+}
+if (!$hayAusentes) {
+    echo '
+        <div class="empleado-ausente">
+            <div class="icon">
+                <span class="material-icons-sharp">person</span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>No hay empleados ausentes</h3>
+                    <small class="text-muted">Por ahora...</small>
+                </div>
+            </div>
+        </div>';
+}
+?>
 
                 </div>
                 <div class="añadir-empleado">

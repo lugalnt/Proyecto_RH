@@ -40,7 +40,7 @@ function verificarPrestaciones($numeroEmpleado) {
 
     // Obtener todos los tipos de prestaciones
     $tiposPrestacion = [];
-    $queryTipos = $conn->query("SELECT tipoMayor, nombre, PeriodoMeses FROM tiposprestacion");
+    $queryTipos = $conn->query("SELECT tipoMayor, nombre, PeriodoMeses FROM tiposprestacion WHERE tipoMayor != 'Academico'");
     if (!$queryTipos) {
         error_log("Error en queryTipos: " . $conn->error);
     }
