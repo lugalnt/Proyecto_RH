@@ -2,7 +2,7 @@
 <?php
 require_once("conn.php"); // Asegúrate de tener la conexión $conn
 
-function normalizar($texto) {
+function normalizarAc($texto) {
     return strtolower(str_replace([' ', '_'], '', $texto));
 }
 
