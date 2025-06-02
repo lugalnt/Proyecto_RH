@@ -1,5 +1,6 @@
 <?php
-$dir = "uploads/";
+session_start();
+$dir = "uploads/". $_SESSION['Numero_Empleado'] . "/";
 $pdfs = [];
 if (is_dir($dir)) {
     foreach (scandir($dir) as $file) {

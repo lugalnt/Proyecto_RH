@@ -1,5 +1,7 @@
 <?php
-$targetDir = "uploads/";
+session_start();
+
+$targetDir = "uploads/" . $_SESSION['Numero_Empleado'] . "/";
 if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
 
 if (isset($_FILES["pdf"]) && $_FILES["pdf"]["error"] == 0) {
