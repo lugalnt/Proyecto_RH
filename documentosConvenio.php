@@ -90,7 +90,7 @@ session_start();
             <main>
                                 <h1>Registrar plantillas de convenios</h1>
                         <h2>Por favor selecciona el convenio</h2>
-                        <form action="" method="post" id="registroConvenioForm">
+                        <form action="" method="post" id="registroConvenioForm" enctype="multipart/form-data">
                             <label for="nombre_familiar"><h5>Nombre del convenio</h5></label>
                             <select name="idConvenio" required>
                             <?php
@@ -106,6 +106,15 @@ session_start();
                             }
                             ?>
                             </select>
+                            <label for="documento"><h5>Plantillas de solicitud del convenio</h5></label>
+                            <br>
+                            <input type="file" name="plantillaSolicitud[]" accept=".pdf" multiple required>
+                            <br>
+                            <label for="documento"><h5>Plantillas de respuesta del convenio</h5></label>
+                            <br>
+                            <input type="file" name="plantillaRespuesta[]" accept=".pdf" multiple required>
+                            <br>
+                            <button type="submit" name="registrarConvenio" class="btn">Registrar Convenio</button>
                         </form>
             </main>
 
@@ -119,4 +128,67 @@ session_start();
 
 
 <?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    $idConvenio = $_POST['idConvenio'];
+    $plantillaSolicitud = $_FILES['plantillaSolicitud'];
+    $plantillaRespuesta = $_FILES['plantillaRespuesta'];
+    $errors = [];
+
+
+    if (empty($plantillaSolicitud['name'][0])) {
+        $errors[] = "Error al subir la plantilla de solicitud.";
+    }
+    if (empty($plantillaRespuesta['name'][0])) {
+        $errors[] = "Error al subir la plantilla de respuesta.";
+    }
+
+    if (empty($errors)) {
+        $queryGTM = $conn->prepare("SELECT nombre, tipoMayor FROM tiposprestacion WHERE id = ?");
+        $queryGTM->bind_param("i", $idConvenio);
+        $queryGTM->execute();
+        $resultGTM = $queryGTM->get_result();
+        if ($resultGTM->num_rows > 0) {
+            $rowGTM = $resultGTM->fetch_assoc();
+            $nombreConvenio = $rowGTM['nombre'];
+            $tipoMayor = $rowGTM['tipoMayor'];
+
+            $rutaSolicitud = 'DocumentosPrestaciones/Plantillas/'.$tipoMayor.'/'.$nombreConvenio.'/Solicitud/';
+            $rutaRespuesta = 'DocumentosPrestaciones/Plantillas/'.$tipoMayor.'/'.$nombreConvenio.'/Respuesta/';
+            if (!is_dir($rutaSolicitud)) mkdir($rutaSolicitud, 0777, true);
+            if (!is_dir($rutaRespuesta)) mkdir($rutaRespuesta, 0777, true);
+
+            // Guardar todas las plantillas de solicitud
+            foreach ($plantillaSolicitud['name'] as $i => $nombreArchivo) {
+                echo "<script>console.log('Subiendo archivo: ".htmlspecialchars($nombreArchivo)."');</script>";
+                if ($plantillaSolicitud['error'][$i] === UPLOAD_ERR_OK) {
+                    $rutaArchivoSolicitud = $rutaSolicitud . basename($nombreArchivo);
+                    if (move_uploaded_file($plantillaSolicitud['tmp_name'][$i], $rutaArchivoSolicitud)) {
+                        echo "<script>alert('Plantilla de solicitud registrada correctamente: ".htmlspecialchars($nombreArchivo)."');</script>";
+                    } else {
+                        echo "<script>alert('Error al mover la plantilla de solicitud: ".htmlspecialchars($nombreArchivo)."');</script>";
+                    }
+                }
+            }
+            // Guardar todas las plantillas de respuesta
+            foreach ($plantillaRespuesta['name'] as $i => $nombreArchivo) {
+                echo "<script>console.log('Subiendo archivo: ".htmlspecialchars($nombreArchivo)."');</script>";
+                if ($plantillaRespuesta['error'][$i] === UPLOAD_ERR_OK) {
+                    $rutaArchivoRespuesta = $rutaRespuesta . basename($nombreArchivo);
+                    if (move_uploaded_file($plantillaRespuesta['tmp_name'][$i], $rutaArchivoRespuesta)) {
+                        echo "<script>alert('Plantilla de respuesta registrada correctamente: ".htmlspecialchars($nombreArchivo)."');</script>";
+                    } else {
+                        echo "<script>alert('Error al mover la plantilla de respuesta: ".htmlspecialchars($nombreArchivo)."');</script>";
+                    }
+                }
+            }
+        } else {
+            echo "<script>alert('Convenio no encontrado.');</script>";
+        }
+    } else {
+        foreach ($errors as $error) {
+            echo "<script>alert('$error');</script>";
+        }
+    }
+}
 ?>
