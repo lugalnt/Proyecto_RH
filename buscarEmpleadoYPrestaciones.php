@@ -642,8 +642,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         }
-    } else if (!empty($numero) && empty($nombre)) {
+     else if (!empty($numero) && empty($nombre)) {
         $numeroEmpleado = $numero;
+        echo "<script>console.log('numeroEmpleado:', " . json_encode($numeroEmpleado) . ");</script>";
 
         $queryCIE = $conn->prepare("SELECT * FROM empleado WHERE Numero_Empleado = ?");
         $queryCIE->bind_param("i", $numeroEmpleado);
@@ -657,31 +658,88 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         require_once("ESTADOsepuedeprestacion.php");
 
-        if ($numeroEmpleado) {
-            $prestacionesPermitidas = verificarPrestaciones($numeroEmpleado);
 
-            echo '<h3>Prestaciones Permitidas</h3>';
+            if ($numeroEmpleado) {
+                $prestacionesPermitidas = verificarPrestaciones($numeroEmpleado);
+                echo "<script>console.log('prestacionesPermitidas:', " . json_encode($prestacionesPermitidas) . ");</script>";
+    
+                // Contenedor flex para las listas
+                echo '<div class="prestaciones-container">';
+                
+                // Lista de prestaciones permitidas
+                echo '<div class="prestaciones-permitidas">';
+                echo '<h3>Prestaciones Permitidas</h3>';
+                echo '<ul>';
+                foreach ($prestacionesPermitidas as $categoria => $prestaciones) {
+                    foreach ($prestaciones as $prestacion => $permitido) {
+                        if ($permitido) {
+                            echo '<li class="permitido">' . htmlspecialchars($categoria . ': ' . $prestacion) . '</li>';
+                        }
+                    }
+                }
+                echo '</ul>';
+                echo '</div>';
+    
+                // Lista de prestaciones no permitidas
+                echo '<div class="prestaciones-no-permitidas">';
+                echo '<h3>Prestaciones No Permitidas</h3>';
+                echo '<ul>';
+                foreach ($prestacionesPermitidas as $categoria => $prestaciones) {
+                    foreach ($prestaciones as $prestacion => $permitido) {
+                        if (!$permitido) {
+                            echo '<li class="no-permitido">' . htmlspecialchars($categoria . ': ' . $prestacion) . '</li>';
+                        }
+                    }
+                }
+                echo '</ul>';
+                echo '</div>';
+    
+                echo '</div>';
+                            require_once("ESTADOsepuedeAcademico.php");
+
+            // Lista de prestaciones académicas familiares reclamables
+            echo '<div class="prestaciones-familiares">';
+            echo '<h3>Prestaciones académicas familiares que pueden reclamar</h3>';
             echo '<ul>';
-            foreach ($prestacionesPermitidas as $categoria => $prestaciones) {
-                foreach ($prestaciones as $prestacion => $permitido) {
-                    if ($permitido) {
-                        echo '<li class="permitido">' . htmlspecialchars($categoria . ': ' . $prestacion) . '</li>';
+
+            // Obtener familiares (excluyendo N/A)
+            $queryFamiliares = $conn->prepare("
+                SELECT fe.Id_Familiar, fe.Nombre_Familiar
+                FROM empleado_familiar ef
+                INNER JOIN familiar_empleado fe ON ef.Id_Familiar = fe.Id_Familiar
+                WHERE ef.Numero_Empleado = ? AND fe.Id_Familiar != 0
+            ");
+            $queryFamiliares->bind_param("i", $numeroEmpleado);
+            $queryFamiliares->execute();
+            $resultFamiliares = $queryFamiliares->get_result();
+
+            // Obtener tipos de prestaciones académicas
+            $queryPrestaciones = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Academico'");
+            $queryPrestaciones->execute();
+            $resultPrestaciones = $queryPrestaciones->get_result();
+            $prestacionesAcademicas = [];
+            while ($row = $resultPrestaciones->fetch_assoc()) {
+                $prestacionesAcademicas[] = $row['nombre'];
+            }
+            $queryPrestaciones->close();
+
+            while ($fam = $resultFamiliares->fetch_assoc()) {
+                $nombreFamiliar = $fam['Nombre_Familiar'];
+                $idFamiliar = $fam['Id_Familiar'];
+                foreach ($prestacionesAcademicas as $nombrePrestacion) {
+                    if (sePuedeOtorgarPrestacionAcademica($numeroEmpleado, $idFamiliar, $nombrePrestacion)) {
+                        echo '<li class="familiar-permitido">'
+                            . htmlspecialchars($nombreFamiliar . ' puede solicitar: ' . $nombrePrestacion)
+                            . '</li>';
                     }
                 }
             }
             echo '</ul>';
-
-            echo '<h3>Prestaciones No Permitidas</h3>';
-            echo '<ul>';
-            foreach ($prestacionesPermitidas as $categoria => $prestaciones) {
-                foreach ($prestaciones as $prestacion => $permitido) {
-                    if (!$permitido) {
-                        echo '<li class="no-permitido">' . htmlspecialchars($categoria . ': ' . $prestacion) . '</li>';
-                    }
-                }
+            echo '</div>';
+            } else {                
+                // Cierre del contenedor flex
             }
-            echo '</ul>';
-        }
+        
 
         while ($rowCIE = $resultCIE->fetch_assoc()) {
             if ($_POST['check'] == "on") {
@@ -914,7 +972,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </table>
     ';
 
-
+}
 ?>
 <script src="./index.js"></script> 
 </div>

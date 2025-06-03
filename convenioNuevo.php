@@ -105,7 +105,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
   
             <main>
+    <a href="documentosConvenio.php" class="accion-item">Ver y Subir los documentos de los convenios</a>
             <div class="acciones-container">
+
     <form action="" method="post" class="accion-item">
         <input type="hidden" name="Registrar" value="Registrar">
         <button value="Registrar" type="submit" class="btn btn-primary">Registrar nuevo convenio</button>
