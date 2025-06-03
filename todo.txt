@@ -1,32 +1,17 @@
--> IMPORTANTE RECORDAR: AJUSTAR TODO LO DE LOS CONVENIOS YA QUE TIENEN SU PROPIA TABLA DINAMICA YA
+No es to do pero importante recordar:
 
-SEGUN YA HICE PERO REVISAR:
--Que se vean en las solicitudes
--Que se vean en los filtros
--Que tengan en los precios
+CONOCIMIENTOS FUNDAMENTALES PARA TRABAJAR CON FILES EN PHP
 
-HACER:
--Que el archivo que revisa si estan disponible para usuario la use en vez del array mapeo 
-insano god programming que habia hecho ✓
--Que los costos vengan de la tabla en vez del otro archivo ✓
+SI SON VARIOS EL INPUT TIENE ATRIBUTO MULTIPLE Y EL NOMBRE DEBE SER ACOMPAÑADO CON []
+PORQUE SI NO NO SERA RECONOCIDO COMO ARREGLO
+
+EL FORMULARIO QUE MANDARA LOS ARCHIVOS (VARIOS) DEBE LLEVAR COMO ATRIBUTO EN SU ETIQUETA FORM LO SIGUIENTE:
+enctype="multipart/form-data"
 
 
 
 
 
-⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢰⡿⠋⠁⠀⠀⠈⠉⠙⠻⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢀⣿⠇⠀⢀⣴⣶⡾⠿⠿⠿⢿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⣀⣀⣸⡿⠀⠀⢸⣿⣇⠀⠀⠀⠀⠀⠀⠙⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⣾⡟⠛⣿⡇⠀⠀⢸⣿⣿⣷⣤⣤⣤⣤⣶⣶⣿⠇⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀
-⢀⣿⠀⢀⣿⡇⠀⠀⠀⠻⢿⣿⣿⣿⣿⣿⠿⣿⡏⠀⠀⠀⠀⢴⣶⣶⣿⣿⣿⣆
-⢸⣿⠀⢸⣿⡇⠀⠀⠀⠀⠀⠈⠉⠁⠀⠀⠀⣿⡇⣀⣠⣴⣾⣮⣝⠿⠿⠿⣻⡟
-⢸⣿⠀⠘⣿⡇⠀⠀⠀⠀⠀⠀⠀⣠⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠉⠀
-⠸⣿⠀⠀⣿⡇⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠉⠀⠀⠀⠀
-⠀⠻⣷⣶⣿⣇⠀⠀⠀⢠⣼⣿⣿⣿⣿⣿⣿⣿⣛⣛⣻⠉⠁⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢸⣿⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢸⣿⣀⣀⣀⣼⡿⢿⣿⣿⣿⣿⣿⡿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠙⠛⠛⠛⠋⠁⠀⠙⠻⠿⠟⠋⠑⠛⠋⠀
 
 
 
