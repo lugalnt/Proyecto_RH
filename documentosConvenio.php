@@ -88,6 +88,25 @@ session_start();
 
   
             <main>
+                                <h1>Registrar plantillas de convenios</h1>
+                        <h2>Por favor selecciona el convenio</h2>
+                        <form action="" method="post" id="registroConvenioForm">
+                            <label for="nombre_familiar"><h5>Nombre del convenio</h5></label>
+                            <select name="idConvenio" required>
+                            <?php
+                            $queryGC = $conn->prepare("SELECT id,nombre,tipoMayor FROM tiposprestacion ORDER BY tipoMayor");
+                            $queryGC->execute();
+                            $resultGC = $queryGC->get_result();
+                            if ($resultGC->num_rows > 0) {
+                                while ($row = $resultGC->fetch_assoc()) {
+                                    echo '<option value="'.$row['id'].'">'.$row['nombre'].' || '.$row['tipoMayor'].'</option>';
+                                }
+                            } else {
+                                echo '<option value="">No hay convenios disponibles</option>';
+                            }
+                            ?>
+                            </select>
+                        </form>
             </main>
 
             
