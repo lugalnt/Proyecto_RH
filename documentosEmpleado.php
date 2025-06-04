@@ -1,44 +1,9 @@
 <?php
-include_once("error_handler.php");
-require_once("conn.php");
-
 session_start();
-
-if(!isset($_SESSION['Numero_Empleado']))
-{
-  header('Location: login.html');
-}
-
-//This shit so dumb bro
-if(isset($_SESSION['Numero_Empleado'])){
-$numeroEmpleado = $_SESSION['Numero_Empleado'];
-
-// Check if the employee is already related to the familiar with Id_Familiar 0
-$queryCheckRelation = $conn->prepare("SELECT * FROM empleado_familiar WHERE Numero_Empleado = ? AND Id_Familiar = 0");
-$queryCheckRelation->bind_param("i", $numeroEmpleado);
-$queryCheckRelation->execute();
-$resultCheckRelation = $queryCheckRelation->get_result();
-
-if ($resultCheckRelation->num_rows == 0) {
-    // If not related, create the relation
-    $queryInsertRelation = $conn->prepare("INSERT INTO empleado_familiar (Numero_Empleado, Id_Familiar, Relacion) VALUES (?, 0, 'Esposa')");
-    $queryInsertRelation->bind_param("i", $numeroEmpleado);
-    $queryInsertRelation->execute();
-}
-}
-//
-
-
-
-
-
-
-
-
-
+require_once("conn.php");
 ?>
 
-
+<html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +11,7 @@ if ($resultCheckRelation->num_rows == 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleado</title>
     <!-- ASIGNACION DE CSS -->
-    <link rel="stylesheet" href="./styleEmpleado.css">
+    <link rel="stylesheet" href="./styleRegistrarFamiliares.css">
     <!-- SIMBOLOS QUE SE UTILIZARAN -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
     rel="stylesheet">
@@ -67,11 +32,11 @@ if ($resultCheckRelation->num_rows == 0) {
             </div>
 
             <div class="sidebar">
-                <a href="index.php" class="active">
+                <a href="index.php">
                     <span class="material-icons-sharp">grid_view</span>
                     <h3>Menú</h3>
                 </a>
-                <a href="registrarfamiliares.php">
+                <a href="registrarfamiliares.php"  class="active">
                     <span class="material-icons-sharp">people</span>
                     <h3>Registrar familiar para prestamo</h3>
                 </a>
@@ -102,7 +67,7 @@ if ($resultCheckRelation->num_rows == 0) {
         </aside>
     <!-- FIN DE BARRA LATERAL -->
 
-        <!-- CONTENIDO PRINCIPAL -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div class="contenido"> 
         <div class="top">
                 <button id="menu-btn">
@@ -124,32 +89,36 @@ if ($resultCheckRelation->num_rows == 0) {
                     </div>
                 </div>
         </div> 
-        <main>
-            <h1>Menú</h1>
 
-            <!-- INICIO DE PRESTAMOS RECIENTES TABLA -->
-            <div class="prestamos-recientes">
-                <h2>Tus Prestamos Recientes</h2>
+            <h1>Subida de documentos para tus solicitudes</h1>
+<body>
+<main>
+<div class="prestamos-recientes">
+                <h2>Prestamos Recientes</h2>
 
                 <table>
                     <thead>
-                        <tr>
+                    <tr>
                     <th>Tipo</th>
                     <th>Fecha Solicitada</th>
-                    <th>Estado</th>        
+                    <th>Estado</th> 
+                    <th>Accion</th>       
                     </thead>
                     <tbody>
-            <?php
-
-                    $querySPR = $conn->prepare("SELECT * FROM empleado_prestacion WHERE Numero_Empleado = ? ORDER BY Fecha_Solicitada DESC LIMIT 6");
-                    $querySPR->bind_param("i", $_SESSION['Numero_Empleado']);
+        <?php
+            $queryCPEE = $conn -> prepare("SELECT Id_Prestacion FROM empleado_prestacion WHERE Numero_Empleado = ?");
+            $queryCPEE->bind_param("i", $_SESSION['Numero_Empleado']);
+            $queryCPEE->execute();
+            $resultCPEE = $queryCPEE->get_result();
+            while($rowCPEE = $resultCPEE->fetch_assoc())
+            {
+                    $querySPR = $conn->prepare("SELECT * FROM prestacion WHERE Id_Prestacion = ? ORDER BY Fecha_Solicitada ");
+                    $querySPR->bind_param("i", $rowCPEE['Id_Prestacion']);
                     $querySPR->execute();
                     $resultSPR = $querySPR->get_result();
 
                     while($rowSPR = $resultSPR->fetch_assoc())
                     {
-                      $NombreEmpleado = htmlspecialchars($_SESSION['Nombre_Empleado']);
-                    
                     
                       echo "<div class='benefits-container'>";
                       echo "<td>".$rowSPR['Tipo']."</td>";
@@ -163,39 +132,30 @@ if ($resultCheckRelation->num_rows == 0) {
                         {
                             echo "<td class=".'success'.">Concedido</td>";
                         }
-
+                      echo '
+                        <td>
+                        <form action="" method="POST">
+                        <input type="hidden" name="prestacion_id" value="'.$rowSPR['Id_Prestacion'].'">
+                        <input type="hidden" name="tipo_prestacion" value="'.$rowSPR['Tipo'].'"> 
+                        <button type="submit"> Subir documentos de esta solicitud</button>
+                        </form>
+                        </td>
+                      ';  
                       echo "</tr>";
                     }
-            ?>
-
+}                 
+        ?>
+                        
                     </tbody>
                     
                 </table>
 
-                <a href="documentosEmpleado.php">Manejar documentos de tus prestaciones</a>
             </div>
         </main>
-    </div>
-
-</div>
-    <!-- <script src="./prestaciones.js"></script> -->
-    <script src="./index.js"></script>
-</body>
-</html>
 
 
 <?php
-
-if($_SERVER["REQUEST_METHOD"] == "POST")
-{
-  if(isset($_POST["logout"]))
-  {
-  session_destroy();
-  echo("<meta http-equiv='refresh' content='1'>");
-  }
-
-
-}
-
-
 ?>
+
+</body>
+</html>
