@@ -119,6 +119,23 @@ require_once("conn.php");
 
                     while($rowSPR = $resultSPR->fetch_assoc())
                     {
+                        switch ($rowSPR['Tipo'])
+                        {
+                            case "Academico":
+                                $queryGN = $conn->prepare("SELECT PA.Tipo, PA.Id_Prestacion, F.Nombre_Familiar FROM prestacion_apoyoacademico
+                                                           AS PA INNER JOIN familiar_empleado AS F ON PA.Id_Familiar = F.Id_Fmiliar
+                                                           WHERE PA.Id_Prestacion = ?");
+                                $queryGN->bind_param("i", $rowSPR['Id_Prestacion']);
+                                $querySPR->execute();
+                                $resultSPR = $querySPR->get_result();
+                                $rowSPR = $resultSPR->fetch_assoc();
+                                $especificos = 'De tipo: '.$rowSPR['Tipo'].' y el familiar: '.$rowSPR['Nombre_Familiar'];
+                            break;
+                            
+
+
+                        }
+                      
                     
                       echo "<div class='benefits-container'>";
                       echo "<td>".$rowSPR['Tipo']."</td>";
