@@ -101,6 +101,7 @@ require_once("conn.php");
                     <tr>
                     <th>Tipo</th>
                     <th>Fecha Solicitada</th>
+                    <th>Especificaciones</th>
                     <th>Estado</th> 
                     <th>Accion</th>       
                     </thead>
@@ -126,20 +127,69 @@ require_once("conn.php");
                                                            AS PA INNER JOIN familiar_empleado AS F ON PA.Id_Familiar = F.Id_Fmiliar
                                                            WHERE PA.Id_Prestacion = ?");
                                 $queryGN->bind_param("i", $rowSPR['Id_Prestacion']);
-                                $querySPR->execute();
-                                $resultSPR = $querySPR->get_result();
-                                $rowSPR = $resultSPR->fetch_assoc();
-                                $especificos = 'De tipo: '.$rowSPR['Tipo'].' y el familiar: '.$rowSPR['Nombre_Familiar'];
+                                $queryGN->execute();
+                                $resultGN = $queryGN->get_result();
+                                $rowGN = $resultGN->fetch_assoc();
+                                $especificos = 'De tipo: '.$rowGN['Tipo'].' y el familiar: '.$rowGN['Nombre_Familiar'];
                             break;
                             
+                            case "Financiera":
+                                $queryGN = $conn->prepare("SELECT PF.Tipo, PF.Id_Prestacion, F.Nombre_Familiar, PF.Deposito FROM prestacion_apoyofinanciero
+                                                           AS PF INNER JOIN familiar_empleado AS F ON PF.Id_Familiar = F.Id_Familiar
+                                                           WHERE PF.Id_Prestacion = ?");
+                                $queryGN->bind_param("i", $rowSPR['Id_Prestacion']);
+                                $queryGN->execute();
+                                $resultGN = $queryGN->get_result();
+                                $rowGN = $resultGN->fetch_assoc();
+                                if ($rowGN['Deposito'] == 1)
+                                {
+                                    $especificos = 'De tipo: '.$rowGN['Tipo'].' y el familiar: '.$rowGN['Nombre_Familiar'].' con deposito';
+                                }
+                                else
+                                {
+                                    $especificos = 'De tipo: '.$rowGN['Tipo'].' y el familiar: '.$rowGN['Nombre_Familiar'].' con reembolso';
+                                }
+                            break;
 
+                            case "Día":
+                                $queryGN = $conn->prepare("SELECT Motivo, Fecha_Solicitada, Dia_Extra FROM prestacion_dias
+                                                           WHERE Id_Prestacion = ?");
+                                $queryGN->bind_param("i", $rowSPR['Id_Prestacion']);
+                                $queryGN->execute();
+                                $resultGN = $queryGN->get_result();
+                                $rowGN = $resultGN->fetch_assoc();
+                                if ($rowGN['Dia_Extra'] == 1)
+                                {
+                                    $especificos = 'Pidiendo el dia '.htmlspecialchars($rowGN['Fecha_Solicitada']).' con motivo: '.$rowGN['Motivo'].' y usa un dia extra';
+                                }
+                                else
+                                {
+                                    $especificos = 'Pidiendo el dia '.htmlspecialchars($rowGN['Fecha_Solicitada']).' con motivo: '.$rowGN['Motivo'].'';
+                                }
+                            break;
 
+                            case "Plazo":
+                                $queryGN = $conn->prepare("SELECT Tipo, Fecha_Inicio, Fecha_Final FROM prestacion_plazos
+                                                           WHERE Id_Prestacion = ?");
+                                $queryGN->bind_param("i", $rowSPR['Id_Prestacion']);
+                                $queryGN->execute();
+                                $resultGN = $queryGN->get_result();
+                                $rowGN = $resultGN->fetch_assoc();
+                                $especificos = 'De tipo: '.$rowGN['Tipo'].' desde '.htmlspecialchars($rowGN['Fecha_Inicio']).' hasta '.htmlspecialchars($rowGN['Fecha_Final']);
+                            break;
+
+                            default:
+                                $especificos = 'No hay detalles adicionales disponibles.';
+                            break;
+
+                            // ^ Esto deberia ser una funcion, pero ya lo hice asi.    
                         }
                       
                     
                       echo "<div class='benefits-container'>";
                       echo "<td>".$rowSPR['Tipo']."</td>";
                       echo "<td>FECHA: ".$rowSPR['Fecha_Solicitada']."</td>";
+                      echo "<td>".$especificos."</td>";
 
                         if (is_null($rowSPR['Fecha_Otorgada']))
                         {
