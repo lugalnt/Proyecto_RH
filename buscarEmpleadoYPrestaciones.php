@@ -540,6 +540,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $rowCPA = $resultCPA->fetch_assoc();
 
                         $tipo = "Apoyo académico: " . $rowCPA['Tipo'];
+                        $tipoMayor = "Academico";
+                        $tipoEspecifico = $rowCPA['Tipo'];
                     }
 
                     if ($rowGPE['Tipo'] == "Financiera") {
@@ -550,6 +552,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $rowCPA = $resultCPA->fetch_assoc();
 
                         $tipo = "Apoyo financiero: " . $rowCPA['Tipo'];
+                        $tipoMayor = "Financiera";
+                        $tipoEspecifico = $rowCPA['Tipo'];
                     }
 
                     if ($rowGPE['Tipo'] == "Día") {
@@ -560,6 +564,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $rowCPD = $resultCPD->fetch_assoc();
 
                         $tipo = "Día: " . $rowCPD['Motivo'];
+                        $tipoMayor = "Día";
+                        $tipoEspecifico = $rowCPA['Motivo'];
                     }
 
                     if ($rowGPE['Tipo'] == "Plazo") {
@@ -570,6 +576,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $rowCPP = $resultCPP->fetch_assoc();
 
                         $tipo = "Plazo: " . $rowCPP['Tipo'];
+                        $tipoMayor = "Plazo";
+                        $tipoEspecifico = $rowCPA['Tipo'];
                     }
 //DESMADRE TABLA////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     echo '
@@ -619,8 +627,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo'   <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
                         <td>' . htmlspecialchars($tipo) . '</td>
                         <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
-                        <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+                        <td>' . htmlspecialchars($rowCE['Estado']) . '
+                        <br>
+                        <form action="mostrarDocumentosDe.php" method="POST">
+                        <input type="hidden" name="tipoMayor" value="'.$tipoMayor.'">
+                        <input type="hidden" name="tipo_prestacion" value="'.$tipoEspecifico.'"> 
+                        <input type="hidden" name="prestacion_id" value="'.$idPrestacion.'">
+                        <input type="hidden" name="numero_empleado" value="'.$numeroEmpleado.'">
+                        <button type="submit"> Ver documentos de esta solicitud</button>
+                        </form>
+                        </td>
                 ';
+
+
 
                 if ($rowCE['Estado'] == "Pendiente") {
                 echo'
@@ -865,6 +884,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $rowCPA = $resultCPA->fetch_assoc();
 
                     $tipo = "Apoyo académico: " . $rowCPA['Tipo'];
+                    $tipoMayor = "Academico";
+                    $tipoEspecifico = $rowCPA['Tipo'];
                 }
 
                 if ($rowGPE['Tipo'] == "Financiera") {
@@ -875,6 +896,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $rowCPA = $resultCPA->fetch_assoc();
 
                     $tipo = "Apoyo financiero: " . $rowCPA['Tipo'];
+                    $tipoMayor = "Financiera";
+                    $tipoEspecifico = $rowCPA['Tipo'];
                 }
 
                 if ($rowGPE['Tipo'] == "Día") {
@@ -885,6 +908,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $rowCPD = $resultCPD->fetch_assoc();
 
                     $tipo = "Día: " . $rowCPD['Motivo'];
+                    $tipoMayor = "Día";
+                    $tipoEspecifico = $rowCPD['Motivo'];
                 }
 
                 if ($rowGPE['Tipo'] == "Plazo") {
@@ -895,6 +920,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $rowCPP = $resultCPP->fetch_assoc();
 
                     $tipo = "Plazo: " . $rowCPP['Tipo'];
+                    $tipoMayor = "Plazo";
+                    $tipoEspecifico = $rowCPP['Tipo'];
                 }
 //DESMADRE TABLA////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     echo '
@@ -943,7 +970,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo'   <td>' . htmlspecialchars($rowCE['Fecha_Solicitada']) . '</td>
         <td>' . htmlspecialchars($tipo) . '</td>
         <td>' . htmlspecialchars($rowCE['Fecha_Otorgada']) . '</td>
-        <td>' . htmlspecialchars($rowCE['Estado']) . '</td>
+        <td>' . htmlspecialchars($rowCE['Estado']) . '
+        <br>
+        <form action="mostrarDocumentosDe.php" method="POST">
+        <input type="hidden" name="tipoMayor" value="'.$tipoMayor.'">
+        <input type="hidden" name="tipo_prestacion" value="'.$tipoEspecifico.'"> 
+        <input type="hidden" name="prestacion_id" value="'.$idPrestacion.'">
+        <input type="hidden" name="numero_empleado" value="'.$numeroEmpleado.'">
+        <button type="submit"> Ver documentos de esta solicitud</button>
+        </form>       
+        </td>
     ';
 
     if ($rowCE['Estado'] == "Pendiente") {

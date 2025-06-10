@@ -319,6 +319,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     $rowCPA = $resultCPA->fetch_assoc();
 
                     $tipo = "Apoyo académico: ".$rowCPA['Tipo'];
+                    $tipoMayor = "Academico";
+                    $tipoEspecifico = $rowCPA['Tipo'];
                 }
 
                 if ($rowSP['Tipo'] == "Financiera") {
@@ -329,6 +331,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     $rowCPA = $resultCPA->fetch_assoc();
 
                     $tipo = "Apoyo financiero: ".$rowCPA['Tipo'];
+                    $tipoMayor = "Financiera";
+                    $tipoEspecifico = $rowCPA['Tipo'];
                 }
 
                 if ($rowSP['Tipo'] == "Día") {
@@ -339,6 +343,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     $rowCPD = $resultCPD->fetch_assoc();
 
                     $tipo = "Día: ".$rowCPD['Motivo'];
+                    $tipoMayor = "Día";
+                    $tipoEspecifico = $rowCPD['Motivo'];
                 }
 
                 if($rowSP['Tipo'] == "Plazo") {
@@ -349,6 +355,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     $rowCPP = $resultCPP->fetch_assoc();
 
                     $tipo = "Plazo: ".$rowCPP['Tipo'];
+                    $tipoMayor = "Plazo";
+                    $tipoEspecifico = $rowCPP['Tipo'];
                 }
 
                 $queryCFP = $conn->prepare("SELECT * FROM familiar_prestacion WHERE Id_Prestacion = ?");
@@ -406,6 +414,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                             echo "<input type='hidden' name='tipoPrestacion' value='".htmlspecialchars($tipo)."'>";        
                                    echo'         <button type="submit" class="btn btn-primary">Otorgar prestación</button>
                                         </form>
+                                        <br>
+                                        <form action="mostrarDocumentosDe.php" method="POST">
+                                        <input type="hidden" name="tipoMayor" value="'.$tipoMayor.'">
+                                        <input type="hidden" name="tipo_prestacion" value="'.$tipoEspecifico.'"> 
+                                        <input type="hidden" name="prestacion_id" value="'.$idPrestacion.'">
+                                        <input type="hidden" name="numero_empleado" value="'.$numeroEmpleado.'">
+                                        <button type="submit"> Ver documentos de esta solicitud</button>
+                                        </form>
                                     </td>
                                 </tr>
                             </tbody>
@@ -452,6 +468,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                             echo "<input type='hidden' name='tipoPrestacion' value='".htmlspecialchars($tipo)."'>";        
                                    echo'         <button type="submit" class="btn btn-primary">Otorgar prestación</button>
                                         </form>
+                                                                                <br>
+                                        <form action="mostrarDocumentosDe.php" method="POST">
+                                        <input type="hidden" name="tipoMayor" value="'.$tipoMayor.'">
+                                        <input type="hidden" name="tipo_prestacion" value="'.$tipoEspecifico.'"> 
+                                        <input type="hidden" name="prestacion_id" value="'.$idPrestacion.'">
+                                        <input type="hidden" name="numero_empleado" value="'.$numeroEmpleado.'">
+                                        <button type="submit"> Ver documentos de esta solicitud</button>
+                                        </form>
                                     </td>
                                 </tr>
                             </tbody>
@@ -494,6 +518,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 echo "<input type='hidden' name='tipoPrestacion' value='".htmlspecialchars($tipo)."'>";
                 echo "<button type='submit' class='btn btn-primary'>Otorgar prestación</button>";
                 echo "</form>";
+                echo '
+                    <br>
+                    <form action="mostrarDocumentosDe.php" method="POST">
+                    <input type="hidden" name="tipoMayor" value="'.$tipoMayor.'">
+                    <input type="hidden" name="tipo_prestacion" value="'.$tipoEspecifico.'"> 
+                    <input type="hidden" name="prestacion_id" value="'.$idPrestacion.'">
+                    <input type="hidden" name="numero_empleado" value="'.$numeroEmpleado.'">
+                    <button type="submit"> Ver documentos de esta solicitud</button>
+                    </form>
+                     ';
                 echo "</td>";
                 echo "</tr>
                 </tbody>

@@ -96,7 +96,8 @@ require_once("conn.php");
                     <th>Fecha Solicitada</th>
                     <th>Especificaciones</th>
                     <th>Estado</th> 
-                    <th>Accion</th>       
+                    <th>SUbir documentos</th>       
+                    <th>Ver documentos</th>       
                     </thead>
                     <tbody>
         <?php
@@ -208,6 +209,18 @@ require_once("conn.php");
                         </form>
                         </td>
                       ';  
+
+                      echo '
+                        <td>
+                        <form action="mostrarDocumentosDe.php" method="POST">
+                        <input type="hidden" name="tipoMayor" value="'.$rowSPR['Tipo'].'">
+                        <input type="hidden" name="tipo_prestacion" value="'.$tipo.'"> 
+                        <input type="hidden" name="prestacion_id" value="'.$rowSPR['Id_Prestacion'].'">
+                        <input type="hidden" name="numero_empleado" value="'.$_SESSION['Numero_Empleado'].'">
+                        <button type="submit"> Ver documentos de esta solicitud</button>
+                        </form>
+                        </td>
+                      ';
                       echo "</tr>";
                     }
             }                 
