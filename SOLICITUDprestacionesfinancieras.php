@@ -327,18 +327,26 @@ $queryInsertPF->bind_param("iiisii", $id_prestacion, $_SESSION['Numero_Empleado'
 $queryInsertPF->execute();
 $queryInsertPF->close();
 
-if ($tipoPF == 'Guarderia') {
-        echo '<script>mostrarPDF("PDF Prestaciones/Guarderia y Canastilla/Prestacion guarderia y canastilla (Solicitud).pdf")</script>';
-} elseif ($tipoPF == 'Gastos funerarios') {
-        echo '<script>mostrarPDF("PDF Prestaciones/Gastos Funerarios/Prestacion gastos funerarios (Solicitud).pdf")</script>';
-} elseif ($tipoPF == 'Lentes' && $tipo_pago == 'Deposito') {
-        echo '<script>mostrarPDF("PDF Prestaciones/Lentes/Prestacion Lentes(Solicitud[Deposito]).pdf")</script>';
-} elseif ($tipoPF == 'Lentes' && $tipo_pago == 'Reembolso') {
-        echo '<script>mostrarPDF("PDF Prestaciones/Lentes/Prestacion Lentes(Solicitud[Reembolso]).pdf")</script>';
-} elseif ($tipoPF == 'Titulacion') {
-        echo '<script>mostrarPDF("PDF Prestaciones/Titulacion/Prestacion titulacion (Solicitud).pdf")</script>';
-} elseif ($tipoPF == 'Aparato Ortopedico') {
-        echo '<script>mostrarPDF("PDF Prestaciones/Aparatos Ortopedicos/Prestacion Aparatos Ortopedicos (Solicitud).pdf")</script>';
+switch ($tipoPF) {
+        case 'Guarderia':
+                echo '<script>mostrarPDF("PDF Prestaciones/Guarderia y Canastilla/Prestacion guarderia y canastilla (Solicitud).pdf")</script>';
+                break;
+        case 'Gastos funerarios':
+                echo '<script>mostrarPDF("PDF Prestaciones/Gastos Funerarios/Prestacion gastos funerarios (Solicitud).pdf")</script>';
+                break;
+        case 'Lentes':
+                if ($tipo_pago == 'Deposito') {
+                        echo '<script>mostrarPDF("PDF Prestaciones/Lentes/Prestacion Lentes(Solicitud[Deposito]).pdf")</script>';
+                } elseif ($tipo_pago == 'Reembolso') {
+                        echo '<script>mostrarPDF("PDF Prestaciones/Lentes/Prestacion Lentes(Solicitud[Reembolso]).pdf")</script>';
+                }
+                break;
+        case 'Titulacion':
+                echo '<script>mostrarPDF("PDF Prestaciones/Titulacion/Prestacion titulacion (Solicitud).pdf")</script>';
+                break;
+        case 'Aparato Ortopedico':
+                echo '<script>mostrarPDF("PDF Prestaciones/Aparatos Ortopedicos/Prestacion Aparatos Ortopedicos (Solicitud).pdf")</script>';
+                break;
 }
 
 

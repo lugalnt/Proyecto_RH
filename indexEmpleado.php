@@ -172,7 +172,7 @@ if ($resultCheckRelation->num_rows == 0) {
                     
                 </table>
 
-                <a href="">Mostrar Todos</a>
+                <a href="documentosEmpleado.php">Manejar documentos de tus prestaciones</a>
             </div>
         </main>
     </div>
