@@ -404,7 +404,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                         <form action="otorgarPrestaciones.php" method="post">
                                             <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">';
                                             echo "<input type='hidden' name='tipoPrestacion' value='".htmlspecialchars($tipo)."'>";        
-                                   echo'         <button type="submit" class="btn btn-primary">Otorgar prestación</button>
+                                   echo'         <button type="submit" class="btn btn-primary">Otorgar Prestación</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -450,7 +450,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                         <form action="otorgarPrestaciones.php" method="post">
                                             <input type="hidden" name="idPrestacion" value="' . htmlspecialchars($idPrestacion) . '">';
                                             echo "<input type='hidden' name='tipoPrestacion' value='".htmlspecialchars($tipo)."'>";        
-                                   echo'         <button type="submit" class="btn btn-primary">Otorgar prestación</button>
+                                   echo'         <button type="submit" class="btn btn-primary">Otorgar Prestación</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -492,7 +492,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 echo "<form action='otorgarPrestaciones.php' method='post'>";
                 echo "<input type='hidden' name='idPrestacion' value='".htmlspecialchars($idPrestacion)."'>";
                 echo "<input type='hidden' name='tipoPrestacion' value='".htmlspecialchars($tipo)."'>";
-                echo "<button type='submit' class='btn btn-primary'>Otorgar prestación</button>";
+                echo "<button type='submit' class='btn btn-primary'>Otorgar Prestación</button>";
                 echo "</form>";
                 echo "</td>";
                 echo "</tr>

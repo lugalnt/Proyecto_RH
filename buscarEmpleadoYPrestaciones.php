@@ -132,7 +132,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     </script>
 </head>
 <body>
-
         <div class="contenido">
         <h2>Buscar Empleado y Prestaciones</h2>
         <form action="" method="post">
@@ -143,14 +142,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             <div class="button-container">
             <button type="submit">Buscar</button>
             </div>
+            <br>
             <div class="filtros-container">
     <form action="" method="post">
-        <div class="filtro-item">
+        <div class="filtro-item checkbox-center">
             <input type="checkbox" id="check" name="check" value="on">
-            <label for="check">Quiero filtrar</label>
+            <label for="check">Quiero Filtrar</label>
         </div>
         <div class="filtro-item">
-            <label for="prestacionFiltro"><h3>Filtros</h3></label>
+            <label for="prestacionFiltro">Filtros</label>
             <select name="prestacionFiltro" id="prestacionFiltro" required onchange="mostrarSelectEspecifico()">
                 <option value="todos">Todos</option>
                 <option value="Academico">Académicas</option>
@@ -160,7 +160,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             </select>
         </div>
         <div class="filtro-item" id="filtro-academico" style="display:none;">
-            <label for="especificoAcademico">Tipo de apoyo académico:</label>
+            <label for="especificoAcademico">Tipo de Apoyo Académico:</label>
+            <br>
             <select name="especifico" id="especificoAcademico">
                 <?php
                 $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Academica'");
@@ -179,7 +180,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             </select>
         </div>
         <div class="filtro-item" id="filtro-financiera" style="display:none;">
-            <label for="especificoFinanciera">Tipo de apoyo financiero:</label>
+            <label for="especificoFinanciera">Tipo de Apoyo Financiero:</label>
             <select name="especifico" id="especificoFinanciera">
                 <?php
                 $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Financiera'");
@@ -198,7 +199,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             </select>
         </div>
         <div class="filtro-item" id="filtro-dia" style="display:none;">
-            <label for="especificoDia">Motivo del día:</label>
+            <label for="especificoDia">Motivo Del Día:</label>
             <select name="especifico" id="especificoDia">
                 <?php
                 $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Dia'");
@@ -216,7 +217,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             </select>
         </div>
         <div class="filtro-item" id="filtro-plazo" style="display:none;">
-            <label for="especificoPlazo">Tipo de plazo:</label>
+            <label for="especificoPlazo">Tipo De Plazo:</label>
             <select name="especifico" id="especificoPlazo">
                 <?php
                 $queryTiposAcademicos = $conn->prepare("SELECT nombre FROM tiposprestacion WHERE tipoMayor = 'Plazo'");
@@ -233,8 +234,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 ?>
             </select>
         </div>
-        <div class="filtro-item">
-            <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+        <div class="filtro-item center-btn">
+            <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
         </div>
     </form>
 
